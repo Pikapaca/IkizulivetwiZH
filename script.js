@@ -2,6 +2,10 @@ let members = {};
 let tweets = [];
 let visibleCount = 30;
 let loading = false;
+let sortOrder = "new"; // 默认新→旧
+let currentMember = null;
+let currentMonth = null;
+let currentTag = null;
 
 // 加载 JSON
 async function loadJSON(path) {
@@ -41,6 +45,13 @@ async function init() {
     visibleCount = 30;
     applyFilters();
   });
+
+  //排序
+ document.getElementById("sortSelect").addEventListener("change", (e)=>{
+  sortOrder = e.target.value;
+  visibleCount = 30;
+  applyFilters(currentMember, currentMonth, currentTag);
+});
 
   // 夜间模式
   document.getElementById("darkToggle").addEventListener("click", ()=>{
@@ -111,17 +122,28 @@ function renderMemberSidebar(){
 }
 
 // 应用筛选
-function applyFilters(member=null, month=null, tag=null){
+function applyFilters(tag=null) {
   const search = document.getElementById("searchInput").value.toLowerCase();
-  currentFiltered = tweets.filter(t=>{
-    return (!member || t.member===member)
-        && (!month || t.month===month)
-        && (!tag || (t.tags && t.tags.includes(tag)))
-        && t.translation.toLowerCase().includes(search);
-  });
-  currentFiltered.sort((a,b)=> new Date(b.date)-new Date(a.date));
+  const member = currentMember || "";
+  const month = currentMonth || "";
+
+  currentFiltered = tweets.filter(t =>
+    (member === "" || t.member === member) &&
+    (month === "" || t.month === month) &&
+    t.translation.toLowerCase().includes(search) &&
+    (tag === null || (t.tags && t.tags.includes(tag)))
+  );
+
+  // 使用全局 sortOrder，而不是下拉框
+  currentFiltered.sort((a,b) => 
+    sortOrder === "new" ? new Date(b.date) - new Date(a.date) 
+                        : new Date(a.date) - new Date(b.date)
+  );
+
+  visibleCount = 30;
   renderCurrent();
 }
+
 
 // 渲染当前推文
 function renderCurrent(){
@@ -188,3 +210,26 @@ function renderTweet(t){
 // 启动
 let currentFiltered = [];
 init();
+
+const sortToggle = document.getElementById("sortToggle");
+const sortLabel = document.getElementById("sortLabel");
+
+if(sortToggle && sortLabel){
+  sortToggle.addEventListener("click", () => {
+    // 切换排序
+    sortOrder = sortOrder === "new" ? "old" : "new";
+
+    // 更新图标
+    sortToggle.textContent = sortOrder === "new" ? "⬇" : "⬆";
+
+    // 更新文字提示
+    sortLabel.textContent = sortOrder === "new" ? "新 → 旧" : "旧 → 新";
+
+    // 更新 tooltip
+    sortToggle.title = sortOrder === "new" ? "排序：新 → 旧" : "排序：旧 → 新";
+
+    // 重置渲染数量并刷新
+    visibleCount = 30;
+    applyFilters(currentMember, currentMonth, currentTag);
+  });
+}

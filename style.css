@@ -32,6 +32,13 @@ header {
   border: 1px solid #ccc;
 }
 
+#sortSelect {
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9em;
+}
+
 /* ======================= 左右侧固定栏 ======================= */
 #monthSidebar, #memberSidebar {
   position: fixed;
