@@ -23,16 +23,20 @@
   <button id="darkToggle">夜间模式</button>
 </header>
 
-<!-- 左侧月份筛选 -->
-<aside id="monthSidebar"></aside>
+<div id="layoutContainer">
+  <!-- 左侧月份筛选 -->
+  <aside id="monthSidebar"></aside>
 
-<!-- 右侧成员头像筛选 -->
-<aside id="memberSidebar"></aside>
+  <!-- 主内容 + 右侧成员栏 -->
+  <div id="mainWrapper">
+    <main id="contentArea">
+      <div id="tweetContainer"></div>
+    </main>
 
-<!-- 主内容区域 -->
-<main id="contentArea">
-  <div id="tweetContainer"></div>
-</main>
+    <!-- 右侧成员头像筛选（JS 会添加指南按钮） -->
+    <aside id="memberSidebar"></aside>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>

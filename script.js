@@ -243,6 +243,7 @@ function renderMemberSidebar() {
   if (!sidebar) return;
   sidebar.innerHTML = "";
 
+  // 渲染成员头像
   Object.values(members).forEach(m => {
     const btn = document.createElement("div");
     btn.className = "member-btn";
@@ -259,7 +260,50 @@ function renderMemberSidebar() {
     });
     sidebar.appendChild(btn);
   });
+
+  // 渲染指南按钮
+  if (!document.getElementById("guideBtn")) {
+    const btn = document.createElement("button");
+    btn.id = "guideBtn";
+    btn.textContent = "指南";
+    sidebar.appendChild(btn);
+
+    // 弹窗
+    const modal = document.createElement("div");
+    modal.id = "guideModal";
+    modal.className = "modal";
+    modal.innerHTML = `
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2 id="guideTitle"></h2>
+        <ul id="guideList"></ul>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const close = modal.querySelector(".close-btn");
+    btn.addEventListener("click", () => modal.style.display = "flex");
+    close.addEventListener("click", () => modal.style.display = "none");
+    window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
+
+    // 加载 JSON 并填充
+    loadJSON("guide.json")
+      .then(data => {
+        if (!data) return;
+        document.getElementById("guideTitle").textContent = data.title || "指南";
+        const listEl = document.getElementById("guideList");
+        listEl.innerHTML = "";
+        (data.items || []).forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          listEl.appendChild(li);
+        });
+      })
+      .catch(() => console.warn("guide.json 加载失败"));
+  }
 }
+
+
 
 // ========== 筛选和排序 ==========
 function applyFilters(tag = null) {
