@@ -26,13 +26,23 @@ body {
   }
 
 /* 侧边栏 logo 改为图标 */
-.sidebar .logo img#homeIcon {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  object-fit: contain;
-  margin-right: 10px; /* 和 logo 文本的间距 */
+.sidebar .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 30px;
 }
+
+.sidebar .logo img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
 
 nav {
   flex: 1;
