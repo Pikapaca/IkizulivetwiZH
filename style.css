@@ -1,0 +1,251 @@
+/* ======================= 基础样式 ======================= */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f4f5f7;
+}
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* ======================= 侧边栏 ======================= */
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  border-right: 1px solid #eee;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+nav {
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 25px;
+  cursor: pointer;
+  transition: 0.2s;
+  color: #333;
+}
+
+.nav-item i {
+  margin-right: 12px;
+  font-size: 18px;
+}
+
+.nav-item:hover {
+  background: #f0f2f5;
+}
+
+.nav-item.active {
+  background: #e9f2ff;
+  color: #1677ff;
+}
+
+/* ======================= 主区域 ======================= */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  height: 60px;
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #eee;
+}
+
+#homeIcon {
+  display: inline-block;
+  margin-right: 10px; /* 和标题间距 */
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+}
+
+#homeIcon img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.page-title {
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+#contentArea {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* ======================= 推文卡片 ======================= */
+.tweet {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.tweet-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 名字 + displayId */
+.tweet-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.tweet-name {
+  font-weight: bold;
+}
+
+.tweet-id {
+  color: gray;
+  font-size: 0.85em;
+}
+
+/* 推文内容 */
+.tweet-content {
+  line-height: 1.4;
+  margin-bottom: 4px;
+  white-space: pre-wrap;
+}
+
+/* 日期 */
+.tweet-date {
+  font-size: 0.75em;
+  color: #888;
+}
+
+/* 标签 */
+.tweet-tag {
+  display: inline-block;
+  margin-right: 6px;
+  color: #1a73e8;      /* 蓝色文字 */
+  font-size: 0.85em;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.2s;
+}
+
+.tweet-tag:hover {
+  text-decoration: underline; /* 可选，鼠标悬停加下划线 */
+}
+
+/* ======================= 手机端响应式 ======================= */
+@media (max-width: 768px) {
+
+  .sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    height: 100%;
+    z-index: 200;
+    transition: 0.3s;
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  /* 推文卡片缩小适应屏幕 */
+  .tweet {
+    flex-direction: row;
+    padding: 10px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .tweet-name {
+    font-size: 0.95em;
+  }
+
+  .tweet-id {
+    font-size: 0.8em;
+  }
+
+  .tweet-content {
+    font-size: 0.95em;
+  }
+
+  .tweet-date {
+    font-size: 0.7em;
+  }
+}
+
+/* ======================= 夜间模式支持 ======================= */
+body.dark {
+  background: #1e1e1e;
+  color: #ccc;
+}
+
+body.dark .sidebar {
+  background: #2c2c2c;
+  border-right: 1px solid #444;
+}
+
+body.dark .nav-item.active {
+  background: #1677ff22;
+  color: #1677ff;
+}
+
+body.dark header {
+  background: #2c2c2c;
+  border-bottom: 1px solid #444;
+}
+
+body.dark .tweet {
+  background: #2c2c2c;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+body.dark .tweet-id {
+  color: #aaa;
+}
+
+body.dark .tweet-date {
+  color: #aaa;
+}
