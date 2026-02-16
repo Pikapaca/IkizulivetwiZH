@@ -24,19 +24,6 @@ body {
     left: 0;
   }
 
-#homeIcon {
-  margin-right: 10px; /* 和标题间距 */
-  height: 32px;
-  width: 32px;
-  cursor: pointer;
-}
-
-#homeIcon img {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-}
-
 .logo {
   font-weight: bold;
   font-size: 18px;
@@ -85,6 +72,25 @@ header {
   align-items: center;
   padding: 0 20px;
   border-bottom: 1px solid #eee;
+}
+
+#homeIcon {
+  display: inline-block;
+  margin-right: 10px;
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+}
+
+#homeIcon img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.page-title {
+  font-weight: bold;
+  margin-left: 15px;
 }
 
 
