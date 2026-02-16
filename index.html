@@ -3,63 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>イキヅライブ！汉化存档</title>
+<title>IkizulivetwiZH</title>
 <link rel="stylesheet" href="style.css">
-
-<!-- 图标库 -->
-<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
 
-<div class="layout">
+<!-- 顶部 header -->
+<header>
+  <div id="homeIcon">
+    <img src="images/home-icon.png" alt="Home">
+  </div>
+  <input type="text" id="searchInput" placeholder="搜索推文..." />
+  <button id="darkToggle">夜间模式</button>
+</header>
 
-  <!-- 左侧导航 -->
-  <aside class="sidebar" id="sidebar">
+<!-- 左侧月份筛选 -->
+<aside id="monthSidebar"></aside>
 
-    <div class="logo" >
-  <img src="images/home-icon.png" id="homeIcon" alt="Home">
-    </div>
+<!-- 右侧成员头像筛选 -->
+<aside id="memberSidebar"></aside>
 
-
-    <nav>
-      <div class="nav-item active" data-page="home">
-        <i class="ri-home-5-line"></i>
-      </div>
-
-      <div class="nav-item" data-page="search">
-        <i class="ri-search-line"></i>
-        <span>搜索</span>
-      </div>
-
-      <div class="nav-item" data-page="member">
-        <i class="ri-user-3-line"></i>
-        <span>成员</span>
-      </div>
-
-      <div class="nav-item" data-page="month">
-        <i class="ri-calendar-line"></i>
-        <span>月份</span>
-      </div>
-    </nav>
-
-  </aside>
-
-  <!-- 主区域 -->
-  <main>
-
-    <header>
-      <button id="menuToggle">☰</button>
-      <div class="page-title"></div>
-    </header>
-
-    <!-- 动态区域 -->
-    <section id="contentArea">
-      <div id="tweetContainer"></div>
-    </section>
-
-  </main>
-
-</div>
+<!-- 主内容区域 -->
+<main id="contentArea">
+  <div id="tweetContainer"></div>
+</main>
 
 <script src="script.js"></script>
 </body>
