@@ -75,6 +75,54 @@ header {
   object-fit: cover;
 }
 
+/* ======================= 年份折叠 + 月份按钮 ======================= */
+.year-item {
+  margin-bottom: 6px;
+}
+
+.year-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  cursor: pointer;
+  background: #e0e5f0;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.year-header:hover {
+  background: #d0d8ec;
+}
+
+.toggle-arrow {
+  transition: transform 0.2s;
+}
+
+.year-header.expanded .toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.months-container {
+  display: none; /* 默认折叠 */
+  margin-left: 6px;
+  margin-top: 4px;
+}
+
+.month-btn {
+  display: flex;
+  justify-content: space-between; /* 显示月份 + 推文数 */
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.month-btn:hover {
+  background: #e6f0ff;
+}
+
 /* ======================= 主区域 ======================= */
 main {
   flex: 1;

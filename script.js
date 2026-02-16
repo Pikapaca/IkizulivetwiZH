@@ -86,19 +86,60 @@ async function loadAllTweets() {
 }
 
 // 渲染月份侧边栏
-function renderMonthSidebar(){
+function renderMonthSidebar() {
   const sidebar = document.getElementById("monthSidebar");
-  const months = [...new Set(tweets.map(t=>t.month))].sort((a,b)=> new Date(b)-new Date(a));
-  months.forEach(m=>{
-    const btn = document.createElement("div");
-    btn.className = "month-btn";
-    btn.textContent = m;
-    btn.addEventListener("click", ()=>{
-      visibleCount = 30;
-      applyFilters(null, m);
-      window.scrollTo(0,0);
+  sidebar.innerHTML = "";
+
+  // 按年份分组
+  const grouped = {};
+  const counts = {}; // 每个月份的数量
+  tweets.forEach(t => {
+    const year = t.month.split("-")[0];
+    if (!grouped[year]) grouped[year] = [];
+    if (!grouped[year].includes(t.month)) grouped[year].push(t.month);
+
+    counts[t.month] = (counts[t.month] || 0) + 1; // 统计数量
+  });
+
+  // 排序年份从大到小
+  const years = Object.keys(grouped).sort((a,b) => b - a);
+
+  years.forEach(year => {
+    const yearDiv = document.createElement("div");
+    yearDiv.className = "year-item";
+
+    const header = document.createElement("div");
+    header.className = "year-header";
+    header.innerHTML = `${year} <span class="toggle-arrow">▼</span>`;
+
+    const monthsContainer = document.createElement("div");
+    monthsContainer.className = "months-container";
+    monthsContainer.style.display = "none"; // 默认收起
+
+    // 添加月份按钮
+    grouped[year].sort((a,b)=>b.localeCompare(a)).forEach(month => {
+      const monthBtn = document.createElement("div");
+      monthBtn.className = "month-btn";
+      monthBtn.textContent = `${month} (${counts[month]})`; // 显示数量
+      monthBtn.addEventListener("click", () => {
+        visibleCount = 30;
+        currentMonth = month;
+        applyFilters(currentMember, currentMonth, currentTag);
+        window.scrollTo(0,0);
+      });
+      monthsContainer.appendChild(monthBtn);
     });
-    sidebar.appendChild(btn);
+
+    // 点击年份展开/收起
+    header.addEventListener("click", () => {
+      const isHidden = monthsContainer.style.display === "none";
+      monthsContainer.style.display = isHidden ? "block" : "none";
+      header.querySelector(".toggle-arrow").textContent = isHidden ? "▲" : "▼";
+    });
+
+    yearDiv.appendChild(header);
+    yearDiv.appendChild(monthsContainer);
+    sidebar.appendChild(yearDiv);
   });
 }
 
