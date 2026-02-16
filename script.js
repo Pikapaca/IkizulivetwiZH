@@ -213,4 +213,5 @@ document.querySelectorAll(".nav-item").forEach(item=>{
     item.classList.add("active");
     document.querySelector(".page-title").textContent = item.innerText;
   });
-});
+})
+
