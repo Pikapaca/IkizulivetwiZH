@@ -19,6 +19,11 @@ async function loadJSON(path) {
   }
 }
 
+  function getLatestMonthsFromData(tweets, count=3){
+  const months = [...new Set(tweets.map(t=>t.month))];
+  return months.sort((a,b)=>b.localeCompare(a)).slice(0,count);
+}
+
 // ========== 加载指定月份推文 ==========
 async function loadTweetsByMonth(months = null) {
   const now = new Date();
@@ -53,19 +58,43 @@ async function loadTweetsByMonth(months = null) {
 
 // ========== 初始化 ==========
 async function init() {
-  // 先渲染空壳界面
+  // 先渲染空壳
   renderMemberSidebar();
   renderMonthSidebar();
   renderCurrent();
 
-  // 并行加载数据
+  // 并行加载成员 JSON
   const membersPromise = loadJSON("members.json");
-  const tweetsPromise = loadTweetsByMonth();
 
+  // 先加载所有月份 JSON，不排序也不显示，只为计算最近三个月
+  const now = new Date();
+  const startYear = 2024;
+  const monthsData = [];
+
+  for (let y=startYear; y<=now.getFullYear(); y++){
+    for (let m=1; m<=12; m++){
+      const month = `${y}-${String(m).padStart(2,"0")}`;
+      monthsData.push(loadJSON(`data/${month}.json`).then(data=>{
+        if(data.length>0){
+          data.forEach(t=>t.month=month);
+          tweets = tweets.concat(data);
+        }
+      }));
+    }
+  }
+
+  await Promise.all(monthsData);
+
+  // 获取最近三个月
+  const latestMonths = getLatestMonthsFromData(tweets, 3);
+
+  // 只保留最近三个月推文
+  tweets = tweets.filter(t => latestMonths.includes(t.month))
+                 .sort((a,b)=> new Date(b.date)-new Date(a.date));
+
+  // 加载成员数据
   const memberData = await membersPromise;
   memberData.forEach(m => members[m.id] = m);
-
-  await tweetsPromise;
 
   // 数据加载完成后刷新界面
   renderMemberSidebar();
