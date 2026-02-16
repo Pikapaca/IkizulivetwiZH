@@ -306,6 +306,8 @@ function renderMemberSidebar() {
     btn.addEventListener("click", () => modal.style.display = "flex");
     close.addEventListener("click", () => modal.style.display = "none");
     window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
+    }
+    }
 
 
 // ========== 筛选和排序 ==========
