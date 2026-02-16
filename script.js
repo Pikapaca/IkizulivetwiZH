@@ -23,6 +23,12 @@ async function loadJSON(path) {
   }
 }
 
+// ========== 获取最近几个月 ==========
+function getLatestMonthsFromData(tweets, count = 3) {
+  const months = [...new Set(tweets.map(t => t.month))];
+  return months.sort((a, b) => b.localeCompare(a)).slice(0, count);
+}
+
 // ========== 加载指定月份推文 ==========
 async function loadTweetsByMonth(months = null) {
   const now = new Date();
@@ -31,7 +37,6 @@ async function loadTweetsByMonth(months = null) {
   if (months) {
     monthsToLoad.push(...months);
   } else {
-    // 默认加载最近 3 个月
     for (let i = 0; i < 3; i++) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const y = d.getFullYear();
@@ -40,7 +45,6 @@ async function loadTweetsByMonth(months = null) {
     }
   }
 
-  // 并行加载
   const promises = monthsToLoad.map(m =>
     loadJSON(`data/${m}.json`).then(data => {
       data.forEach(t => t.month = m);
@@ -51,46 +55,41 @@ async function loadTweetsByMonth(months = null) {
   const results = await Promise.all(promises);
   results.forEach(arr => tweets = tweets.concat(arr));
 
-  // 默认按日期排序
   tweets.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
 // ========== 初始化 ==========
 async function init() {
-  // 先渲染空壳
   renderMemberSidebar();
   renderMonthSidebar();
   renderCurrent();
 
-// 在 renderMemberSidebar() 之后，DOM 已经生成，加载 guide.json
- loadJSON("guide.json")
-    .then(data => {
-      if (!data) return;
-      document.getElementById("guideTitle").textContent = data.title || "指南";
-      const listEl = document.getElementById("guideList");
-      listEl.innerHTML = "";
-      (data.items || []).forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        listEl.appendChild(li);
-      });
-    })
-    .catch(() => console.warn("guide.json 加载失败"));
+  // guide.json
+  loadJSON("guide.json").then(data => {
+    if (!data) return;
+    document.getElementById("guideTitle").textContent = data.title || "指南";
+    const listEl = document.getElementById("guideList");
+    listEl.innerHTML = "";
+    (data.items || []).forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      listEl.appendChild(li);
+    });
+  }).catch(() => console.warn("guide.json 加载失败"));
 
-  // 并行加载成员 JSON
   const membersPromise = loadJSON("members.json");
 
-  // 先加载所有月份 JSON，不排序也不显示，只为计算最近三个月
+  // 先加载所有月份 JSON 仅用于计算最近三个月
   const now = new Date();
   const startYear = 2024;
   const monthsData = [];
 
-  for (let y=startYear; y<=now.getFullYear(); y++){
-    for (let m=1; m<=12; m++){
-      const month = `${y}-${String(m).padStart(2,"0")}`;
-      monthsData.push(loadJSON(`data/${month}.json`).then(data=>{
-        if(data.length>0){
-          data.forEach(t=>t.month=month);
+  for (let y = startYear; y <= now.getFullYear(); y++) {
+    for (let m = 1; m <= 12; m++) {
+      const month = `${y}-${String(m).padStart(2, "0")}`;
+      monthsData.push(loadJSON(`data/${month}.json`).then(data => {
+        if (data.length > 0) {
+          data.forEach(t => t.month = month);
           tweets = tweets.concat(data);
         }
       }));
@@ -99,59 +98,44 @@ async function init() {
 
   await Promise.all(monthsData);
 
-  // 获取最近三个月
+  // 最近三个月
   const latestMonths = getLatestMonthsFromData(tweets, 3);
-
-  // 只保留最近三个月推文
   tweets = tweets.filter(t => latestMonths.includes(t.month))
-                 .sort((a,b)=> new Date(b.date)-new Date(a.date));
+                 .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  // 加载成员数据
+  // 成员数据
   const memberData = await membersPromise;
   memberData.forEach(m => members[m.id] = m);
 
-  // 数据加载完成后刷新界面
   renderMemberSidebar();
   renderMonthSidebar();
   applyFilters();
 
-  // 首页 icon 点击
-  const homeIcon = document.getElementById("homeIcon");
-  if (homeIcon) {
-    homeIcon.addEventListener("click", () => {
-      window.scrollTo(0, 0);
-      applyFilters();
-    });
-  }
+  // 首页
+  document.getElementById("homeIcon")?.addEventListener("click", () => {
+    window.scrollTo(0, 0);
+    applyFilters();
+  });
 
-  // 搜索框
-  const searchInput = document.getElementById("searchInput");
-  if (searchInput) {
-    searchInput.addEventListener("input", () => {
-      visibleCount = 30;
-      applyFilters();
-    });
-  }
+  // 搜索
+  document.getElementById("searchInput")?.addEventListener("input", () => {
+    visibleCount = 30;
+    applyFilters();
+  });
 
   // 排序下拉
-  const sortSelect = document.getElementById("sortSelect");
-  if (sortSelect) {
-    sortSelect.addEventListener("change", e => {
-      sortOrder = e.target.value;
-      visibleCount = 30;
-      applyFilters(currentMember, currentMonth, currentTag);
-    });
-  }
+  document.getElementById("sortSelect")?.addEventListener("change", e => {
+    sortOrder = e.target.value;
+    visibleCount = 30;
+    applyFilters(currentMember, currentMonth, currentTag);
+  });
 
   // 夜间模式
-  const darkToggle = document.getElementById("darkToggle");
-  if (darkToggle) {
-    darkToggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-    });
-  }
+  document.getElementById("darkToggle")?.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+  });
 
-  // 懒加载更多推文
+  // 懒加载
   window.addEventListener("scroll", () => {
     if (loading) return;
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
@@ -162,7 +146,7 @@ async function init() {
     }
   });
 
-  // 背景加载剩余月份 JSON
+  // 背景加载剩余月份
   loadRemainingMonths();
 }
 
@@ -171,8 +155,8 @@ async function loadRemainingMonths() {
   const now = new Date();
   const startYear = 2024;
   const loadedMonths = new Set(tweets.map(t => t.month));
-
   const monthsToLoad = [];
+
   for (let y = startYear; y <= now.getFullYear(); y++) {
     for (let m = 1; m <= 12; m++) {
       const month = `${y}-${String(m).padStart(2, "0")}`;
@@ -180,7 +164,6 @@ async function loadRemainingMonths() {
     }
   }
 
-  // 分批并行加载，防止阻塞
   const batchSize = 3;
   for (let i = 0; i < monthsToLoad.length; i += batchSize) {
     const batch = monthsToLoad.slice(i, i + batchSize);
@@ -190,11 +173,7 @@ async function loadRemainingMonths() {
     }));
     const results = await Promise.all(promises);
     results.forEach(arr => tweets = tweets.concat(arr));
-
-    // 按日期排序
     tweets.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    // 如果侧边栏已经显示，则更新
     renderMonthSidebar();
   }
 }
@@ -209,13 +188,12 @@ function renderMonthSidebar() {
   const counts = {};
   tweets.forEach(t => {
     const year = t.month.split("-")[0];
-    if (!grouped[year]) grouped[year] = [];
+    grouped[year] = grouped[year] || [];
     if (!grouped[year].includes(t.month)) grouped[year].push(t.month);
     counts[t.month] = (counts[t.month] || 0) + 1;
   });
 
-  const years = Object.keys(grouped).sort((a, b) => b - a);
-  years.forEach(year => {
+  Object.keys(grouped).sort((a,b)=>b-a).forEach(year => {
     const yearDiv = document.createElement("div");
     yearDiv.className = "year-item";
 
@@ -227,15 +205,14 @@ function renderMonthSidebar() {
     monthsContainer.className = "months-container";
     monthsContainer.style.display = "none";
 
-   header.addEventListener("click", () => {
+    header.addEventListener("click", () => {
       const isHidden = monthsContainer.style.display === "none";
-
       monthsContainer.style.display = isHidden ? "block" : "none";
       header.classList.toggle("expanded", isHidden);
-});
+      header.querySelector(".toggle-arrow").textContent = isHidden ? "▲" : "▼";
+    });
 
-
-    grouped[year].sort((a, b) => b.localeCompare(a)).forEach(month => {
+    grouped[year].sort((a,b)=>b.localeCompare(a)).forEach(month => {
       const monthBtn = document.createElement("div");
       monthBtn.className = "month-btn";
       monthBtn.textContent = `${month} (${counts[month]})`;
@@ -243,15 +220,9 @@ function renderMonthSidebar() {
         visibleCount = 30;
         currentMonth = month;
         applyFilters(currentMember, currentMonth, currentTag);
-        window.scrollTo(0, 0);
+        window.scrollTo(0,0);
       });
       monthsContainer.appendChild(monthBtn);
-    });
-
-    header.addEventListener("click", () => {
-      const isHidden = monthsContainer.style.display === "none";
-      monthsContainer.style.display = isHidden ? "block" : "none";
-      header.querySelector(".toggle-arrow").textContent = isHidden ? "▲" : "▼";
     });
 
     yearDiv.appendChild(header);
@@ -265,32 +236,29 @@ function renderMemberSidebar() {
   if (!sidebar) return;
   sidebar.innerHTML = "";
 
-  // 渲染成员头像
   Object.values(members).forEach(m => {
     const btn = document.createElement("div");
     btn.className = "member-btn";
     const img = document.createElement("img");
     img.src = m.avatar;
     img.title = m.name;
-    img.loading = "lazy"; // 延迟加载
+    img.loading = "lazy";
     btn.appendChild(img);
     btn.addEventListener("click", () => {
       visibleCount = 30;
       currentMember = m.id;
       applyFilters(currentMember, currentMonth, currentTag);
-      window.scrollTo(0, 0);
+      window.scrollTo(0,0);
     });
     sidebar.appendChild(btn);
   });
 
-  // 渲染指南按钮
   if (!document.getElementById("guideBtn")) {
     const btn = document.createElement("button");
     btn.id = "guideBtn";
     btn.textContent = "指南";
     sidebar.appendChild(btn);
 
-    // 弹窗
     const modal = document.createElement("div");
     modal.id = "guideModal";
     modal.className = "modal";
@@ -304,12 +272,11 @@ function renderMemberSidebar() {
     document.body.appendChild(modal);
 
     const close = modal.querySelector(".close-btn");
-    btn.addEventListener("click", () => modal.style.display = "flex");
-    close.addEventListener("click", () => modal.style.display = "none");
-    window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
-    }
-    }
-
+    btn.addEventListener("click", ()=> modal.style.display="flex");
+    close.addEventListener("click", ()=> modal.style.display="none");
+    window.addEventListener("click", e => { if(e.target===modal) modal.style.display="none"; });
+  }
+}
 
 // ========== 筛选和排序 ==========
 function applyFilters(tag = null) {
@@ -321,12 +288,11 @@ function applyFilters(tag = null) {
     (member === "" || t.member === member) &&
     (month === "" || t.month === month) &&
     t.translation.toLowerCase().includes(search) &&
-    (tag === null || (t.tags && t.tags.includes(tag)))
+    (tag===null || (t.tags && t.tags.includes(tag)))
   );
 
-  currentFiltered.sort((a, b) =>
-    sortOrder === "new" ? new Date(b.date) - new Date(a.date)
-      : new Date(a.date) - new Date(b.date)
+  currentFiltered.sort((a,b)=>
+    sortOrder==="new" ? new Date(b.date)-new Date(a.date) : new Date(a.date)-new Date(b.date)
   );
 
   visibleCount = 30;
@@ -341,8 +307,7 @@ function renderCurrent() {
 
   const fragment = document.createDocumentFragment();
   currentFiltered.slice(0, visibleCount).forEach(t => {
-    const tweetEl = renderTweet(t);
-    fragment.appendChild(tweetEl);
+    fragment.appendChild(renderTweet(t));
   });
   container.appendChild(fragment);
 }
@@ -381,8 +346,8 @@ function renderTweet(t) {
       tagEl.textContent = `#${tag}`;
       tagEl.addEventListener("click", () => {
         visibleCount = 30;
-        applyFilters(null, null, tag);
-        window.scrollTo(0, 0);
+        applyFilters(null,null,tag);
+        window.scrollTo(0,0);
       });
       tagContainer.appendChild(tagEl);
     });
@@ -403,12 +368,12 @@ function renderTweet(t) {
 const sortToggle = document.getElementById("sortToggle");
 const sortLabel = document.getElementById("sortLabel");
 
-if (sortToggle && sortLabel) {
+if(sortToggle && sortLabel) {
   sortToggle.addEventListener("click", () => {
-    sortOrder = sortOrder === "new" ? "old" : "new";
-    sortToggle.textContent = sortOrder === "new" ? "⬇" : "⬆";
-    sortLabel.textContent = sortOrder === "new" ? "新 → 旧" : "旧 → 新";
-    sortToggle.title = sortOrder === "new" ? "排序：新 → 旧" : "排序：旧 → 新";
+    sortOrder = sortOrder==="new"?"old":"new";
+    sortToggle.textContent = sortOrder==="new"?"⬇":"⬆";
+    sortLabel.textContent = sortOrder==="new"?"新 → 旧":"旧 → 新";
+    sortToggle.title = sortOrder==="new"?"排序：新 → 旧":"排序：旧 → 新";
     visibleCount = 30;
     applyFilters(currentMember, currentMonth, currentTag);
   });
