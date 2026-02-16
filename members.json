@@ -2,61 +2,61 @@
  {
     "id": "polka",
     "name": "高桥波尔卡@生活好难部！",
-    "displayId": "@polka_lion",
+    "displayId": "polka_lion",
     "avatar": "images/polka.png"
   },  
   {
     "id": "mai",             
     "name": "麻布麻衣@生活好难部！",    
-    "displayId": "@My_Mai_Eld",
+    "displayId": "My_Mai_Eld",
     "avatar": "images/mai.png"
   },
   {
     "id": "akky",
     "name": "五桐 玲@生活好难部！",
-    "displayId": "@G_Akky304250",
+    "displayId": "G_Akky304250",
     "avatar": "images/akky.png"
   },
   {
     "id": "hanabi",
     "name": "驹形花火@生活好难部！",
-    "displayId": "@hanabistarmine",
+    "displayId": "hanabistarmine",
     "avatar": "images/hanabi.png"
   },
   {
     "id": "yukuri",
     "name": "春宫悠可里@生活好难部！",
-    "displayId": "@Yukuri_talk",
+    "displayId": "Yukuri_talk",
     "avatar": "images/yukuri.png"
   },  
   {
     "id": "rollie",
     "name": "此花辉夜@生活好难部！",
-    "displayId": "@Rollie_twinkle",
+    "displayId": "Rollie_twinkle",
     "avatar": "images/rollie.png"
   },
   {
     "id": "midori",
     "name": "山田真绿@生活好难部！",
-    "displayId": "@LittlegreenCom",
+    "displayId": "LittlegreenCom",
     "avatar": "images/midori.png"
   },
   {
     "id": "miracle",
     "name": "金泽奇迹@生活好难部！",
-    "displayId": "@MiracleGoldSP",
+    "displayId": "MiracleGoldSP",
     "avatar": "images/miracle.png"
   },
   {
     "id": "noriko",
     "name": "调布乃理子@生活好难部！",
-    "displayId": "@Noricco_U",
+    "displayId": "Noricco_U",
     "avatar": "images/noriko.png"
   },
   {
     "id": "shion",
     "name": "佐佐木翔音@生活好难部！",
-    "displayId": "@ShaunTheBunny",
+    "displayId": "ShaunTheBunny",
     "avatar": "images/shion.png"
   }
 ]

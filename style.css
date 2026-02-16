@@ -15,6 +15,7 @@ body {
     position: fixed;
     left: -250px;
     top: 0;
+    width: 250px;
     height: 100%;
     z-index: 200;
     transition: 0.3s;
@@ -25,17 +26,12 @@ body {
   }
 
 /* 侧边栏 logo 改为图标 */
-.logo#homeIcon {
+.sidebar .logo img#homeIcon {
   width: 40px;
   height: 40px;
-  margin: 0 auto 30px auto;
   cursor: pointer;
-}
-
-.logo#homeIcon img {
-  width: 100%;
-  height: 100%;
   object-fit: contain;
+  margin-right: 10px; /* 和 logo 文本的间距 */
 }
 
 nav {
@@ -171,19 +167,6 @@ header {
 /* ======================= 手机端响应式 ======================= */
 @media (max-width: 768px) {
 
-  .sidebar {
-    position: fixed;
-    left: -250px;
-    top: 0;
-    height: 100%;
-    z-index: 200;
-    transition: 0.3s;
-  }
-
-  .sidebar.active {
-    left: 0;
-  }
-
   header {
     position: sticky;
     top: 0;
@@ -216,6 +199,20 @@ header {
 
   .tweet-date {
     font-size: 0.7em;
+  }
+
+  .tweet-tag {
+    display: inline-block;
+    margin-right: 6px;
+    color: #1a73e8;
+    font-size: 0.85em;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.2s;
+  }
+
+  .tweet-tag:hover {
+    text-decoration: underline;
   }
 }
 

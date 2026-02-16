@@ -30,6 +30,25 @@ async function init() {
 async function loadAllTweets() {
   const now = new Date();
   const startYear = 2024;
+  const monthsToLoadFirst = 3; // 优先加载最近三个月
+
+  let recentTweets = [];
+  for(let i=0;i<monthsToLoadFirst;i++){
+    const date = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    const month = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
+    try{
+      const data = await loadJSON(`data/${month}.json`);
+      data.forEach(t=> t.month = month);
+      recentTweets = recentTweets.concat(data);
+      const opt = document.createElement("option");
+      opt.value = month;
+      opt.textContent = month;
+      document.getElementById("monthFilter").appendChild(opt);
+    }catch{}
+  }
+
+  tweets = recentTweets; 
+  renderCurrent(); // 先显示最近推文
 
   for (let y = startYear; y <= now.getFullYear(); y++) {
     for (let m = 1; m <= 12; m++) {
@@ -148,7 +167,12 @@ function renderTweet(t) {
   // 拼装
   body.appendChild(header);
   body.appendChild(content);
-  body.appendChild(date);
+  
+if (t.tags && t.tags.length > 0) {
+  body.appendChild(tagContainer); // 标签
+}
+
+body.appendChild(date);
 
   tweet.appendChild(avatar);
   tweet.appendChild(body);
