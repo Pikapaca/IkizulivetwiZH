@@ -180,5 +180,19 @@ document.querySelectorAll(".nav-item").forEach(item => {
   });
 });
 
+/* 首页图标点击回到首页 - 新增代码 */
+const homeIcon = document.getElementById("homeIcon");
+if(homeIcon){
+  homeIcon.addEventListener("click", ()=>{
+    // 回到页面顶部
+    window.scrollTo(0,0);
+
+    // 重置导航高亮
+    document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
+    const homeNav = document.querySelector('.nav-item[data-page="home"]');
+    if(homeNav) homeNav.classList.add("active");
+  });
+}
+
 // ========== 初始化入口 ==========
 init();
