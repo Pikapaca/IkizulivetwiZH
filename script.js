@@ -1,35 +1,42 @@
+// ========== 全局变量 ==========
 let members = {};
 let tweets = [];
+let currentFiltered = [];
 let visibleCount = 30;
 let loading = false;
 
+// ========== 加载 JSON ==========
 async function loadJSON(path) {
   return fetch(path).then(r => r.json());
 }
 
+// ========== 初始化 ==========
 async function init() {
+  // 加载成员
   const memberData = await loadJSON("members.json");
-
   memberData.forEach(m => {
     members[m.id] = m;
-
     const opt = document.createElement("option");
     opt.value = m.id;
     opt.textContent = m.name;
     document.getElementById("memberFilter").appendChild(opt);
   });
 
+  // 加载所有推文
   await loadAllTweets();
-  render();
+
+  // 初次渲染
+  applyFilters();
 }
 
+// ========== 加载所有月份推文 ==========
 async function loadAllTweets() {
   const now = new Date();
   const startYear = 2024;
 
   for (let y = startYear; y <= now.getFullYear(); y++) {
     for (let m = 1; m <= 12; m++) {
-      const month = `${y}-${String(m).padStart(2,"0")}`;
+      const month = `${y}-${String(m).padStart(2, "0")}`;
       try {
         const data = await loadJSON(`data/${month}.json`);
         data.forEach(t => t.month = month);
@@ -39,39 +46,20 @@ async function loadAllTweets() {
         opt.value = month;
         opt.textContent = month;
         document.getElementById("monthFilter").appendChild(opt);
-
       } catch {}
     }
   }
 
+  // 按时间倒序
   tweets.sort((a,b)=> new Date(b.date)-new Date(a.date));
 }
 
-function render() {
-  let currentFiltered = []; // 当前渲染的推文数组（搜索、筛选、tag 都统一）
-let visibleCount = 30;
-let loading = false;
-
-// 原有 init() 保持不变
-async function init() {
-  const memberData = await loadJSON("members.json");
-  memberData.forEach(m => {
-    members[m.id] = m;
-    const opt = document.createElement("option");
-    opt.value = m.id;
-    opt.textContent = m.name;
-    document.getElementById("memberFilter").appendChild(opt);
-  });
-
-  await loadAllTweets();
-  applyFilters(); // 初始化渲染
-}
-
-// 点击 tag / 搜索 / 筛选统一调用
+// ========== 过滤和排序 ==========
 function applyFilters(tag=null) {
   const search = document.getElementById("searchInput").value.toLowerCase();
   const member = document.getElementById("memberFilter").value;
   const month = document.getElementById("monthFilter").value;
+  const sort = document.getElementById("sortOrder").value;
 
   currentFiltered = tweets.filter(t =>
     (member === "" || t.member === member) &&
@@ -80,22 +68,21 @@ function applyFilters(tag=null) {
     (tag === null || (t.tags && t.tags.includes(tag)))
   );
 
-  const sort = document.getElementById("sortOrder").value;
-  currentFiltered.sort((a,b) => sort==="new"? new Date(b.date)-new Date(a.date)
-                                          : new Date(a.date)-new Date(b.date));
+  currentFiltered.sort((a,b)=> sort==="new"? new Date(b.date)-new Date(a.date)
+                                           : new Date(a.date)-new Date(b.date));
+
   visibleCount = 30;
   renderCurrent();
 }
 
-// 根据 currentFiltered 渲染页面
+// ========== 渲染当前推文 ==========
 function renderCurrent() {
   const container = document.getElementById("tweetContainer");
   container.innerHTML = "";
-
   currentFiltered.slice(0, visibleCount).forEach(renderTweet);
 }
 
-// 渲染单条推文
+// ========== 渲染单条推文 ==========
 function renderTweet(t) {
   const container = document.getElementById("tweetContainer");
   const m = members[t.member];
@@ -116,7 +103,7 @@ function renderTweet(t) {
   const header = document.createElement("div");
   header.className = "tweet-header";
   header.innerHTML = `<span class="tweet-name">${m.name}</span>
-                      <span class="tweet-id">${m.displayId ? '@'+m.displayId : ''}</span>`;
+                      <span class="tweet-id">${m.displayId ? m.displayId : ''}</span>`;
 
   // 正文
   const content = document.createElement("div");
@@ -127,7 +114,7 @@ function renderTweet(t) {
   if (t.tags && t.tags.length > 0) {
     const tagContainer = document.createElement("div");
     tagContainer.className = "tweet-tags";
-    t.tags.forEach(tag=>{
+    t.tags.forEach(tag => {
       const tagEl = document.createElement("span");
       tagEl.className = "tweet-tag";
       tagEl.textContent = `#${tag}`;
@@ -135,9 +122,8 @@ function renderTweet(t) {
         document.getElementById("searchInput").value = "";
         document.getElementById("memberFilter").value = "";
         document.getElementById("monthFilter").value = "";
-        visibleCount = 30;
         applyFilters(tag);
-        window.scrollTo(0,0); // 点击 tag 回到顶部
+        window.scrollTo(0,0);
       });
       tagContainer.appendChild(tagEl);
     });
@@ -153,14 +139,13 @@ function renderTweet(t) {
   body.appendChild(header);
   body.appendChild(content);
   body.appendChild(date);
-
   tweet.appendChild(avatar);
   tweet.appendChild(body);
   container.appendChild(tweet);
 }
 
-// 懒加载
-window.addEventListener("scroll",()=>{
+// ========== 懒加载 ==========
+window.addEventListener("scroll", ()=>{
   if(loading) return;
   if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 200){
     loading = true;
@@ -170,50 +155,30 @@ window.addEventListener("scroll",()=>{
   }
 });
 
-// 搜索 / 成员 / 月份 / 排序变化都调用 applyFilters()
-document.getElementById("searchInput").addEventListener("input",()=> applyFilters());
-document.getElementById("memberFilter").addEventListener("change",()=> applyFilters());
-document.getElementById("monthFilter").addEventListener("change",()=> applyFilters());
-document.getElementById("sortOrder").addEventListener("change",()=> applyFilters());
+// ========== 输入 / 筛选事件 ==========
+document.getElementById("searchInput").addEventListener("input", ()=> applyFilters());
+document.getElementById("memberFilter").addEventListener("change", ()=> applyFilters());
+document.getElementById("monthFilter").addEventListener("change", ()=> applyFilters());
+document.getElementById("sortOrder").addEventListener("change", ()=> applyFilters());
 
-
-/* 懒加载 */
-window.addEventListener("scroll",()=>{
-  if(loading) return;
-  if(window.innerHeight+window.scrollY>=document.body.offsetHeight-200){
-    loading=true;
-    visibleCount+=30;
-    render();
-    loading=false;
-  }
-});
-
-/* 筛选监听 */
-document.getElementById("searchInput").addEventListener("input",()=>{visibleCount=30;render();});
-document.getElementById("memberFilter").addEventListener("change",()=>{visibleCount=30;render();});
-document.getElementById("monthFilter").addEventListener("change",()=>{visibleCount=30;render();});
-document.getElementById("sortOrder").addEventListener("change",()=>{visibleCount=30;render();});
-
-/* 夜间模式 */
-document.getElementById("darkToggle").addEventListener("click",()=>{
+// ========== 夜间模式 ==========
+document.getElementById("darkToggle").addEventListener("click", ()=>{
   document.body.classList.toggle("dark");
 });
 
-init();
-
-/* 菜单开关 */
-document.getElementById("menuToggle").addEventListener("click",()=>{
+// ========== 菜单开关 ==========
+document.getElementById("menuToggle").addEventListener("click", ()=>{
   document.getElementById("sidebar").classList.toggle("active");
 });
 
-/* 导航高亮 */
-document.querySelectorAll(".nav-item").forEach(item=>{
-  item.addEventListener("click",()=>{
-    document.querySelectorAll(".nav-item").forEach(i=>i.classList.remove("active"));
+// ========== 导航高亮 ==========
+document.querySelectorAll(".nav-item").forEach(item => {
+  item.addEventListener("click", ()=>{
+    document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
     item.classList.add("active");
     document.querySelector(".page-title").textContent = item.innerText;
   });
 });
 
-// 初始化
-init();  // 确保 init() 调用在最后
+// ========== 初始化入口 ==========
+init();
