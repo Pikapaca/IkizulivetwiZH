@@ -213,5 +213,7 @@ document.querySelectorAll(".nav-item").forEach(item=>{
     item.classList.add("active");
     document.querySelector(".page-title").textContent = item.innerText;
   });
-})
+});
 
+// 初始化
+init();  // 确保 init() 调用在最后
