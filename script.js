@@ -10,13 +10,11 @@ let currentFiltered = [];
 
 // ========== JSON 加载 ==========
 async function loadJSON(path) {
-  try {
-    const res = await fetch(path);
-    if (!res.ok) return [];
-    return await res.json();
-  } catch {
-    return [];
+  const res = await fetch(path);
+  if (!res.ok) {
+    throw new Error("Network error");
   }
+  return await res.json();
 }
 
   function getLatestMonthsFromData(tweets, count=3){
@@ -62,6 +60,21 @@ async function init() {
   renderMemberSidebar();
   renderMonthSidebar();
   renderCurrent();
+
+// 在 renderMemberSidebar() 之后，DOM 已经生成，加载 guide.json
+ loadJSON("guide.json")
+    .then(data => {
+      if (!data) return;
+      document.getElementById("guideTitle").textContent = data.title || "指南";
+      const listEl = document.getElementById("guideList");
+      listEl.innerHTML = "";
+      (data.items || []).forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        listEl.appendChild(li);
+      });
+    })
+    .catch(() => console.warn("guide.json 加载失败"));
 
   // 并行加载成员 JSON
   const membersPromise = loadJSON("members.json");
@@ -213,6 +226,14 @@ function renderMonthSidebar() {
     monthsContainer.className = "months-container";
     monthsContainer.style.display = "none";
 
+   header.addEventListener("click", () => {
+      const isHidden = monthsContainer.style.display === "none";
+
+      monthsContainer.style.display = isHidden ? "block" : "none";
+      header.classList.toggle("expanded", isHidden);
+});
+
+
     grouped[year].sort((a, b) => b.localeCompare(a)).forEach(month => {
       const monthBtn = document.createElement("div");
       monthBtn.className = "month-btn";
@@ -285,24 +306,6 @@ function renderMemberSidebar() {
     btn.addEventListener("click", () => modal.style.display = "flex");
     close.addEventListener("click", () => modal.style.display = "none");
     window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
-
-    // 加载 JSON 并填充
-    loadJSON("guide.json")
-      .then(data => {
-        if (!data) return;
-        document.getElementById("guideTitle").textContent = data.title || "指南";
-        const listEl = document.getElementById("guideList");
-        listEl.innerHTML = "";
-        (data.items || []).forEach(item => {
-          const li = document.createElement("li");
-          li.textContent = item;
-          listEl.appendChild(li);
-        });
-      })
-      .catch(() => console.warn("guide.json 加载失败"));
-  }
-}
-
 
 
 // ========== 筛选和排序 ==========

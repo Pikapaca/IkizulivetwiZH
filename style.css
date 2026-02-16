@@ -46,6 +46,7 @@ header {
   max-height: calc(100vh - 80px);
   overflow-y: auto;
   padding: 10px;
+  padding-bottom: 70px;
   background: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -73,41 +74,6 @@ header {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-}
-
-#guideBtn {
-  display: block;
-  margin-top: 10px;
-  padding: 6px 8px;
-  width: 100%;
-  text-align: center;
-  background: #1a73e8;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9em;
-  transition: 0.2s;
-}
-
-#guideBtn:hover {
-  background: #155ab6;
-}
-
-.modal {
-  position: fixed;
-  top:0; left:0; width:100%; height:100%;
-  background: rgba(0,0,0,0.4);
-  display: none; /* 默认隐藏 */
-  justify-content: center; align-items: center;
-  z-index: 200;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 400px;
-  width: 90%;
 }
 
 .close-btn {
@@ -167,11 +133,15 @@ header {
 
 /* ======================= 主区域 ======================= */
 main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  margin: 0 150px; /* 留出左右筛选栏空间 */
-  padding: 20px;
+  position: relative;
+  margin: 0 150px;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+#tweetContainer {
+  height: 100%;
+  overflow-y: auto;
 }
 
 .tweet {
@@ -320,84 +290,3 @@ body.dark #guideBtn:hover {
   background-color: #27632a;
 }
 
-/* 整体布局 */
-#sidebarContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; /* 占满视窗高度 */
-}
-
-#monthSidebar {
-  flex: 0 0 auto; /* 固定高度，不随内容撑开 */
-  max-height: 50%; /* 或你想要的高度 */
-  overflow-y: auto; /* 月份列表滚动 */
-  padding: 10px;
-  background: #f9f9f9;
-}
-
-#memberSidebar {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* 成员头像靠上 */
-  padding: 10px;
-  background: #fff;
-  position: relative; /* 为指南按钮的绝对定位提供参照 */
-  max-height: 50%;
-  overflow-y: auto; /* 成员列表滚动 */
-}
-
-/* 指南按钮固定在成员栏底部 */
-#guideBtn {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 6px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-}
-
-/* 推文容器可滚动 */
-#tweetContainer {
-  flex: 1 1 auto; /* 占满剩余空间 */
-  overflow-y: auto;
-  padding: 10px;
-  background: #fff;
-}
-
-/* modal 弹窗 */
-.modal {
-  display: none; /* 默认隐藏 */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.modal-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 400px;
-  max-height: 80%;
-  overflow-y: auto;
-  position: relative;
-}
-
-.close-btn {
-  position: absolute;
-  right: 10px;
-  top: 5px;
-  cursor: pointer;
-  font-size: 20px;
-}
