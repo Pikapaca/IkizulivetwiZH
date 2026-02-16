@@ -8,18 +8,19 @@ let currentMonth = null;
 let currentTag = null;
 let currentFiltered = [];
 
-// ========== JSON 加载 ==========
+// ========== JSON 加载（容错版） ==========
 async function loadJSON(path) {
-  const res = await fetch(path);
-  if (!res.ok) {
-    throw new Error("Network error");
+  try {
+    const res = await fetch(path);
+    if (!res.ok) {
+      console.warn(`加载失败: ${path}, 状态码: ${res.status}`);
+      return []; // 文件不存在或网络错误时返回空数组
+    }
+    return await res.json();
+  } catch (e) {
+    console.warn(`加载异常: ${path}`, e);
+    return []; // 异常时返回空数组
   }
-  return await res.json();
-}
-
-  function getLatestMonthsFromData(tweets, count=3){
-  const months = [...new Set(tweets.map(t=>t.month))];
-  return months.sort((a,b)=>b.localeCompare(a)).slice(0,count);
 }
 
 // ========== 加载指定月份推文 ==========
