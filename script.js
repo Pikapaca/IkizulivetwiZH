@@ -21,8 +21,38 @@ async function init() {
   const memberData = await loadJSON("members.json");
   memberData.forEach(m => members[m.id] = m);
 
+async function loadTweetsByMonth(month=null){
+  const now = new Date();
+  const monthsToLoad = [];
+
+  if(month){ 
+    // 如果传了月份，就只加载这个
+    monthsToLoad.push(month);
+  } else {
+    // 默认加载最近三个月
+    for(let i=0; i<3; i++){
+      const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      monthsToLoad.push(`${y}-${m}`);
+    }
+  }
+
+  for(const m of monthsToLoad){
+    // 避免重复加载
+    if(tweets.some(t=>t.month === m)) continue;
+    const data = await loadJSON(`data/${m}.json`);
+    data.forEach(t => t.month = m);
+    tweets = tweets.concat(data);
+  }
+
+  // 按日期排序
+  tweets.sort((a,b)=> new Date(b.date) - new Date(a.date));
+}
+
+
   // 加载所有推文
-  await loadAllTweets();
+ await loadTweetsByMonth();
 
   // 渲染侧边栏
   renderMonthSidebar();
