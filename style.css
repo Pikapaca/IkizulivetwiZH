@@ -308,7 +308,7 @@ body.dark #guideBtn:hover {
     position: fixed;
     width: 100%;
     height: 60px;
-    padding: 0 !important;
+    padding-bottom: 0;
     top: 60px;        /* header 高度 */
     display: flex;
     overflow-x: auto;
