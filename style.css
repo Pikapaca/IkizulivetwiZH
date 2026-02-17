@@ -300,7 +300,7 @@ body.dark #guideBtn:hover {
   }
 
   main {
-    margin: 130px 0px 0px;  /* 清空左右 margin，让推文列占满宽度 */
+    margin: 100px 0px 0px;  /* 清空左右 margin，让推文列占满宽度 */
   }
 
   /* 成员栏改为顶部横向滚动 */
@@ -348,6 +348,7 @@ body.dark #guideBtn:hover {
   }
 
 }
+
 
 
 
