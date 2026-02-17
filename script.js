@@ -275,6 +275,16 @@ function renderMonthSidebar() {
     yearDiv.appendChild(monthsContainer);
     sidebar.appendChild(yearDiv);
   });
+
+     const importantBtn = document.createElement("button");
+  importantBtn.id = "importantBtn";
+  importantBtn.textContent = "重要事件";
+  sidebar.appendChild(importantBtn);
+
+  const hiddenLabelsList = document.createElement("ul");
+  hiddenLabelsList.id = "hiddenLabelsList";
+  hiddenLabelsList.style.display = "none";
+  sidebar.appendChild(hiddenLabelsList);
 }
 
 function renderMemberSidebar() {
