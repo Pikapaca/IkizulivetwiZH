@@ -308,7 +308,8 @@ body.dark #guideBtn:hover {
   #memberSidebar {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 50px;
+    padding: 4px 6px;
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
