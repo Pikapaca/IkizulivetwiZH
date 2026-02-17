@@ -283,7 +283,7 @@ hiddenLabels.forEach(label => {
 importantBtn.addEventListener("click", () => {
   hiddenLabelsList.classList.toggle("show");
 });
-
+}
 
 function renderMemberSidebar() {
   const sidebar = document.getElementById("memberSidebar");
@@ -467,3 +467,4 @@ if(sortToggle && sortLabel) {
 
 // ========== 启动 ==========
 init();
+
