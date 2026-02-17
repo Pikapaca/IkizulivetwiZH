@@ -114,6 +114,9 @@ async function init() {
   // 首页
   document.getElementById("homeIcon")?.addEventListener("click", () => {
     window.scrollTo(0, 0);
+  currentMember = null;
+  currentMonth = null;
+  currentTag = null;
     applyFilters();
   });
 
