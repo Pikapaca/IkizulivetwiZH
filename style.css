@@ -317,7 +317,7 @@ body.dark #guideBtn:hover {
 #hiddenLabelsList li {
   cursor: pointer;
   padding: 3px 0;
-  color: #007bff;
+  color: #191970;
 }
 
 #hiddenLabelsList li:hover {
@@ -394,5 +394,6 @@ body.dark #guideBtn:hover {
 }
 
   
+
 
 
