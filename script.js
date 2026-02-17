@@ -285,7 +285,8 @@ function renderMemberSidebar() {
 
 
     // ✅ 在 DOM 创建后再加载 guide.json
-    loadJSON("guide.json").then(data => {
+function initGuide() {   
+   loadJSON("guide.json").then(data => {
       if (!data) return;
       document.getElementById("guideTitle").textContent = data.title || "指南";
       const listEl = document.getElementById("guideList");
@@ -296,7 +297,6 @@ function renderMemberSidebar() {
         listEl.appendChild(li);
       });
     }).catch(() => console.warn("guide.json 加载失败"));
-  }
 }
 
 // ========== 筛选和排序 ==========
