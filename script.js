@@ -7,6 +7,7 @@ let currentMember = null;
 let currentMonth = null;
 let currentTag = null;
 let currentFiltered = [];
+let currentHiddenLabel = null; // 新增
 
 // ========== JSON 加载（容错版） ==========
 async function loadJSON(path) {
@@ -271,10 +272,12 @@ hiddenLabels.forEach(label => {
   li.style.margin = "3px 0";
 
   li.addEventListener("click", () => {
-    visibleCount = 30;
-    applyFilters(currentMember, currentMonth, currentTag, label);
-    window.scrollTo(0,0);
-  });
+  visibleCount = 30;
+  currentHiddenLabel = label; // 保存当前选中的 hidden_label
+  applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+  window.scrollTo(0,0);
+});
+
 
   hiddenLabelsList.appendChild(li);
 });
@@ -284,6 +287,7 @@ importantBtn.addEventListener("click", () => {
   hiddenLabelsList.classList.toggle("show");
 });
 }
+
 
 function renderMemberSidebar() {
   const sidebar = document.getElementById("memberSidebar");
@@ -306,7 +310,7 @@ function renderMemberSidebar() {
     btn.addEventListener("click", () => {
       visibleCount = 30;
       currentMember = m.id;
-      applyFilters(currentMember, currentMonth, currentTag);
+      applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
       window.scrollTo(0,0);
     });
     sidebar.appendChild(btn);
@@ -467,4 +471,3 @@ if(sortToggle && sortLabel) {
 
 // ========== 启动 ==========
 init();
-
