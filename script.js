@@ -111,36 +111,6 @@ async function init() {
   renderMonthSidebar();
   applyFilters();
 
-//重要事件
-// ====== 重要事件按钮 + hidden label 列表 ======
-const importantBtn = document.getElementById("importantBtn");
-const hiddenLabelsList = document.getElementById("hiddenLabelsList");
-
-// 获取所有 hidden_label（去重、非空）
-let hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
-
-// 生成列表
-hiddenLabels.forEach(label => {
-  const li = document.createElement("li");
-  li.textContent = label;
-  li.style.cursor = "pointer";
-  li.style.color = "blue";
-
-  li.addEventListener("click", () => {
-    visibleCount = 30;
-    // 点击 label → 调用 applyFilters 过滤推文
-    applyFilters(currentMember, currentMonth, currentTag, label);
-    window.scrollTo(0,0);
-  });
-
-  hiddenLabelsList.appendChild(li);
-});
-
-// 按钮点击 → 展开 / 收起 hidden label 列表
-importantBtn.addEventListener("click", () => {
-   hiddenLabelsList.classList.toggle("show");
-});
-
 
   // 首页
   document.getElementById("homeIcon")?.addEventListener("click", () => {
@@ -276,16 +246,44 @@ function renderMonthSidebar() {
     sidebar.appendChild(yearDiv);
   });
 
-     const importantBtn = document.createElement("button");
-  importantBtn.id = "importantBtn";
-  importantBtn.textContent = "重要事件";
-  sidebar.appendChild(importantBtn);
+     // 重要事件按钮
+const importantBtn = document.createElement("button");
+importantBtn.id = "importantBtn";
+importantBtn.textContent = "重要事件";
+importantBtn.style.marginTop = "10px";
+sidebar.appendChild(importantBtn);
 
-  const hiddenLabelsList = document.createElement("ul");
-  hiddenLabelsList.id = "hiddenLabelsList";
-  hiddenLabelsList.style.display = "none";
-  sidebar.appendChild(hiddenLabelsList);
-}
+// hidden_label 列表
+const hiddenLabelsList = document.createElement("ul");
+hiddenLabelsList.id = "hiddenLabelsList";
+hiddenLabelsList.style.paddingLeft = "10px";
+sidebar.appendChild(hiddenLabelsList);
+
+// 获取所有 hidden_label（去重非空）
+const hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
+
+// 生成列表
+hiddenLabels.forEach(label => {
+  const li = document.createElement("li");
+  li.textContent = label;
+  li.style.cursor = "pointer";
+  li.style.color = "blue";
+  li.style.margin = "3px 0";
+
+  li.addEventListener("click", () => {
+    visibleCount = 30;
+    applyFilters(currentMember, currentMonth, currentTag, label);
+    window.scrollTo(0,0);
+  });
+
+  hiddenLabelsList.appendChild(li);
+});
+
+// 按钮点击 → 切换 show class
+importantBtn.addEventListener("click", () => {
+  hiddenLabelsList.classList.toggle("show");
+});
+
 
 function renderMemberSidebar() {
   const sidebar = document.getElementById("memberSidebar");
