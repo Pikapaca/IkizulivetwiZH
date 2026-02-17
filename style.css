@@ -53,7 +53,7 @@ header {
   z-index: 50;
 }
 
-#monthSidebar { left: 10px; width: 130px; }
+#monthSidebar { left: 10px; width: 100px; }
 #memberSidebar { right: 10px; width: 80px; }
 
 .month-btn, .member-btn {
@@ -289,4 +289,5 @@ body.dark #guideBtn {
 body.dark #guideBtn:hover {
   background-color: #27632a;
 }
+
 
