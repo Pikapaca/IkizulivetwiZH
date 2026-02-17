@@ -260,17 +260,7 @@ function renderMemberSidebar() {
     btn.textContent = "指南";
     sidebar.appendChild(btn);
 
-    const modal = document.createElement("div");
-    modal.id = "guideModal";
-    modal.className = "modal";
-    modal.innerHTML = `
-      <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2 id="guideTitle">指南</h2>
-        <ul id="guideList"></ul>
-      </div>
-    `;
-    document.body.appendChild(modal);
+    
 
     const close = modal.querySelector(".close-btn");
     btn.addEventListener("click", ()=> modal.style.display="flex");
