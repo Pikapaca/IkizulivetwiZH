@@ -300,14 +300,14 @@ body.dark #guideBtn:hover {
   }
 
   main {
-    margin: 120px 10px 10px;  /* 清空左右 margin，让推文列占满宽度 */
+    margin: 95px 10px 10px;  /* 清空左右 margin，让推文列占满宽度 */
   }
 
   /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
     position: fixed;
     width: 100%;
-    height: 50px;
+    height: 35px;
     top: 60px;        /* header 高度 */
     display: flex;
     overflow-x: auto;
