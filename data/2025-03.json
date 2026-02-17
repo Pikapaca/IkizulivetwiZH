@@ -1,20 +1,26 @@
 [
   {
     "member": "polka",
-    "translation": "怎么办啊\n高中落榜了\n怎么办怎么办怎么办",
+    "translation": "怎么办啊\n\n高中落榜了\n\n怎么办怎么办怎么办",
+    "original": "どうしよう\n\n高校落ちた\n\nどうしようどうしようどうしよう",
     "date": "2025-03-14 21:56",
-    "tags": ["生活好难部"]
+    "tags": ["生活好难部"],
+    "hidden_label": "before_ikizulive"
   },
   {
     "member": "polka",
-    "translation": "这样的话\n春天开始就没学上了的意思？\n开玩笑吧。。。\n怎么办啊\n啊啊\n这个，不是梦对吧",
+    "translation": "这样的话\n\n春天开始就没学上了的意思？\n\n开玩笑吧。。。\n\n怎么办啊\n\n啊啊\n\n这个，不是梦对吧",
+    "original":"これって\n\n春から行くとこないってこと？\n\nウソでしょ。。。\n\nどうしよう\n\nああ\n\nこれって、夢じゃないよね", 
     "date": "2025-03-14 21:57",
-    "tags": ["生活好难部"]
+    "tags": ["生活好难部"],
+    "hidden_label": "before_ikizulive"
   },
   {
     "member": "polka",
-    "translation": "哭太久了，眼睛好痛\n不过把头埋在被子里窝在床上一整天以后，稍微好一点了\n感觉是这样\n大概\n总之好像有点饿了",
+    "translation": "哭太久了，眼睛好痛\n\n不过把头埋在被子里窝在床上一整天以后，稍微好一点了\n\n感觉是这样\n\n大概\n\n总之好像有点饿了",
+    "original":"ずっと泣きすぎて目が痛い\n\nでも、頭からおふとんかぶって１日中ベッドに丸まってたら少しだけ浮上してきた\n\n気がする\n\nたぶん\n\nとりあえずおなか減ったかも",
     "date": "2025-03-17 17:49",
-    "tags": ["生活好难部"]
+    "tags": ["生活好难部"],
+    "hidden_label": "before_ikizulive"
   }
   ]
