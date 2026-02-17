@@ -283,10 +283,6 @@ function renderMemberSidebar() {
   }
 }
 
-    const close = modal.querySelector(".close-btn");
-    btn.addEventListener("click", ()=> modal.style.display="flex");
-    close.addEventListener("click", ()=> modal.style.display="none");
-    window.addEventListener("click", e => { if(e.target===modal) modal.style.display="none"; });
 
     // ✅ 在 DOM 创建后再加载 guide.json
     loadJSON("guide.json").then(data => {
