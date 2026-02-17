@@ -120,6 +120,18 @@ async function init() {
     applyFilters();
   });
 
+  //手机端月份切换按钮
+   if (window.innerWidth <= 768) { // 可选：只在手机端加
+    const monthToggle = document.createElement("button");
+    monthToggle.textContent = "选择月份";
+    monthToggle.id = "monthToggle"; // 给个 id 好管理
+    monthToggle.onclick = () => {
+      document.getElementById("monthSidebar").classList.toggle("mobile-open");
+    };
+    document.body.prepend(monthToggle);
+  }
+
+
   // 搜索
   document.getElementById("searchInput")?.addEventListener("input", () => {
     visibleCount = 30;

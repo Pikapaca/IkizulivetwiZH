@@ -291,3 +291,57 @@ body.dark #guideBtn:hover {
 }
 
 
+/* ========== 手机兼容 ========== */
+@media (max-width: 768px) {
+
+  /* 页面整体改单列 */
+  body {
+    display: block;
+  }
+
+  /* 成员栏改为顶部横向滚动 */
+  #memberSidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-bottom: 1px solid #ddd;
+  }
+
+  #memberSidebar .member-btn {
+    flex: 0 0 auto;
+    margin: 8px;
+  }
+
+  /* 月份栏可折叠 */
+   #monthSidebar {
+    position: relative;
+    width: 100%;
+    display: none;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  #monthSidebar.mobile-open {
+    display: block;
+  }
+
+}
+
+  /* 推文区域全宽 */
+  #tweetContainer {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .tweet {
+    width: 100%;
+  }
+
+}
+
+
+
+
