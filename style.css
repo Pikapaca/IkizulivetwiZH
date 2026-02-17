@@ -299,11 +299,17 @@ body.dark #guideBtn:hover {
     display: block;
   }
 
+  main {
+    margin: 100px 0px 0px;  /* 清空左右 margin，让推文列占满宽度 */
+  }
+
   /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
-    position: relative;
+    position: fixed;
     width: 100%;
-    height: auto;
+    height: 60px;
+    padding-bottom: 0;
+    top: 60px;        /* header 高度 */
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
@@ -312,7 +318,8 @@ body.dark #guideBtn:hover {
 
   #memberSidebar .member-btn {
     flex: 0 0 auto;
-    margin: 8px;
+    margin-right: 8px;
+    margin-bottom: 0
   }
 
   /* 月份栏可折叠 */
@@ -341,6 +348,8 @@ body.dark #guideBtn:hover {
   }
 
 }
+
+
 
 
 
