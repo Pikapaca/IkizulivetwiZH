@@ -253,6 +253,7 @@ function renderMemberSidebar() {
     sidebar.appendChild(btn);
   });
 
+  // 渲染指南按钮和弹窗
   if (!document.getElementById("guideBtn")) {
     const btn = document.createElement("button");
     btn.id = "guideBtn";
@@ -265,7 +266,7 @@ function renderMemberSidebar() {
     modal.innerHTML = `
       <div class="modal-content">
         <span class="close-btn">&times;</span>
-        <h2 id="guideTitle"></h2>
+        <h2 id="guideTitle">指南</h2>
         <ul id="guideList"></ul>
       </div>
     `;
@@ -275,6 +276,19 @@ function renderMemberSidebar() {
     btn.addEventListener("click", ()=> modal.style.display="flex");
     close.addEventListener("click", ()=> modal.style.display="none");
     window.addEventListener("click", e => { if(e.target===modal) modal.style.display="none"; });
+
+    // ✅ 在 DOM 创建后再加载 guide.json
+    loadJSON("guide.json").then(data => {
+      if (!data) return;
+      document.getElementById("guideTitle").textContent = data.title || "指南";
+      const listEl = document.getElementById("guideList");
+      listEl.innerHTML = "";
+      (data.items || []).forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        listEl.appendChild(li);
+      });
+    }).catch(() => console.warn("guide.json 加载失败"));
   }
 }
 
