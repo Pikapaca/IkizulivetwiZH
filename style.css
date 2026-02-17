@@ -307,7 +307,7 @@ body.dark #guideBtn:hover {
   #memberSidebar {
     position: fixed;
     width: 100%;
-    height: 35px;
+    height: auto;
     top: 60px;        /* header 高度 */
     display: flex;
     overflow-x: auto;
@@ -317,7 +317,8 @@ body.dark #guideBtn:hover {
 
   #memberSidebar .member-btn {
     flex: 0 0 auto;
-    margin: 8px;
+    margin-right: 8px;
+    margin-bottom: 0
   }
 
   /* 月份栏可折叠 */
