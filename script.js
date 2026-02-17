@@ -111,6 +111,7 @@ async function init() {
   renderMonthSidebar();
   applyFilters();
 
+
   // 首页
   document.getElementById("homeIcon")?.addEventListener("click", () => {
     window.scrollTo(0, 0);
@@ -244,6 +245,44 @@ function renderMonthSidebar() {
     yearDiv.appendChild(monthsContainer);
     sidebar.appendChild(yearDiv);
   });
+
+     // 重要事件按钮
+const importantBtn = document.createElement("button");
+importantBtn.id = "importantBtn";
+importantBtn.textContent = "重要事件";
+importantBtn.style.marginTop = "10px";
+sidebar.appendChild(importantBtn);
+
+// hidden_label 列表
+const hiddenLabelsList = document.createElement("ul");
+hiddenLabelsList.id = "hiddenLabelsList";
+hiddenLabelsList.style.paddingLeft = "10px";
+sidebar.appendChild(hiddenLabelsList);
+
+// 获取所有 hidden_label（去重非空）
+const hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
+
+// 生成列表
+hiddenLabels.forEach(label => {
+  const li = document.createElement("li");
+  li.textContent = label;
+  li.style.cursor = "pointer";
+  li.style.color = "blue";
+  li.style.margin = "3px 0";
+
+  li.addEventListener("click", () => {
+    visibleCount = 30;
+    applyFilters(currentMember, currentMonth, currentTag, label);
+    window.scrollTo(0,0);
+  });
+
+  hiddenLabelsList.appendChild(li);
+});
+
+// 按钮点击 → 切换 show class
+importantBtn.addEventListener("click", () => {
+  hiddenLabelsList.classList.toggle("show");
+});
 }
 
 function renderMemberSidebar() {
@@ -428,3 +467,4 @@ if(sortToggle && sortLabel) {
 
 // ========== 启动 ==========
 init();
+
