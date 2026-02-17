@@ -119,6 +119,7 @@ async function init() {
   currentMember = null;
   currentMonth = null;
   currentTag = null;
+  currentHiddenLabel = null; // 清空 hidden_label 筛选
     applyFilters();
   });
 
