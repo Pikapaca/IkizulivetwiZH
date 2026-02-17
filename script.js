@@ -298,19 +298,30 @@ function renderMemberSidebar() {
     }).catch(() => console.warn("guide.json 加载失败"));
 
 
-// ========== 筛选和排序 ==========
-function applyFilters(tag = null) {
+// ========== 筛选和排序（支持隐藏 label + 原文检索） ==========
+function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null, hiddenLabelFilter = null) {
   const search = document.getElementById("searchInput")?.value.toLowerCase() || "";
-  const member = currentMember || "";
-  const month = currentMonth || "";
+  const member = memberFilter || currentMember || "";
+  const month = monthFilter || currentMonth || "";
+  const tag = tagFilter || currentTag || "";
+  const hiddenLabel = hiddenLabelFilter || ""; // 可选过滤
 
-  currentFiltered = tweets.filter(t =>
-    (member === "" || t.member === member) &&
-    (month === "" || t.month === month) &&
-    t.translation.toLowerCase().includes(search) &&
-    (tag===null || (t.tags && t.tags.includes(tag)))
-  );
+  currentFiltered = tweets.filter(t => {
+    // 成员筛选
+    if (member !== "" && t.member !== member) return false;
+    // 月份筛选
+    if (month !== "" && t.month !== month) return false;
+    // 标签筛选
+    if (tag !== "" && (!t.tags || !t.tags.includes(tag))) return false;
+    // 隐藏 label 筛选（安全处理）
+    if (hiddenLabel !== "" && (!t.hidden_label || t.hidden_label !== hiddenLabel)) return false;
+    // 搜索匹配 translation 或 original
+    const translationMatch = t.translation.toLowerCase().includes(search);
+    const originalMatch = t.original ? t.original.toLowerCase().includes(search) : false;
+    return translationMatch || originalMatch;
+  });
 
+  // 排序
   currentFiltered.sort((a,b)=>
     sortOrder==="new" ? new Date(b.date)-new Date(a.date) : new Date(a.date)-new Date(b.date)
   );
@@ -318,6 +329,7 @@ function applyFilters(tag = null) {
   visibleCount = 30;
   renderCurrent();
 }
+
 
 // ========== 渲染推文 ==========
 function renderCurrent() {
