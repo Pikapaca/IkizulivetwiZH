@@ -299,6 +299,11 @@ body.dark #guideBtn:hover {
     display: block;
   }
 
+  main {
+    margin: 0;  /* 清空左右 margin，让推文列占满宽度 */
+    height: auto; /* 可选：高度自适应 */
+  }
+
   /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
     position: relative;
