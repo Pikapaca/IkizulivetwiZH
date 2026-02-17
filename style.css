@@ -197,7 +197,7 @@ body.dark .tweet-id, body.dark .tweet-date { color: #aaa; }
   width: 100%;
   padding: 8px 0;
   margin-top: 8px; /* 在成员头像下方 */
-  background-color: #4CAF50;
+  background-color: #191970;
   color: #fff;
   font-weight: bold;
   border: none;
@@ -394,6 +394,5 @@ body.dark #guideBtn:hover {
 }
 
   
-
 
 
