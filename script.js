@@ -236,6 +236,11 @@ function renderMemberSidebar() {
   if (!sidebar) return;
   sidebar.innerHTML = "";
 
+  // 先获取 modal（必须在外层作用域）
+  const modal = document.getElementById("guideModal");
+  const close = modal ? modal.querySelector(".close-btn") : null;
+
+  // 渲染成员头像
   Object.values(members).forEach(m => {
     const btn = document.createElement("div");
     btn.className = "member-btn";
@@ -253,29 +258,29 @@ function renderMemberSidebar() {
     sidebar.appendChild(btn);
   });
 
-  // 渲染指南按钮和弹窗
+  // 只创建按钮，不创建 modal
   if (!document.getElementById("guideBtn")) {
     const btn = document.createElement("button");
     btn.id = "guideBtn";
     btn.textContent = "指南";
     sidebar.appendChild(btn);
 
-     // ✅ 不再创建 modal
-  // 改为获取已经存在的 HTML 元素
-  const modal = document.getElementById("guideModal");
-  const close = modal.querySelector(".close-btn");
+    if (modal) {
+      btn.addEventListener("click", () => {
+        modal.style.display = "flex";
+      });
 
-  btn.addEventListener("click", () => {
-    modal.style.display = "flex";
-  });
+      if (close) {
+        close.addEventListener("click", () => {
+          modal.style.display = "none";
+        });
+      }
 
-  close.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  window.addEventListener("click", e => {
-    if (e.target === modal) modal.style.display = "none";
-  });
+      window.addEventListener("click", e => {
+        if (e.target === modal) modal.style.display = "none";
+      });
+    }
+  }
 }
 
     const close = modal.querySelector(".close-btn");
