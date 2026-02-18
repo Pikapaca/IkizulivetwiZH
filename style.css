@@ -370,6 +370,7 @@ body.dark #guideBtn:hover {
   #sortSelect {
     font-size: 13px;
     padding: 4px 6px;
+    flex: 0 1 auto;
   }
 
   /* 夜间模式按钮缩小 */
@@ -377,6 +378,7 @@ body.dark #guideBtn:hover {
     font-size: 13px;
     padding: 4px 15px;
     white-space: nowrap;
+    flex: 0 1 auto;
   }
 
   /* 成员栏改为顶部横向滚动 */
@@ -392,6 +394,7 @@ body.dark #guideBtn:hover {
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
+    scroll-padding-right: 0;
   }
 
   #memberSidebar .member-btn {
