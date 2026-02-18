@@ -123,16 +123,6 @@ async function init() {
     applyFilters();
   });
 
-  //手机端月份切换按钮
-   if (window.innerWidth <= 768) { // 可选：只在手机端加
-    const monthToggle = document.createElement("button");
-    monthToggle.textContent = "选择月份";
-    monthToggle.id = "monthToggle"; // 给个 id 好管理
-    monthToggle.onclick = () => {
-      document.getElementById("monthSidebar").classList.toggle("mobile-open");
-    };
-    document.body.prepend(monthToggle);
-  }
 
 
   // 搜索
@@ -247,6 +237,25 @@ function renderMonthSidebar() {
     yearDiv.appendChild(monthsContainer);
     sidebar.appendChild(yearDiv);
   });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const mobileMonthBtn = document.getElementById("mobileMonthBtn");
+  const mobileImportantBtn = document.getElementById("mobileImportantBtn");
+  const monthSidebar = document.getElementById("monthSidebar");
+
+  mobileMonthBtn.addEventListener("click", () => {
+    monthSidebar.classList.toggle("mobile-open");
+  });
+
+  mobileImportantBtn.addEventListener("click", () => {
+    const tweets = document.querySelectorAll(".tweet");
+    tweets.forEach(tweet => {
+      const labels = tweet.dataset.hiddenLabel?.split(",") || [];
+      tweet.style.display = labels.includes("重要事件") ? "flex" : "none";
+    });
+  });
+});
+
 
      // 重要事件按钮
 const importantBtn = document.createElement("button");
