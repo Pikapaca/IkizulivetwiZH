@@ -424,11 +424,6 @@ function renderCurrent() {
     fragment.appendChild(renderTweet(t));
   });
 
- // ✅ 最后一条推文后加一个 spacer，防止被底栏遮挡
-  const spacer = document.createElement("div");
-  spacer.style.height = "80px";  // >= 底部栏高度
-  fragment.appendChild(spacer);
-
   container.appendChild(fragment);
 }
 

@@ -486,8 +486,6 @@ body.dark #guideBtn:hover {
   }
   
 
-
-
   .tweet {
     width: 100%;
     max-width: 100%;
@@ -496,6 +494,13 @@ body.dark #guideBtn:hover {
     box-sizing: border-box;
     word-break: break-word;
   }
+
+  /* 最后一条推文后自动空出底部栏 */
+#tweetContainer::after {
+  content: "";
+  display: block;
+  height: calc(70px + 10px); /* 底部栏高度 + 安全间距 */
+}
 
 }
 
