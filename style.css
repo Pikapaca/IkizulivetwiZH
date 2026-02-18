@@ -402,7 +402,7 @@ body.dark #guideBtn:hover {
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 10px;          /* 留空间 */
+    padding: 5px;          /* 留空间 */
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
@@ -413,10 +413,10 @@ body.dark #guideBtn:hover {
     flex: 0 0 auto;
     margin-bottom: 0;
   }
-  #memberSidebar #guideBtn {
-  flex: 0 0 auto;
-}
 
+  #memberSidebar .member-btn:first-child {
+    margin-left: 10;
+}
 
 
   /* 月份栏可折叠 */
@@ -471,7 +471,7 @@ body.dark #guideBtn:hover {
 
   /* 推文区域全宽 */
  #tweetContainer {
-    position: absolute;      /* 固定在视口 */
+    position: fixed;      /* 固定在视口 */
     top: 130px;           /* 留出 header + 成员栏高度 */
     bottom: 70px;         /* 留出底部操作栏 */
     left: 20px;           /* 两侧间距 */
@@ -483,15 +483,6 @@ body.dark #guideBtn:hover {
     z-index: 500;         /* 确保在底部栏下方 */
     padding: 10px 0 150px 0;      /* 上下间距，如果需要 */
   }
-  
-  #tweetScroll {
-  max-height: calc(100vh - 130px - 70px); /* 视口减去上下固定部分 */
-  overflow-y: auto;
-  padding-bottom: 20px; /* 避免底栏遮挡 */
-}
-  
-
-
 
   .tweet {
     width: 100%;
