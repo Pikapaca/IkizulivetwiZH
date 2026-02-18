@@ -423,6 +423,12 @@ function renderCurrent() {
   currentFiltered.slice(0, visibleCount).forEach(t => {
     fragment.appendChild(renderTweet(t));
   });
+
+  // ⭐ 底部 spacer
+  const spacer = document.createElement("div");
+  spacer.style.height = "70px"; // 高度 = 底部固定栏高度
+  fragment.appendChild(spacer);
+
   container.appendChild(fragment);
 }
 
