@@ -370,7 +370,8 @@ body.dark #guideBtn:hover {
   #sortSelect {
     font-size: 13px;
     padding: 4px 6px;
-    flex: 0 1 auto;
+    flex-shrink: 1;  /* 允许在空间不足时缩小 */
+    max-width: 80px; /* 可根据需要调整 */
   }
 
   /* 夜间模式按钮缩小 */
@@ -378,7 +379,8 @@ body.dark #guideBtn:hover {
     font-size: 13px;
     padding: 4px 15px;
     white-space: nowrap;
-    flex: 0 1 auto;
+    flex-shrink: 1;  /* 允许在空间不足时缩小 */
+    max-width: 80px; /* 可根据需要调整 */
   }
 
   /* 成员栏改为顶部横向滚动 */
