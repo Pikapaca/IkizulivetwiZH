@@ -345,7 +345,6 @@ body.dark #guideBtn:hover {
   /* 页面整体改单列 */
   body {
     display: block;
-    margin: 0;
   }
 
   header {
@@ -389,7 +388,7 @@ body.dark #guideBtn:hover {
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 0;          /* 右留空间 */
+    padding: 0 0 0 10px;          /* 右留空间 */
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
@@ -399,6 +398,11 @@ body.dark #guideBtn:hover {
     flex: 0 0 auto;
     margin-bottom: 0;
   }
+
+  #memberSidebar .member-btn:last-child {
+    margin-right: 0;
+}
+
 
   /* 月份栏可折叠 */
 #monthSidebar {
