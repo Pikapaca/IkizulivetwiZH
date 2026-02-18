@@ -345,6 +345,7 @@ body.dark #guideBtn:hover {
   /* 页面整体改单列 */
   body {
     display: block;
+    margin: 0;
   }
 
   header {
@@ -384,12 +385,11 @@ body.dark #guideBtn:hover {
     position: fixed;
     width: 100%;
     height: 60px;
-    padding-bottom: 0;
     top: 60px;        /* header 高度 */
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
-    
+    padding: 0;          /* 右留空间 */
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
