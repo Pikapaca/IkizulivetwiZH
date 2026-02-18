@@ -431,6 +431,11 @@ body.dark #guideBtn:hover {
 
 }
 
-  
+
+@media (min-width: 768px) {
+  #mobileImportantBtn, #mobileMonthBtn {
+    display: none;
+  }
+}  
 
 
