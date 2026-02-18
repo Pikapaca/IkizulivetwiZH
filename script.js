@@ -123,6 +123,23 @@ async function init() {
   applyFilters();
 
 
+const mobileMonthBtn = document.getElementById("mobileMonthBtn");
+const monthSidebar = document.getElementById("monthSidebar");
+if (mobileMonthBtn && monthSidebar) {
+  mobileMonthBtn.addEventListener("click", () => {
+    monthSidebar.classList.toggle("mobile-open");
+  });
+}
+
+// 手机端“重要事件”按钮
+const mobileImportantBtn = document.getElementById("mobileImportantBtn");
+const hiddenLabelsList = document.getElementById("hiddenLabelsList");
+if (mobileImportantBtn && hiddenLabelsList) {
+  mobileImportantBtn.addEventListener("click", () => {
+    hiddenLabelsList.classList.toggle("show");
+  });
+}
+
 
   // 首页
   document.getElementById("homeIcon")?.addEventListener("click", () => {
@@ -291,22 +308,8 @@ importantBtn.addEventListener("click", () => {
 });
 }
 
-const mobileMonthBtn = document.getElementById("mobileMonthBtn");
-const monthSidebar = document.getElementById("monthSidebar");
-if (mobileMonthBtn && monthSidebar) {
-  mobileMonthBtn.addEventListener("click", () => {
-    monthSidebar.classList.toggle("mobile-open");
-  });
-}
 
-// 手机端“重要事件”按钮
-const mobileImportantBtn = document.getElementById("mobileImportantBtn");
-const hiddenLabelsList = document.getElementById("hiddenLabelsList");
-if (mobileImportantBtn && hiddenLabelsList) {
-  mobileImportantBtn.addEventListener("click", () => {
-    hiddenLabelsList.classList.toggle("show");
-  });
-}
+
 
 
 
@@ -412,21 +415,18 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 
 // ========== 渲染推文 ==========
 function renderCurrent() {
-  const container = document.getElementById("tweetContainer");
+  const container = window.innerWidth <= 768
+    ? document.getElementById("tweetScroll")
+    : document.getElementById("tweetContainer");
+
   if (!container) return;
 
-  // 手机端滚动容器
-  const scrollContainer = window.innerWidth <= 768
-    ? document.getElementById("tweetScroll")
-    : container;
-
-  scrollContainer.innerHTML = ""; // 清空当前内容
-
+  container.innerHTML = ""; // 清空
   const fragment = document.createDocumentFragment();
   currentFiltered.slice(0, visibleCount).forEach(t => {
     fragment.appendChild(renderTweet(t));
   });
-  scrollContainer.appendChild(fragment);
+  container.appendChild(fragment);
 }
 
 
