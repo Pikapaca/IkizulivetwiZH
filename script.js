@@ -417,17 +417,21 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 function renderCurrent() {
   const container = document.getElementById("tweetContainer");
   if (!container) return;
-  container.innerHTML = "";
+
+  // 手机端滚动容器
+  const scrollContainer = window.innerWidth <= 768
+    ? document.getElementById("tweetScroll")
+    : container;
+
+  scrollContainer.innerHTML = ""; // 清空当前内容
 
   const fragment = document.createDocumentFragment();
   currentFiltered.slice(0, visibleCount).forEach(t => {
     fragment.appendChild(renderTweet(t));
   });
-
-
-
-  container.appendChild(fragment);
+  scrollContainer.appendChild(fragment);
 }
+
 
 function renderTweet(t) {
   const container = document.createElement("div");
