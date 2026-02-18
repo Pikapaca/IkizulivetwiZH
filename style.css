@@ -348,40 +348,50 @@ body.dark #guideBtn:hover {
   }
 
   header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    overflow-x: hidden; /* 禁止 header 横向拖动 */
-    z-index: 1000;
-  } 
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: white;
+  box-sizing: border-box;
+  overflow-x: hidden; /* 禁止横向拖动 */
+}
 
-/* 搜索框可缩小 */
-  #searchInput {
-    margin-left: auto;
-    flex: 1;            /* 允许占剩余空间 */
-    min-width: 0;       /* ⭐ 允许压缩 */
-    max-width: 120px;   /* 限制最大宽度 */
-    font-size: 14px;
-  }
+/* logo 固定大小，不缩小 */
+#homeIcon img {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+}
 
-  /* 排序下拉缩小 */
-  #sortSelect {
-    font-size: 13px;
-    padding: 4px 6px;
-    flex-shrink: 1;  /* 允许在空间不足时缩小 */
-    max-width: 80px; /* 可根据需要调整 */
-  }
+/* 搜索框：占剩余空间，可缩小 */
+#searchInput {
+  flex: 1 1 auto;   /* 可以占剩余空间，也可以缩小 */
+  min-width: 30px;   /* 最小宽度，防止看不见 */
+  font-size: 14px;
+  box-sizing: border-box;
+  white-space: nowrap;  /* 保持单行 */
+  overflow: hidden;
+  text-overflow: ellipsis; /* 超出显示省略号 */
+}
 
-  /* 夜间模式按钮缩小 */
-  #darkModeToggle {
-    font-size: 13px;
-    padding: 4px 15px;
-    white-space: nowrap;
-    flex-shrink: 1;  /* 允许在空间不足时缩小 */
-    max-width: 80px; /* 可根据需要调整 */
-  }
+/* 排序下拉和夜间模式按钮：可缩小，不换行 */
+#sortSelect, #darkModeToggle {
+  flex: 0 1 auto;      /* 不占剩余空间，但可以缩小 */
+  min-width: 30px;     /* 最小宽度 */
+  max-width: 60px;     /* 最大宽度，防止撑出屏幕 */
+  font-size: 13px;
+  padding: 4px 6px;    /* 可调小，越小越容易缩 */
+  box-sizing: border-box;
+  white-space: nowrap;  /* 保持单行 */
+  overflow: hidden;
+  text-overflow: ellipsis; /* 超出显示省略号 */
+}
 
   /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
@@ -392,7 +402,7 @@ body.dark #guideBtn:hover {
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 0 0 0 10px;          /* 左留空间 */
+    padding: 5px;          /* 留空间 */
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
@@ -478,6 +488,7 @@ body.dark #guideBtn:hover {
     width: 100%;
     max-width: 100%;
     margin-bottom: 10px;
+    padding: 10px
     box-sizing: border-box;
     word-break: break-word;
   }
