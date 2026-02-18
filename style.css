@@ -472,7 +472,7 @@ body.dark #guideBtn:hover {
 
   /* 推文区域全宽 */
  #tweetContainer {
-    position: absolute;      /* 固定在视口 */
+    position: fixed;      /* 固定在视口 */
     top: 130px;           /* 留出 header + 成员栏高度 */
     bottom: 70px;         /* 留出底部操作栏 */
     left: 20px;           /* 两侧间距 */
@@ -499,7 +499,7 @@ body.dark #guideBtn:hover {
 #tweetContainer::after {
   content: "";
   display: block;
-  height: calc(70px + 10px); /* 底部栏高度 + 安全间距 */
+  height: 100px; /* 底部栏高度 + 安全间距 */
 }
 
 }
