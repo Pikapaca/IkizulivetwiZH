@@ -238,23 +238,23 @@ function renderMonthSidebar() {
     sidebar.appendChild(yearDiv);
   });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const mobileMonthBtn = document.getElementById("mobileMonthBtn");
-  const mobileImportantBtn = document.getElementById("mobileImportantBtn");
-  const monthSidebar = document.getElementById("monthSidebar");
-
+const mobileMonthBtn = document.getElementById("mobileMonthBtn");
+if (mobileMonthBtn) {
   mobileMonthBtn.addEventListener("click", () => {
-    monthSidebar.classList.toggle("mobile-open");
-  });
+    // 打开网页版月份栏
+    monthSidebar.classList.toggle("mobile-open"); 
 
-  mobileImportantBtn.addEventListener("click", () => {
-    const tweets = document.querySelectorAll(".tweet");
-    tweets.forEach(tweet => {
-      const labels = tweet.dataset.hiddenLabel?.split(",") || [];
-      tweet.style.display = labels.includes("重要事件") ? "flex" : "none";
-    });
+    // 如果你想点击按钮就直接选某个月，可以直接设置 currentMonth
+    // 例如选第一个月份：
+    const firstMonth = months[0]; // months 数组里存的月份值
+    if (firstMonth) {
+      currentMonth = firstMonth;
+      visibleCount = 30;
+      applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+      window.scrollTo(0, 0);
+    }
   });
-});
+}
 
 
      // 重要事件按钮
@@ -297,6 +297,27 @@ importantBtn.addEventListener("click", () => {
   hiddenLabelsList.classList.toggle("show");
 });
 }
+
+// 手机端底部“重要事件”按钮绑定
+const mobileImportantBtn = document.getElementById("mobileImportantBtn");
+if (mobileImportantBtn) { // 确保元素存在
+  mobileImportantBtn.addEventListener("click", () => {
+    // 这里可以直接复用之前生成列表的第一个 hidden_label 或者固定“重要事件”
+    // 如果你希望直接展开列表并选择某个 label，可以这样：
+    const firstLabel = hiddenLabels[0]; // 例如第一个 hidden_label
+    if (firstLabel) {
+      visibleCount = 30;
+      currentHiddenLabel = firstLabel;
+      applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+      window.scrollTo(0, 0);
+    }
+
+    // 可选：同时展开 hiddenLabelsList 列表（网页版显示效果）
+    hiddenLabelsList.classList.add("show");
+  });
+}
+
+
 
 
 function renderMemberSidebar() {
