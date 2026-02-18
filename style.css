@@ -347,6 +347,15 @@ body.dark #guideBtn:hover {
     display: block;
   }
 
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    overflow-x: hidden; /* 禁止 header 横向拖动 */
+    z-index: 1000;
+  } 
 
   /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
@@ -363,7 +372,8 @@ body.dark #guideBtn:hover {
 
   #memberSidebar .member-btn {
     flex: 0 0 auto;
-    margin-right: 8px;
+    margin-left: 10px
+    margin-right: 10px;
     margin-bottom: 0
   }
 
@@ -433,8 +443,8 @@ body.dark #guideBtn:hover {
   }
 
   .tweet {
-    width: 100%;
-    max-width: 100%;
+    width: 95%;
+    max-width: 95%;
     margin-bottom: 10px;
     box-sizing: border-box;
     word-break: break-word;
