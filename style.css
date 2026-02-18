@@ -336,7 +336,7 @@ body.dark #guideBtn:hover {
 }
 
 #mobileBottomBar {
-  display: none !important;
+ 
 }
 
 /* ========== 手机兼容 ========== */
@@ -347,9 +347,6 @@ body.dark #guideBtn:hover {
     display: block;
   }
 
-  main {
-    margin: 100px 0px 0px;  /* 清空左右 margin，让推文列占满宽度 */
-  }
 
   /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
@@ -376,6 +373,7 @@ body.dark #guideBtn:hover {
   }
 
 #mobileBottomBar {
+    display: flex;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -396,7 +394,9 @@ body.dark #guideBtn:hover {
 
   /* 给页面底部留空间 */
   main {
-    padding-bottom: 70px;
+    margin: 100px 0 70px 0;
+    width: 100vw;
+    box-sizing: border-box;
   }
 
 
@@ -405,10 +405,12 @@ body.dark #guideBtn:hover {
   #tweetContainer {
     width: 100%;
     padding: 10px;
+    box-sizing: border-box
   }
 
   .tweet {
     width: 100%;
+    max-width: 100%
   }
 
 }
