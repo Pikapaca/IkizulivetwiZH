@@ -392,7 +392,7 @@ body.dark #guideBtn:hover {
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 0 0 0 10px;          /* 右留空间 */
+    padding: 0 0 0 10px;          /* 左留空间 */
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
@@ -404,8 +404,8 @@ body.dark #guideBtn:hover {
     margin-bottom: 0;
   }
 
-  #memberSidebar .member-btn:last-child {
-    margin-right: 0;
+  #memberSidebar .member-btn:first-child {
+    margin-left: 10;
 }
 
 
