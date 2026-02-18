@@ -393,7 +393,7 @@ body.dark #guideBtn:hover {
   text-overflow: ellipsis; /* 超出显示省略号 */
 }
 
-  /* 成员栏改为顶部横向滚动 */
+    /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
     position: fixed;
     width: 100%;
@@ -414,9 +414,6 @@ body.dark #guideBtn:hover {
     margin-bottom: 0;
   }
 
-  #memberSidebar .member-btn:first-child {
-    margin-left: 10;
-}
 
 
   /* 月份栏可折叠 */
@@ -471,7 +468,7 @@ body.dark #guideBtn:hover {
 
   /* 推文区域全宽 */
  #tweetContainer {
-    position: fixed;      /* 固定在视口 */
+    position: absolute;      /* 固定在视口 */
     top: 130px;           /* 留出 header + 成员栏高度 */
     bottom: 70px;         /* 留出底部操作栏 */
     left: 20px;           /* 两侧间距 */
@@ -483,6 +480,15 @@ body.dark #guideBtn:hover {
     z-index: 500;         /* 确保在底部栏下方 */
     padding: 10px 0 150px 0;      /* 上下间距，如果需要 */
   }
+  
+  #tweetScroll {
+  max-height: calc(100vh - 130px - 70px); /* 视口减去上下固定部分 */
+  overflow-y: auto;
+  padding-bottom: 20px; /* 避免底栏遮挡 */
+}
+  
+
+
 
   .tweet {
     width: 100%;
