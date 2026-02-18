@@ -122,7 +122,7 @@ async function init() {
   renderMonthSidebar();
   applyFilters();
 
-document.addEventListener("DOMContentLoaded", () => {
+
   const mobileMonthBtn = document.getElementById("mobileMonthBtn");
   if (mobileMonthBtn) {
   mobileMonthBtn.addEventListener("click", () => {
@@ -144,8 +144,6 @@ if (mobileImportantBtn) {
 
   });
 }
-
-});
 
 
   // 首页
