@@ -335,6 +335,10 @@ body.dark #guideBtn:hover {
   max-height: 500px; /* 足够显示所有 label */
 }
 
+#mobileBottomBar {
+  display: none !important;
+}
+
 /* ========== 手机兼容 ========== */
 @media (max-width: 768px) {
 
@@ -367,19 +371,35 @@ body.dark #guideBtn:hover {
   }
 
   /* 月份栏可折叠 */
-   #monthSidebar {
-    position: relative;
+#monthSidebar {
+    display: none !important;
+  }
+
+#mobileBottomBar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    display: none;
-    max-height: 50vh;
-    overflow-y: auto;
+    height: 55px;
+    background: white;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
   }
 
-  #monthSidebar.mobile-open {
-    display: block;
+  body.dark #mobileBottomBar {
+    background: #111;
+    border-color: #333;
   }
 
-}
+  /* 给页面底部留空间 */
+  main {
+    padding-bottom: 70px;
+  }
+
+
 
   /* 推文区域全宽 */
   #tweetContainer {
