@@ -394,7 +394,7 @@ body.dark #guideBtn:hover {
 
   /* 给页面底部留空间 */
   main {
-    margin: 100px 0 70px 0;
+    margin: 100px 10px 70px 10px;
     width: 100vw;
     box-sizing: border-box;
   }
@@ -404,7 +404,18 @@ body.dark #guideBtn:hover {
   z-index: 1000;
 }
 
-
+#monthSidebar.mobile-open {
+  display: block !important;
+  position: fixed;
+  top: 60px;   /* header 高度 */
+  left: 0;
+  width: 200px; /* 可调 */
+  height: calc(100% - 60px);
+  background: #f9f9f9;
+  z-index: 999;
+  overflow-y: auto;
+  padding: 10px;
+}
 
   /* 推文区域全宽 */
   #tweetContainer {

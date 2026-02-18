@@ -123,25 +123,20 @@ async function init() {
   applyFilters();
 
 
-  const mobileMonthBtn = document.getElementById("mobileMonthBtn");
-  if (mobileMonthBtn) {
+const mobileMonthBtn = document.getElementById("mobileMonthBtn");
+const monthSidebar = document.getElementById("monthSidebar");
+if (mobileMonthBtn && monthSidebar) {
   mobileMonthBtn.addEventListener("click", () => {
-    const monthSidebar = document.getElementById("monthSidebar");
-    if (monthSidebar) {
-      monthSidebar.classList.toggle("mobile-open"); // 展开或折叠侧边栏
-    }
+    monthSidebar.classList.toggle("mobile-open");
   });
 }
 
-// ======= 手机端“重要事件”按钮事件 =======
+// 手机端“重要事件”按钮
 const mobileImportantBtn = document.getElementById("mobileImportantBtn");
-if (mobileImportantBtn) {
+const hiddenLabelsList = document.getElementById("hiddenLabelsList");
+if (mobileImportantBtn && hiddenLabelsList) {
   mobileImportantBtn.addEventListener("click", () => {
-    const hiddenLabelsList = document.getElementById("hiddenLabelsList");
-    if (hiddenLabelsList) {
-      hiddenLabelsList.classList.toggle("show"); // 仅展开列表，由用户自己选择
-    }
-
+    hiddenLabelsList.classList.toggle("show");
   });
 }
 
