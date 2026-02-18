@@ -1,5 +1,7 @@
 let members = {};
 let tweets = [];
+let allMonths = [];       // 全部存在推文里的月份
+let hiddenLabels = [];    // 全部 hidden_label
 let visibleCount = 30;
 let loading = false;
 let sortOrder = "new"; // 默认新→旧
@@ -7,6 +9,7 @@ let currentMember = null;
 let currentMonth = null;
 let currentTag = null;
 let currentFiltered = [];
+let currentHiddenLabel = null; // 新增
 
 // ========== JSON 加载（容错版） ==========
 async function loadJSON(path) {
@@ -56,6 +59,14 @@ async function loadTweetsByMonth(months = null) {
   results.forEach(arr => tweets = tweets.concat(arr));
 
   tweets.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+function generateGlobalArrays() {
+  // 月份数组（按降序）
+  allMonths = [...new Set(tweets.map(t => t.month))].sort((a, b) => b.localeCompare(a));
+
+  // hidden_label 数组（去重且非空）
+  hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
 }
 
 // ========== 初始化 ==========
@@ -112,25 +123,34 @@ async function init() {
   applyFilters();
 
 
+const mobileMonthBtn = document.getElementById("mobileMonthBtn");
+const monthSidebar = document.getElementById("monthSidebar");
+if (mobileMonthBtn && monthSidebar) {
+  mobileMonthBtn.addEventListener("click", () => {
+    monthSidebar.classList.toggle("mobile-open");
+  });
+}
+
+// 手机端“重要事件”按钮
+const mobileImportantBtn = document.getElementById("mobileImportantBtn");
+const hiddenLabelsList = document.getElementById("hiddenLabelsList");
+if (mobileImportantBtn && hiddenLabelsList) {
+  mobileImportantBtn.addEventListener("click", () => {
+    hiddenLabelsList.classList.toggle("show");
+  });
+}
+
+
   // 首页
   document.getElementById("homeIcon")?.addEventListener("click", () => {
     window.scrollTo(0, 0);
   currentMember = null;
   currentMonth = null;
   currentTag = null;
+  currentHiddenLabel = null; // 清空 hidden_label 筛选
     applyFilters();
   });
 
-  //手机端月份切换按钮
-   if (window.innerWidth <= 768) { // 可选：只在手机端加
-    const monthToggle = document.createElement("button");
-    monthToggle.textContent = "选择月份";
-    monthToggle.id = "monthToggle"; // 给个 id 好管理
-    monthToggle.onclick = () => {
-      document.getElementById("monthSidebar").classList.toggle("mobile-open");
-    };
-    document.body.prepend(monthToggle);
-  }
 
 
   // 搜索
@@ -246,6 +266,7 @@ function renderMonthSidebar() {
     sidebar.appendChild(yearDiv);
   });
 
+
      // 重要事件按钮
 const importantBtn = document.createElement("button");
 importantBtn.id = "importantBtn";
@@ -260,7 +281,7 @@ hiddenLabelsList.style.paddingLeft = "10px";
 sidebar.appendChild(hiddenLabelsList);
 
 // 获取所有 hidden_label（去重非空）
-const hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
+hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
 
 // 生成列表
 hiddenLabels.forEach(label => {
@@ -271,10 +292,12 @@ hiddenLabels.forEach(label => {
   li.style.margin = "3px 0";
 
   li.addEventListener("click", () => {
-    visibleCount = 30;
-    applyFilters(currentMember, currentMonth, currentTag, label);
-    window.scrollTo(0,0);
-  });
+  visibleCount = 30;
+  currentHiddenLabel = label; // 保存当前选中的 hidden_label
+  applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+  window.scrollTo(0,0);
+});
+
 
   hiddenLabelsList.appendChild(li);
 });
@@ -284,6 +307,11 @@ importantBtn.addEventListener("click", () => {
   hiddenLabelsList.classList.toggle("show");
 });
 }
+
+
+
+
+
 
 function renderMemberSidebar() {
   const sidebar = document.getElementById("memberSidebar");
@@ -306,7 +334,7 @@ function renderMemberSidebar() {
     btn.addEventListener("click", () => {
       visibleCount = 30;
       currentMember = m.id;
-      applyFilters(currentMember, currentMonth, currentTag);
+      applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
       window.scrollTo(0,0);
     });
     sidebar.appendChild(btn);
@@ -389,14 +417,17 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 function renderCurrent() {
   const container = document.getElementById("tweetContainer");
   if (!container) return;
-  container.innerHTML = "";
 
+  container.innerHTML = "";
   const fragment = document.createDocumentFragment();
   currentFiltered.slice(0, visibleCount).forEach(t => {
     fragment.appendChild(renderTweet(t));
   });
+
   container.appendChild(fragment);
 }
+
+
 
 function renderTweet(t) {
   const container = document.createElement("div");
@@ -467,4 +498,3 @@ if(sortToggle && sortLabel) {
 
 // ========== 启动 ==========
 init();
-
