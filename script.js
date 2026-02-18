@@ -415,19 +415,17 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 
 // ========== 渲染推文 ==========
 function renderCurrent() {
-  const container = window.innerWidth <= 768
-    ? document.getElementById("tweetScroll")
-    : document.getElementById("tweetContainer");
-
+  const container = document.getElementById("tweetContainer");
   if (!container) return;
 
-  container.innerHTML = ""; // 清空
+  container.innerHTML = "";
   const fragment = document.createDocumentFragment();
   currentFiltered.slice(0, visibleCount).forEach(t => {
     fragment.appendChild(renderTweet(t));
   });
   container.appendChild(fragment);
 }
+
 
 
 function renderTweet(t) {

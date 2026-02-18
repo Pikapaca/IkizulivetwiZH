@@ -485,12 +485,6 @@ body.dark #guideBtn:hover {
     padding: 10px 0 150px 0;      /* 上下间距，如果需要 */
   }
   
-  #tweetScroll {
-  max-height: calc(100vh - 130px - 70px); /* 视口减去上下固定部分 */
-  overflow-y: auto;
-  padding-bottom: 20px; /* 避免底栏遮挡 */
-}
-  
 
 
 
