@@ -1,5 +1,7 @@
 let members = {};
 let tweets = [];
+let allMonths = [];       // 全部存在推文里的月份
+let hiddenLabels = [];    // 全部 hidden_label
 let visibleCount = 30;
 let loading = false;
 let sortOrder = "new"; // 默认新→旧
@@ -57,6 +59,14 @@ async function loadTweetsByMonth(months = null) {
   results.forEach(arr => tweets = tweets.concat(arr));
 
   tweets.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+function generateGlobalArrays() {
+  // 月份数组（按降序）
+  allMonths = [...new Set(tweets.map(t => t.month))].sort((a, b) => b.localeCompare(a));
+
+  // hidden_label 数组（去重且非空）
+  hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
 }
 
 // ========== 初始化 ==========
@@ -241,21 +251,12 @@ function renderMonthSidebar() {
 const mobileMonthBtn = document.getElementById("mobileMonthBtn");
 if (mobileMonthBtn) {
   mobileMonthBtn.addEventListener("click", () => {
-    // 打开网页版月份栏
-    monthSidebar.classList.toggle("mobile-open"); 
-
-    // 如果你想点击按钮就直接选某个月，可以直接设置 currentMonth
-    // 例如选第一个月份：
-    const firstMonth = months[0]; // months 数组里存的月份值
-    if (firstMonth) {
-      currentMonth = firstMonth;
-      visibleCount = 30;
-      applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
-      window.scrollTo(0, 0);
+    const monthSidebar = document.getElementById("monthSidebar");
+    if (monthSidebar) {
+      monthSidebar.classList.toggle("mobile-open"); // 展开或折叠侧边栏
     }
   });
 }
-
 
      // 重要事件按钮
 const importantBtn = document.createElement("button");
@@ -271,7 +272,7 @@ hiddenLabelsList.style.paddingLeft = "10px";
 sidebar.appendChild(hiddenLabelsList);
 
 // 获取所有 hidden_label（去重非空）
-const hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
+hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
 
 // 生成列表
 hiddenLabels.forEach(label => {
@@ -298,22 +299,15 @@ importantBtn.addEventListener("click", () => {
 });
 }
 
-// 手机端底部“重要事件”按钮绑定
+// ======= 手机端“重要事件”按钮事件 =======
 const mobileImportantBtn = document.getElementById("mobileImportantBtn");
-if (mobileImportantBtn) { // 确保元素存在
+if (mobileImportantBtn) {
   mobileImportantBtn.addEventListener("click", () => {
-    // 这里可以直接复用之前生成列表的第一个 hidden_label 或者固定“重要事件”
-    // 如果你希望直接展开列表并选择某个 label，可以这样：
-    const firstLabel = hiddenLabels[0]; // 例如第一个 hidden_label
-    if (firstLabel) {
-      visibleCount = 30;
-      currentHiddenLabel = firstLabel;
-      applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
-      window.scrollTo(0, 0);
+    const hiddenLabelsList = document.getElementById("hiddenLabelsList");
+    if (hiddenLabelsList) {
+      hiddenLabelsList.classList.toggle("show"); // 仅展开列表，由用户自己选择
     }
 
-    // 可选：同时展开 hiddenLabelsList 列表（网页版显示效果）
-    hiddenLabelsList.classList.add("show");
   });
 }
 
