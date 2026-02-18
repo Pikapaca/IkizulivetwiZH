@@ -399,6 +399,11 @@ body.dark #guideBtn:hover {
     box-sizing: border-box;
   }
 
+#mobileMonthBtn, #mobileImportantBtn {
+  display: block;
+  z-index: 1000;
+}
+
 
 
   /* 推文区域全宽 */

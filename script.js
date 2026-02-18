@@ -122,6 +122,31 @@ async function init() {
   renderMonthSidebar();
   applyFilters();
 
+document.addEventListener("DOMContentLoaded", () => {
+  const mobileMonthBtn = document.getElementById("mobileMonthBtn");
+  if (mobileMonthBtn) {
+  mobileMonthBtn.addEventListener("click", () => {
+    const monthSidebar = document.getElementById("monthSidebar");
+    if (monthSidebar) {
+      monthSidebar.classList.toggle("mobile-open"); // 展开或折叠侧边栏
+    }
+  });
+}
+
+// ======= 手机端“重要事件”按钮事件 =======
+const mobileImportantBtn = document.getElementById("mobileImportantBtn");
+if (mobileImportantBtn) {
+  mobileImportantBtn.addEventListener("click", () => {
+    const hiddenLabelsList = document.getElementById("hiddenLabelsList");
+    if (hiddenLabelsList) {
+      hiddenLabelsList.classList.toggle("show"); // 仅展开列表，由用户自己选择
+    }
+
+  });
+}
+
+});
+
 
   // 首页
   document.getElementById("homeIcon")?.addEventListener("click", () => {
@@ -248,15 +273,6 @@ function renderMonthSidebar() {
     sidebar.appendChild(yearDiv);
   });
 
-const mobileMonthBtn = document.getElementById("mobileMonthBtn");
-if (mobileMonthBtn) {
-  mobileMonthBtn.addEventListener("click", () => {
-    const monthSidebar = document.getElementById("monthSidebar");
-    if (monthSidebar) {
-      monthSidebar.classList.toggle("mobile-open"); // 展开或折叠侧边栏
-    }
-  });
-}
 
      // 重要事件按钮
 const importantBtn = document.createElement("button");
@@ -299,17 +315,7 @@ importantBtn.addEventListener("click", () => {
 });
 }
 
-// ======= 手机端“重要事件”按钮事件 =======
-const mobileImportantBtn = document.getElementById("mobileImportantBtn");
-if (mobileImportantBtn) {
-  mobileImportantBtn.addEventListener("click", () => {
-    const hiddenLabelsList = document.getElementById("hiddenLabelsList");
-    if (hiddenLabelsList) {
-      hiddenLabelsList.classList.toggle("show"); // 仅展开列表，由用户自己选择
-    }
 
-  });
-}
 
 
 
