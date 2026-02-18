@@ -418,15 +418,23 @@ body.dark #guideBtn:hover {
 }
 
   /* 推文区域全宽 */
-  #tweetContainer {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box
+ #tweetContainer {
+    position: fixed;      /* 固定在视口 */
+    top: 120px;           /* 留出 header + 成员栏高度 */
+    bottom: 70px;         /* 留出底部操作栏 */
+    left: 10px;           /* 两侧间距 */
+    right: 10px;          /* 两侧间距 */
+    overflow-y: auto;     /* 内部可滚动 */
+    box-sizing: border-box;
+    background: white;    /* 可选，防止内容透到底色 */
+    z-index: 500;         /* 确保在底部栏下方 */
+    padding: 10px 0;      /* 上下间距，如果需要 */
   }
 
   .tweet {
-    width: 95%;
-    max-width: 95%
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 10px;
   }
 
 }
