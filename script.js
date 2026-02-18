@@ -123,23 +123,6 @@ async function init() {
   applyFilters();
 
 
-const mobileMonthBtn = document.getElementById("mobileMonthBtn");
-const monthSidebar = document.getElementById("monthSidebar");
-if (mobileMonthBtn && monthSidebar) {
-  mobileMonthBtn.addEventListener("click", () => {
-    monthSidebar.classList.toggle("mobile-open");
-  });
-}
-
-// 手机端“重要事件”按钮
-const mobileImportantBtn = document.getElementById("mobileImportantBtn");
-const hiddenLabelsList = document.getElementById("hiddenLabelsList");
-if (mobileImportantBtn && hiddenLabelsList) {
-  mobileImportantBtn.addEventListener("click", () => {
-    hiddenLabelsList.classList.toggle("show");
-  });
-}
-
 
   // 首页
   document.getElementById("homeIcon")?.addEventListener("click", () => {
@@ -308,8 +291,22 @@ importantBtn.addEventListener("click", () => {
 });
 }
 
+const mobileMonthBtn = document.getElementById("mobileMonthBtn");
+const monthSidebar = document.getElementById("monthSidebar");
+if (mobileMonthBtn && monthSidebar) {
+  mobileMonthBtn.addEventListener("click", () => {
+    monthSidebar.classList.toggle("mobile-open");
+  });
+}
 
-
+// 手机端“重要事件”按钮
+const mobileImportantBtn = document.getElementById("mobileImportantBtn");
+const hiddenLabelsList = document.getElementById("hiddenLabelsList");
+if (mobileImportantBtn && hiddenLabelsList) {
+  mobileImportantBtn.addEventListener("click", () => {
+    hiddenLabelsList.classList.toggle("show");
+  });
+}
 
 
 
