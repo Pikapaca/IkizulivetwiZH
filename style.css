@@ -481,7 +481,7 @@ body.dark #guideBtn:hover {
     box-sizing: border-box;
     background: white;    /* 可选，防止内容透到底色 */
     z-index: 500;         /* 确保在底部栏下方 */
-    padding: 10px 0;      /* 上下间距，如果需要 */
+    padding: 10px 0 80px 0;      /* 上下间距，如果需要 */
   }
 
   .tweet {
