@@ -402,7 +402,6 @@ body.dark #guideBtn:hover {
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 5px;          /* 留空间 */
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
@@ -411,11 +410,10 @@ body.dark #guideBtn:hover {
 
   #memberSidebar .member-btn {
     flex: 0 0 auto;
-    margin-bottom: 0;
+    margin-right: 8px; /* 按钮间距，只保留右间距 */
   }
-
-  #memberSidebar .member-btn:first-child {
-    margin-left: 10;
+  #memberSidebar .member-btn:last-child {
+  margin-right: 0; /* 最后一个按钮右边不留空 */
 }
 
 
