@@ -469,20 +469,22 @@ body.dark #guideBtn:hover {
   padding: 10px;
 }
 
-  /* 推文区域全宽 */
- #tweetContainer {
-    position: fixed;      /* 固定在视口 */
-    top: 130px;           /* 留出 header + 成员栏高度 */
-    bottom: 70px;         /* 留出底部操作栏 */
-    left: 20px;           /* 两侧间距 */
-    right: 20px;          /* 两侧间距 */
-    overflow-y: auto;     /* 内部可滚动 */
-    overflow-x: hidden
-    box-sizing: border-box;
-    background: white;    /* 可选，防止内容透到底色 */
-    z-index: 500;         /* 确保在底部栏下方 */
-    padding: 10px 0 150px 0;      /* 上下间距，如果需要 */
-  }
+/* 手机端推文区域 */
+#tweetContainer {
+  position: relative;       /* 取消 fixed */
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  width: 100%;
+  padding: 10px;            /* 内部缩进 */
+  margin-top: 130px;        /* 留出 header + 成员栏 */
+  margin-bottom: 80px;      /* 留出底部操作栏 */
+  overflow-y: visible;      /* 内容自然流动，不固定滚动 */
+  overflow-x: hidden;       /* 禁止横向滚动 */
+  box-sizing: border-box;
+}
+
 
   .tweet {
     width: 100%;
