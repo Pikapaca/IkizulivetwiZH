@@ -492,7 +492,7 @@ function attachAnnotations(container, annotations = []) {
   if (!annotations.length) return;
   
   annotations.forEach(item => {
-    const { word, meaning } = item;
+    const { term, definition } = item;
     const regex = new RegExp(`(${word})`, "g");
 
     const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
