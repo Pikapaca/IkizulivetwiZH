@@ -428,10 +428,11 @@ body.dark .annotation-tooltip {
     background-color: #1e1e1e; /* 夜间模式深色 */
 }
   
-  body.dark main {
-    background-color: #1e1e1e;
-  }
-
+body.dark, 
+html.dark,
+body.dark > #app {
+  background-color: #333; 
+}
 
   header {
   display: flex;
