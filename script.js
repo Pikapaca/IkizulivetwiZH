@@ -434,10 +434,21 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 
   // 排序
   currentFiltered.sort((a,b)=>
-    sortOrder==="new" ? new Date(b.date)-new Date(a.date) : new Date(a.date)-new Date(b.date)
-  );
+    const timeDiff = new Date(b.date) - new Date(a.date);
 
-  visibleCount = 30;
+  if (timeDiff !== 0) {
+    return sortOrder === "new"
+      ? timeDiff
+      : -timeDiff;
+  }
+
+  // 时间相同
+  return sortOrder === "new"
+    ? b._idx - a._idx
+    : a._idx - b._idx;
+});
+
+
   renderCurrent();
 }
 
