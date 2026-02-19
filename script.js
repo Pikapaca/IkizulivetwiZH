@@ -463,32 +463,35 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 
 // ========== 渲染推文 ==========
 function renderCurrent() {
-  const container = document.getElementById("tweetContainer");
-  if (!container) return;
+    const container = document.getElementById("tweetContainer");
+    if (!container) return;
 
-   // 清空推文，保留 sentinel
-  const sentinel = document.getElementById("lazySentinel");
-  Array.from(container.children).forEach(c => {
-    if (c !== sentinel) container.removeChild(c);
-  });
-  const fragment = document.createDocumentFragment();
-  
+    let sentinel = document.getElementById("lazySentinel");
+
+    // 如果 sentinel 不存在或不在 container 内，创建并 append
+    if (!sentinel || sentinel.parentNode !== container) {
+        sentinel = document.createElement("div");
+        sentinel.id = "lazySentinel";
+        sentinel.style.height = "1px";
+        container.appendChild(sentinel);
+    }
+
+    // 清空推文，保留 sentinel
+    Array.from(container.children).forEach(c => {
+        if (c !== sentinel) container.removeChild(c);
+    });
+
+    const fragment = document.createDocumentFragment();
     const list = currentFiltered.length ? currentFiltered : tweets;
-  list.slice(0, visibleCount).forEach(t => {
-     const tweetEl = renderTweet(t)
+    list.slice(0, visibleCount).forEach(t => {
+        const tweetEl = renderTweet(t);
+        attachAnnotations(tweetEl, t.annotations || []);
+        fragment.appendChild(tweetEl);
+    });
 
- // ✅ 添加注释功能
-    attachAnnotations(tweetEl, t.annotations || []);
-    fragment.appendChild(tweetEl);
-  });
-
- // 将推文插在 sentinel 之前
-  if (sentinel) {
     container.insertBefore(fragment, sentinel);
-  } else {
-    container.appendChild(fragment);
-  }
 }
+
 
 
 function setupLazyLoadObserver() {
