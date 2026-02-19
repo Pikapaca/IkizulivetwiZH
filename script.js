@@ -476,15 +476,18 @@ function renderCurrent() {
 function tryLoadMore() {
   if (loading) return;
 
+  const list = currentFiltered.length ? currentFiltered : tweets;
+
   if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200) {
-    if (visibleCount < currentFiltered.length) {
+    if (visibleCount < list.length) {
       loading = true;
       visibleCount += 30;
       renderCurrent();
       loading = false;
     }
   }
- }
+}
+
 
 
 
