@@ -456,8 +456,16 @@ function renderCurrent() {
   currentFiltered.slice(0, visibleCount).forEach(t => {
      const tweetEl = renderTweet(t)
 
+ // ✅ 添加注释功能
+    attachAnnotations(tweetEl, t.annotations || []);
 
-  }
+    fragment.appendChild(tweetEl);
+  });
+
+  container.appendChild(fragment);
+}
+
+
 
 function tryLoadMore() {
   if (loading) return;
@@ -469,15 +477,8 @@ function tryLoadMore() {
       renderCurrent();
       loading = false;
     }
-
- // ✅ 添加注释功能
-    attachAnnotations(tweetEl, t.annotations || []);
-
-    fragment.appendChild(tweetEl);
-  });
-
-  container.appendChild(fragment);
-}
+  }
+ }
 
 
 
