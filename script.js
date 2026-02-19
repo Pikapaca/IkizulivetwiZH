@@ -424,6 +424,12 @@ function renderCurrent() {
     fragment.appendChild(renderTweet(t));
   });
 
+ // ✅ 添加注释功能
+    attachAnnotations(tweetEl, t.annotations || []);
+
+    fragment.appendChild(tweetEl);
+  });
+
   container.appendChild(fragment);
 }
 
@@ -480,6 +486,69 @@ function renderTweet(t) {
   container.appendChild(body);
   return container;
 }
+
+// -------- 新增注释功能 --------
+function attachAnnotations(container, annotations = []) {
+  if (!annotations.length) return;
+  
+  annotations.forEach(item => {
+    const { word, meaning } = item;
+    const regex = new RegExp(`(${word})`, "g");
+
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+    const nodes = [];
+    while(walker.nextNode()) nodes.push(walker.currentNode);
+
+    nodes.forEach(textNode => {
+      if (!regex.test(textNode.textContent)) return;
+
+      const frag = document.createDocumentFragment();
+      let lastIndex = 0;
+
+      textNode.textContent.replace(regex, (match, p1, offset) => {
+        if (offset > lastIndex) {
+          frag.appendChild(document.createTextNode(textNode.textContent.slice(lastIndex, offset)));
+        }
+
+        const span = document.createElement("span");
+        span.className = "annotated";
+        span.textContent = match;
+
+        const tooltip = document.createElement("div");
+        tooltip.className = "annotation-tooltip";
+        tooltip.textContent = meaning;
+        document.body.appendChild(tooltip);
+
+        span.addEventListener("click", e => {
+          e.stopPropagation();
+          const isVisible = tooltip.style.display === "block";
+          document.querySelectorAll(".annotation-tooltip").forEach(t => t.style.display = "none");
+          if (!isVisible) {
+            const rect = span.getBoundingClientRect();
+            tooltip.style.top = (rect.bottom + window.scrollY + 5) + "px";
+            tooltip.style.left = (rect.left + window.scrollX) + "px";
+            tooltip.style.display = "block";
+          } else {
+            tooltip.style.display = "none";
+          }
+        });
+
+        frag.appendChild(span);
+        lastIndex = offset + match.length;
+      });
+
+      if (lastIndex < textNode.textContent.length) {
+        frag.appendChild(document.createTextNode(textNode.textContent.slice(lastIndex)));
+      }
+
+      textNode.replaceWith(frag);
+    });
+  });
+}
+
+document.addEventListener("click", () => {
+  document.querySelectorAll(".annotation-tooltip").forEach(t => t.style.display = "none");
+});
 
 // ========== 排序图标 ==========
 const sortToggle = document.getElementById("sortToggle");
