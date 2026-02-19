@@ -415,6 +415,7 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
   const tag = tagFilter || currentTag || "";
   const hiddenLabel = hiddenLabelFilter || ""; // 可选过滤
 
+ if (member || month || tag || hiddenLabel || search) { 
   currentFiltered = tweets.filter(t => {
     // 成员筛选
     if (member !== "" && t.member !== member) return false;
@@ -429,6 +430,10 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
     const originalMatch = t.original ? t.original.toLowerCase().includes(search) : false;
     return translationMatch || originalMatch;
   });
+   } else {
+    // 🔹 无筛选时，把 currentFiltered 赋值为 tweets
+    currentFiltered = [...tweets];
+  }
 
   // 排序
   currentFiltered.sort((a,b)=> {
@@ -476,10 +481,8 @@ function renderCurrent() {
 function tryLoadMore() {
   if (loading) return;
 
-  const list = currentFiltered.length ? currentFiltered : tweets;
-
   if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200) {
-    if (visibleCount < list.length) {
+    if (visibleCount < currentFiltered.length) {
       loading = true;
       visibleCount += 30;
       renderCurrent();
@@ -487,6 +490,7 @@ function tryLoadMore() {
     }
   }
 }
+
 
 
 
@@ -617,7 +621,7 @@ if(sortToggle && sortLabel) {
     sortLabel.textContent = sortOrder==="new"?"新 → 旧":"旧 → 新";
     sortToggle.title = sortOrder==="new"?"排序：新 → 旧":"排序：旧 → 新";
     visibleCount = 30;
-    applyFilters(currentMember, currentMonth, currentTag);
+    applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
   });
 }
 
