@@ -210,6 +210,7 @@ body.dark #monthSidebar {
 body.dark .member-btn,
 body.dark .month-btn,
 body.dark button {
+  background-color: #2a2a2a; /* 默认深色背景 */
   color: #ccc;
 }
 
@@ -217,6 +218,7 @@ body.dark .member-btn:hover,
 body.dark .month-btn:hover,
 body.dark button:hover {
   background-color: #333;
+  color: #fff;
 }
 
 /* ========== 指南按钮 ========== */
@@ -489,7 +491,10 @@ body.dark .annotation-tooltip {
     margin-bottom: 0;
   }
 
-
+  body.dark #memberSidebar {
+    background: #111;
+    border-color: #333;
+  }
 
   /* 月份栏可折叠 */
 #monthSidebar {
@@ -514,6 +519,22 @@ body.dark .annotation-tooltip {
   body.dark #mobileBottomBar {
     background: #111;
     border-color: #333;
+  }
+
+  body.dark header {
+    background-color: #1a1a1a;
+    color: #ccc;
+    border-bottom: 1px solid #333;
+  }
+
+  body.dark .member-btn {
+    background-color: #2a2a2a;
+    color: #ccc;
+  }
+
+  body.dark .member-btn:hover {
+    background-color: #333;
+    color: #fff;
   }
 
   /* 给页面底部留空间 */
