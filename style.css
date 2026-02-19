@@ -425,14 +425,13 @@ body.dark .annotation-tooltip {
   }
 
   body.dark .tweet-container {
-  background-color: #1e1e1e; /* 夜间模式深色 */
+    background-color: #1e1e1e; /* 夜间模式深色 */
 }
-
-
-  main {
-    background-color: transparent; /* 保持透明以显示 body 背景 */
-  }
   
+  body.dark main {
+    background-color: #1e1e1e;
+  }
+
 
   header {
   display: flex;
