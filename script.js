@@ -186,15 +186,7 @@ if (mobileImportantBtn && hiddenLabelsList) {
   });
 
   // 懒加载
-  window.addEventListener("scroll", () => {
-    if (loading) return;
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-      loading = true;
-      visibleCount += 30;
-      renderCurrent();
-      loading = false;
-    }
-  });
+  window.addEventListener("scroll", tryLoadMore);
 
   // 背景加载剩余月份
   loadRemainingMonths();
@@ -450,6 +442,7 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 
 
   renderCurrent();
+  tryLoadMore();
 }
 
 
@@ -463,6 +456,17 @@ function renderCurrent() {
   currentFiltered.slice(0, visibleCount).forEach(t => {
      const tweetEl = renderTweet(t)
 
+function tryLoadMore() {
+  if (loading) return;
+
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+    if (visibleCount < currentFiltered.length) {
+      loading = true;
+      visibleCount += 30;
+      renderCurrent();
+      loading = false;
+    }
+  }
 
  // ✅ 添加注释功能
     attachAnnotations(tweetEl, t.annotations || []);
