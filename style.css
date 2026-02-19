@@ -37,7 +37,7 @@ header {
   backdrop-filter: blur(6px);
 
   /* 字体颜色 */
-  color: #ccc;
+  color: #2c2c2c;
 
   /* 过渡动画 */
   transition: all 0.2s ease-in-out;
