@@ -193,6 +193,7 @@ if (mobileImportantBtn && hiddenLabelsList) {
   // 后台异步加载剩余月份
 loadRemainingMonths().then(() => {
   visibleCount = 30; // 重置可见条数
+renderCurrent();
   // 追加新推文后更新
   applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
 });
@@ -432,7 +433,7 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
   });
    } else {
     // 🔹 无筛选时，把 currentFiltered 赋值为 tweets
-    currentFiltered = [];
+    currentFiltered = [...tweets];
   }
 
   // 排序
@@ -484,8 +485,15 @@ function renderCurrent() {
 function tryLoadMore() {
   if (loading) return;
 
-  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200) {
-    if (visibleCount < currentFiltered.length) {
+  const list = currentFiltered; // currentFiltered 已经保证无筛选时等于 tweets
+  if (!list.length) return;
+
+  // ⚠️ 使用 container 的 scrollHeight 代替 document.documentElement
+  const container = document.getElementById("tweetContainer");
+  if (!container) return;
+
+  if (window.innerHeight + window.scrollY >= container.offsetHeight - 200) {
+    if (visibleCount < list.length) {
       loading = true;
       visibleCount += 30;
       renderCurrent();
