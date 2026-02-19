@@ -136,6 +136,8 @@ async function init() {
   renderMonthSidebar();
   applyFilters();
 
+  // 懒加载
+  window.addEventListener("scroll", tryLoadMore);
 
 const mobileMonthBtn = document.getElementById("mobileMonthBtn");
 const monthSidebar = document.getElementById("monthSidebar");
@@ -144,6 +146,8 @@ if (mobileMonthBtn && monthSidebar) {
     monthSidebar.classList.toggle("mobile-open");
   });
 }
+
+
 
 // 手机端“重要事件”按钮
 const mobileImportantBtn = document.getElementById("mobileImportantBtn");
@@ -185,11 +189,13 @@ if (mobileImportantBtn && hiddenLabelsList) {
     document.body.classList.toggle("dark");
   });
 
-  // 懒加载
-  window.addEventListener("scroll", tryLoadMore);
 
-  // 背景加载剩余月份
-  loadRemainingMonths();
+  // 后台异步加载剩余月份
+loadRemainingMonths().then(() => {
+  visibleCount = 30; // 重置可见条数
+  // 追加新推文后更新
+  applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+});
 }
 
 // ========== 背景加载剩余月份 ==========
@@ -470,7 +476,7 @@ function renderCurrent() {
 function tryLoadMore() {
   if (loading) return;
 
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200) {
     if (visibleCount < currentFiltered.length) {
       loading = true;
       visibleCount += 30;
