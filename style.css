@@ -343,9 +343,11 @@ body.dark #guideBtn:hover {
 .annotated {
   border-bottom: 1px dashed #1a73e8;
   cursor: pointer;
-  text-decoration: underline dotted;
   position: relative;
    /* 手机端也加轻微高亮，增强可点击性 */
+  margin-top: 2px;
+  margin-bottom: 2px;
+  display: inline-block; /* 必须加 inline-block 才能应用上下 margin */
   transition: background-color 0.2s;
 }
 
@@ -359,7 +361,7 @@ body.dark #guideBtn:hover {
   position: absolute;
   background-color: #fff;
   color: #000;
-  padding: 6px 10px;
+  padding: 8px 12px;
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   white-space: normal;
@@ -368,6 +370,8 @@ body.dark #guideBtn:hover {
   max-width: 200px;
   font-size: 0.85em;
   word-break: break-word; /* 防止长词撑出 */
+  line-height: 1.4;          /* 增加行高，让文字更易读 */
+  margin-top: 4px;           /* 与文字本身保持距离 */
 }
 
 body.dark .annotation-tooltip {
@@ -540,6 +544,12 @@ body.dark .annotation-tooltip {
   display: block;
   height: 100px; /* 底部栏高度 + 安全间距 */
 }
+
+.annotation-tooltip {
+    max-width: 90%;
+    font-size: 0.9em;
+    padding: 10px;
+  }
 
 }
 
