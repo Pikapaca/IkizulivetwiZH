@@ -61,7 +61,7 @@ async function loadTweetsByMonth(months = null) {
 tweets = tweets.map((t, idx) => ({ ...t, _idx: idx }));
 tweets.sort((a, b) => {
   const diff = new Date(b.date) - new Date(a.date);
-  return diff !== 0 ? diff : a._idx - b._idx;
+  return diff !== 0 ? diff : b._idx - a._idx;
 });
 }
 
@@ -216,7 +216,7 @@ async function loadRemainingMonths() {
     tweets = tweets.map((t, idx) => ({ ...t, _idx: idx }));
         tweets.sort((a, b) => {
          const diff = new Date(b.date) - new Date(a.date);
-         return diff !== 0 ? diff : a._idx - b._idx;
+         return diff !== 0 ? diff : b._idx - a._idx;
    });
 
     renderMonthSidebar();
@@ -576,4 +576,3 @@ if(sortToggle && sortLabel) {
 
 // ========== 启动 ==========
 init();
-
