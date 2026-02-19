@@ -136,8 +136,7 @@ async function init() {
   renderMonthSidebar();
   applyFilters();
 
-  // 懒加载
-  window.addEventListener("scroll", tryLoadMore);
+
 
 const mobileMonthBtn = document.getElementById("mobileMonthBtn");
 const monthSidebar = document.getElementById("monthSidebar");
@@ -455,7 +454,7 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 
   visibleCount = 30;
   renderCurrent();
-  tryLoadMore();
+
 }
 
 
@@ -477,32 +476,52 @@ function renderCurrent() {
     fragment.appendChild(tweetEl);
   });
 
-  container.appendChild(fragment);
+  let sentinel = document.getElementById("lazySentinel");
+if (!sentinel) {
+  sentinel = document.createElement("div");
+  sentinel.id = "lazySentinel";
+  sentinel.style.height = "1px";
+  container.appendChild(sentinel);
+}
+setupLazyLoadObserver(); // 调用下面创建的函数
 }
 
+let observer;
 
-
-function tryLoadMore() {
-  if (loading) return;
-
-  const list = currentFiltered; // currentFiltered 已经保证无筛选时等于 tweets
-  if (!list.length) return;
-
-  // ⚠️ 使用 container 的 scrollHeight 代替 document.documentElement
+function setupLazyLoadObserver() {
   const container = document.getElementById("tweetContainer");
   if (!container) return;
 
-  if (window.innerHeight + window.scrollY >= container.offsetHeight - 200) {
-    if (visibleCount < list.length) {
-      loading = true;
-      visibleCount += 30;
-      renderCurrent();
-      loading = false;
-    }
-  }
+  if (observer) observer.disconnect(); // 先移除旧 observer
+
+  const sentinel = document.getElementById("lazySentinel");
+  if (!sentinel) return;
+
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        loadMoreTweets();
+      }
+    });
+  }, {
+    root: null,
+    rootMargin: "200px", // 提前 200px 加载
+    threshold: 0
+  });
+
+  observer.observe(sentinel);
 }
 
+function loadMoreTweets() {
+  if (loading) return;
+  const list = currentFiltered; // currentFiltered 已经保证无筛选时等于 tweets
+  if (visibleCount >= list.length) return;
 
+  loading = true;
+  visibleCount += 30;
+  renderCurrent();
+  loading = false;
+}
 
 
 
