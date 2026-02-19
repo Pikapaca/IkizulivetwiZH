@@ -424,6 +424,11 @@ body.dark .annotation-tooltip {
     background-color: #1e1e1e; /* 夜间模式深色 */
   }
 
+  body.dark .tweet-container {
+  background-color: #1e1e1e; /* 夜间模式深色 */
+}
+
+
   main {
     background-color: transparent; /* 保持透明以显示 body 背景 */
   }
