@@ -134,7 +134,7 @@ header {
 /* ======================= 主区域 ======================= */
 main {
   position: relative;
-  margin: 0 150px;
+  margin: 0 120px 0 140px;
   height: calc(100vh - 60px);
   overflow: hidden;
 }
@@ -622,5 +622,6 @@ body.dark > #app {
     display: none;
   }
 }  
+
 
 
