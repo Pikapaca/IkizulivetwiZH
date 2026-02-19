@@ -60,8 +60,18 @@ async function loadTweetsByMonth(months = null) {
 
 tweets = tweets.map((t, idx) => ({ ...t, _idx: idx }));
 tweets.sort((a, b) => {
-  const diff = new Date(b.date) - new Date(a.date);
-  return diff !== 0 ? diff : b._idx - a._idx;
+  const timeDiff = new Date(b.date) - new Date(a.date);
+
+  if (timeDiff !== 0) {
+    return sortOrder === "new"
+      ? timeDiff
+      : -timeDiff;
+  }
+
+  // 时间相同的情况
+  return sortOrder === "new"
+    ? b._idx - a._idx   // 新→旧：b 在 a 上面
+    : a._idx - b._idx;  // 旧→新：a 在 b 上面
 });
 }
 
@@ -215,9 +225,19 @@ async function loadRemainingMonths() {
     results.forEach(arr => tweets = tweets.concat(arr));
     tweets = tweets.map((t, idx) => ({ ...t, _idx: idx }));
         tweets.sort((a, b) => {
-         const diff = new Date(b.date) - new Date(a.date);
-         return diff !== 0 ? diff : b._idx - a._idx;
-   });
+           const timeDiff = new Date(b.date) - new Date(a.date);
+
+  if (timeDiff !== 0) {
+    return sortOrder === "new"
+      ? timeDiff
+      : -timeDiff;
+  }
+
+  // 时间相同的情况
+  return sortOrder === "new"
+    ? b._idx - a._idx   // 新→旧：b 在 a 上面
+    : a._idx - b._idx;  // 旧→新：a 在 b 上面
+});
 
     renderMonthSidebar();
   }
