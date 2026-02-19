@@ -10,6 +10,7 @@ let currentMonth = null;
 let currentTag = null;
 let currentFiltered = [];
 let currentHiddenLabel = null; // 新增
+let observer;
 
 // ========== JSON 加载（容错版） ==========
 async function loadJSON(path) {
@@ -196,6 +197,8 @@ renderCurrent();
   // 追加新推文后更新
   applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
 });
+
+setupLazyLoadObserver(); // 初始化 scroll observer
 }
 
 // ========== 背景加载剩余月份 ==========
@@ -463,7 +466,11 @@ function renderCurrent() {
   const container = document.getElementById("tweetContainer");
   if (!container) return;
 
-  container.innerHTML = "";
+   // 清空推文，保留 sentinel
+  const sentinel = document.getElementById("lazySentinel");
+  Array.from(container.children).forEach(c => {
+    if (c !== sentinel) container.removeChild(c);
+  });
   const fragment = document.createDocumentFragment();
   
     const list = currentFiltered.length ? currentFiltered : tweets;
@@ -472,45 +479,36 @@ function renderCurrent() {
 
  // ✅ 添加注释功能
     attachAnnotations(tweetEl, t.annotations || []);
-
     fragment.appendChild(tweetEl);
   });
 
-  let sentinel = document.getElementById("lazySentinel");
-if (!sentinel) {
-  sentinel = document.createElement("div");
-  sentinel.id = "lazySentinel";
-  sentinel.style.height = "1px";
-  container.appendChild(sentinel);
-}
-setupLazyLoadObserver(); // 调用下面创建的函数
+ // 将推文插在 sentinel 之前
+  if (sentinel) {
+    container.insertBefore(fragment, sentinel);
+  } else {
+    container.appendChild(fragment);
+  }
 }
 
-let observer;
 
 function setupLazyLoadObserver() {
-  const container = document.getElementById("tweetContainer");
-  if (!container) return;
-
-  if (observer) observer.disconnect(); // 先移除旧 observer
-
   const sentinel = document.getElementById("lazySentinel");
   if (!sentinel) return;
 
-  observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        loadMoreTweets();
-      }
-    });
-  }, {
-    root: null,
-    rootMargin: "200px", // 提前 200px 加载
-    threshold: 0
-  });
+  if (!observer) {
+    observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          loadMoreTweets();
+        }
+      });
+    }, { root: null, rootMargin: "200px", threshold: 0 });
+  }
 
   observer.observe(sentinel);
 }
+
+
 
 function loadMoreTweets() {
   if (loading) return;
