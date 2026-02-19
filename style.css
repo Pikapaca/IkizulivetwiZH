@@ -343,6 +343,7 @@ body.dark #guideBtn:hover {
 .annotated {
   border-bottom: 1px dashed #1a73e8;
   cursor: pointer;
+  text-decoration: underline dotted;
   position: relative;
    /* 手机端也加轻微高亮，增强可点击性 */
   transition: background-color 0.2s;

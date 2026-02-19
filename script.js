@@ -493,7 +493,7 @@ function attachAnnotations(container, annotations = []) {
   
   annotations.forEach(item => {
     const { term, definition } = item;
-    const regex = new RegExp(`(${word})`, "g");
+    const regex = new RegExp(`(${term})`, "g");
 
     const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
     const nodes = [];
@@ -516,7 +516,7 @@ function attachAnnotations(container, annotations = []) {
 
         const tooltip = document.createElement("div");
         tooltip.className = "annotation-tooltip";
-        tooltip.textContent = meaning;
+        tooltip.textContent = definition;
         document.body.appendChild(tooltip);
 
         span.addEventListener("click", e => {
