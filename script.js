@@ -58,8 +58,12 @@ async function loadTweetsByMonth(months = null) {
   const results = await Promise.all(promises);
   results.forEach(arr => tweets = tweets.concat(arr));
 
-  tweets.sort((a, b) => new Date(b.date) - new Date(a.date));
-}
+tweets = tweets.map((t, idx) => ({ ...t, _idx: idx }));
+tweets.sort((a, b) => {
+  const diff = new Date(b.date) - new Date(a.date);
+  return diff !== 0 ? diff : a._idx - b._idx;
+});
+
 
 function generateGlobalArrays() {
   // 月份数组（按降序）
@@ -209,7 +213,12 @@ async function loadRemainingMonths() {
     }));
     const results = await Promise.all(promises);
     results.forEach(arr => tweets = tweets.concat(arr));
-    tweets.sort((a, b) => new Date(b.date) - new Date(a.date));
+    tweets = tweets.map((t, idx) => ({ ...t, _idx: idx }));
+        tweets.sort((a, b) => {
+         const diff = new Date(b.date) - new Date(a.date);
+         return diff !== 0 ? diff : a._idx - b._idx;
+   });
+
     renderMonthSidebar();
   }
 }
