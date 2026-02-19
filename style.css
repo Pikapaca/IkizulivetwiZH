@@ -28,16 +28,83 @@ header {
   margin-left: auto;
   padding: 5px 10px;
   font-size: 0.95em;
+  /* 圆角 + 边框 */
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  /* 背景玻璃感 */
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+
+  /* 字体颜色 */
+  color: #fff;
+
+  /* 过渡动画 */
+  transition: all 0.2s ease-in-out;
+}
+
+#searchInput:focus {
+  outline: none; /* 去掉默认蓝色框 */
+  background-color: rgba(255, 255, 255, 0.35); /* 聚焦时稍亮 */
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 5px rgba(255,255,255,0.4);
 }
 
 #sortSelect {
   padding: 5px 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
   font-size: 0.9em;
+    /* 圆角 + 边框 */
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  /* 背景玻璃感 */
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+
+  /* 字体颜色 */
+  color: #fff;
+
+  /* 过渡动画 */
+  transition: all 0.2s ease-in-out;
 }
+
+#sortSelect:hover, #sortSelect:focus {
+  background-color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 5px rgba(255,255,255,0.4);
+  outline: none;
+}
+
+
+/* 排序按钮 & 夜间模式按钮通用样式 */
+#sortToggle,
+#darkToggle {
+  padding: 5px 12px;
+  font-size: 0.95em;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.2); /* 更柔和的边框 */
+  
+  /* 背景半透明灰色，更适合白背景 */
+  background-color: rgba(200, 200, 200, 0.15);
+  backdrop-filter: blur(4px);
+
+  color: #333; /* 字体颜色偏暗，更容易看清 */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+/* 鼠标悬停或聚焦时 */
+#sortToggle:hover,
+#sortToggle:focus,
+#darkToggle:hover,
+#darkToggle:focus {
+  background-color: rgba(200, 200, 200, 0.25); /* hover 稍微加深 */
+  border-color: rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+
 
 /* ======================= 左右侧固定栏 ======================= */
 #monthSidebar, #memberSidebar {
@@ -330,7 +397,7 @@ body.dark #guideBtn:hover {
   cursor: pointer;
  
   /* 背景 + 玻璃效果 */
-  background-color: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+  background-color: rgba(200, 200, 200, 0.2); /* 半透明背景 */
   backdrop-filter: blur(6px);                 /* 背景模糊 */
   
   /* 边框 & 圆角 */
@@ -338,7 +405,7 @@ body.dark #guideBtn:hover {
   border-radius: 6px;
 
   /* 字体颜色和阴影 */
-  color: #fff;
+  color: #080808;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 
   /* 动画过渡 */
