@@ -191,6 +191,34 @@ body.dark main { color: #ccc; }
 body.dark .tweet { background: #2c2c2c; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 body.dark .tweet-id, body.dark .tweet-date { color: #aaa; }
 
+/* header 夜间模式 */
+body.dark header {
+  background-color: #1f1f1f;
+  color: #ccc;
+  border-bottom: 1px solid #333;
+}
+
+/* 侧边栏夜间模式 */
+body.dark #memberSidebar,
+body.dark #monthSidebar {
+  background-color: #1a1a1a;
+  color: #ccc;
+  border-right: 1px solid #333;
+}
+
+/* 侧边栏按钮文字/hover */
+body.dark .member-btn,
+body.dark .month-btn,
+body.dark button {
+  color: #ccc;
+}
+
+body.dark .member-btn:hover,
+body.dark .month-btn:hover,
+body.dark button:hover {
+  background-color: #333;
+}
+
 /* ========== 指南按钮 ========== */
 #guideBtn {
   display: block;
