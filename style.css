@@ -420,6 +420,15 @@ body.dark .annotation-tooltip {
     display: block;
   }
 
+  body.dark {
+    background-color: #1e1e1e; /* 夜间模式深色 */
+  }
+
+  main {
+    background-color: transparent; /* 保持透明以显示 body 背景 */
+  }
+  
+
   header {
   display: flex;
   align-items: center;
