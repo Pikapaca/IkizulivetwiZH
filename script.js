@@ -432,7 +432,7 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
   });
    } else {
     // 🔹 无筛选时，把 currentFiltered 赋值为 tweets
-    currentFiltered = [...tweets];
+    currentFiltered = [];
   }
 
   // 排序
@@ -452,6 +452,7 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 });
 
 
+  visibleCount = 30;
   renderCurrent();
   tryLoadMore();
 }
@@ -464,7 +465,9 @@ function renderCurrent() {
 
   container.innerHTML = "";
   const fragment = document.createDocumentFragment();
-  currentFiltered.slice(0, visibleCount).forEach(t => {
+  
+    const list = currentFiltered.length ? currentFiltered : tweets;
+  list.slice(0, visibleCount).forEach(t => {
      const tweetEl = renderTweet(t)
 
  // ✅ 添加注释功能
