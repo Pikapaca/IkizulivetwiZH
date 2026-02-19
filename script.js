@@ -63,7 +63,7 @@ tweets.sort((a, b) => {
   const diff = new Date(b.date) - new Date(a.date);
   return diff !== 0 ? diff : a._idx - b._idx;
 });
-
+}
 
 function generateGlobalArrays() {
   // 月份数组（按降序）
@@ -576,3 +576,4 @@ if(sortToggle && sortLabel) {
 
 // ========== 启动 ==========
 init();
+
