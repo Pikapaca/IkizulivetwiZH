@@ -433,7 +433,7 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
   });
 
   // 排序
-  currentFiltered.sort((a,b)=>
+  currentFiltered.sort((a,b)=> {
     const timeDiff = new Date(b.date) - new Date(a.date);
 
   if (timeDiff !== 0) {
