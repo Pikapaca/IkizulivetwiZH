@@ -421,8 +421,8 @@ function renderCurrent() {
   container.innerHTML = "";
   const fragment = document.createDocumentFragment();
   currentFiltered.slice(0, visibleCount).forEach(t => {
-    fragment.appendChild(renderTweet(t));
-  });
+     const tweetEl = renderTweet(t)
+
 
  // ✅ 添加注释功能
     attachAnnotations(tweetEl, t.annotations || []);
