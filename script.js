@@ -163,13 +163,17 @@ if (mobileImportantBtn && hiddenLabelsList) {
   document.getElementById("searchInput")?.addEventListener("input", () => {
     visibleCount = 30;
     applyFilters();
+    const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
   });
 
   // 排序下拉
   document.getElementById("sortSelect")?.addEventListener("change", e => {
     sortOrder = e.target.value;
     visibleCount = 30;
-    applyFilters(currentMember, currentMonth, currentTag);
+    applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+    const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
   });
 
 // 夜间模式
@@ -279,7 +283,8 @@ function renderMonthSidebar() {
         visibleCount = 30;
         currentMonth = month;
         applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
-        window.scrollTo(0,0);
+        const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
       });
       monthsContainer.appendChild(monthBtn);
     });
@@ -318,7 +323,8 @@ hiddenLabels.forEach(label => {
   visibleCount = 30;
   currentHiddenLabel = label; // 保存当前选中的 hidden_label
   applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
-  window.scrollTo(0,0);
+  const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
 });
 
 
@@ -358,7 +364,8 @@ function renderMemberSidebar() {
       visibleCount = 30;
       currentMember = m.id;
       applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
-      window.scrollTo(0,0);
+      const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
     });
     sidebar.appendChild(btn);
   });
@@ -580,7 +587,8 @@ function renderTweet(t) {
       tagEl.addEventListener("click", () => {
         visibleCount = 30;
         applyFilters(null,null,tag);
-        window.scrollTo(0,0);
+        const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
       });
       tagContainer.appendChild(tagEl);
     });
@@ -672,7 +680,8 @@ if(sortToggle && sortLabel) {
     sortToggle.title = sortOrder==="new"?"排序：新 → 旧":"排序：旧 → 新";
     visibleCount = 30;
     applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
-    window.scrollTo(0, 0);
+    const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
   });
 }
 
