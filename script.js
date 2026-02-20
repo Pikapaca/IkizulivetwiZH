@@ -436,7 +436,7 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
   }
   return true;
 });
-  }
+
 
   // 排序
   currentFiltered.sort((a,b)=> {
