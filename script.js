@@ -10,6 +10,7 @@ let currentMonth = null;
 let currentTag = null;
 let currentFiltered = [];
 let currentHiddenLabel = null; // 新增
+let observer;
 
 // ========== JSON 加载（容错版） ==========
 async function loadJSON(path) {
@@ -89,18 +90,6 @@ async function init() {
   renderMonthSidebar();
   renderCurrent();
 
-  // guide.json
-  loadJSON("guide.json").then(data => {
-    if (!data) return;
-    document.getElementById("guideTitle").textContent = data.title || "指南";
-    const listEl = document.getElementById("guideList");
-    listEl.innerHTML = "";
-    (data.items || []).forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      listEl.appendChild(li);
-    });
-  }).catch(() => console.warn("guide.json 加载失败"));
 
   const membersPromise = loadJSON("members.json");
 
@@ -136,8 +125,7 @@ async function init() {
   renderMonthSidebar();
   applyFilters();
 
-  // 懒加载
-  window.addEventListener("scroll", tryLoadMore);
+
 
 const mobileMonthBtn = document.getElementById("mobileMonthBtn");
 const monthSidebar = document.getElementById("monthSidebar");
@@ -175,19 +163,24 @@ if (mobileImportantBtn && hiddenLabelsList) {
   document.getElementById("searchInput")?.addEventListener("input", () => {
     visibleCount = 30;
     applyFilters();
+    const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
   });
 
   // 排序下拉
   document.getElementById("sortSelect")?.addEventListener("change", e => {
     sortOrder = e.target.value;
     visibleCount = 30;
-    applyFilters(currentMember, currentMonth, currentTag);
+    applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+    const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
   });
 
-  // 夜间模式
-  document.getElementById("darkToggle")?.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-  });
+// 夜间模式
+document.getElementById("darkToggle")?.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  updateDarkButton();
+});
 
 
   // 后台异步加载剩余月份
@@ -197,6 +190,12 @@ renderCurrent();
   // 追加新推文后更新
   applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
 });
+
+setupLazyLoadObserver(); // 初始化 scroll observer
+
+// —— 新增手机端夜间模式 emoji 按钮显示控制 —— //
+updateDarkButton(); // 初始化按钮显示（根据屏幕宽度和 dark class）
+window.addEventListener("resize", updateDarkButton); // 窗口变化时刷新按钮
 }
 
 // ========== 背景加载剩余月份 ==========
@@ -283,8 +282,9 @@ function renderMonthSidebar() {
       monthBtn.addEventListener("click", () => {
         visibleCount = 30;
         currentMonth = month;
-        applyFilters(currentMember, currentMonth, currentTag);
-        window.scrollTo(0,0);
+        applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+        const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
       });
       monthsContainer.appendChild(monthBtn);
     });
@@ -323,7 +323,8 @@ hiddenLabels.forEach(label => {
   visibleCount = 30;
   currentHiddenLabel = label; // 保存当前选中的 hidden_label
   applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
-  window.scrollTo(0,0);
+  const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
 });
 
 
@@ -363,7 +364,8 @@ function renderMemberSidebar() {
       visibleCount = 30;
       currentMember = m.id;
       applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
-      window.scrollTo(0,0);
+      const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
     });
     sidebar.appendChild(btn);
   });
@@ -416,25 +418,25 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
   const tag = tagFilter || currentTag || "";
   const hiddenLabel = hiddenLabelFilter || ""; // 可选过滤
 
- if (member || month || tag || hiddenLabel || search) { 
+ 
   currentFiltered = tweets.filter(t => {
-    // 成员筛选
-    if (member !== "" && t.member !== member) return false;
-    // 月份筛选
-    if (month !== "" && t.month !== month) return false;
-    // 标签筛选
-    if (tag !== "" && (!t.tags || !t.tags.includes(tag))) return false;
-    // 隐藏 label 筛选（安全处理）
-    if (hiddenLabel !== "" && (!t.hidden_label || t.hidden_label !== hiddenLabel)) return false;
-    // 搜索匹配 translation 或 original
+  // 成员筛选
+  if (member && t.member !== member) return false;
+  // 月份筛选
+  if (month && t.month !== month) return false;
+  // 标签筛选
+  if (tag && (!t.tags || !t.tags.includes(tag))) return false;
+  // 隐藏 label 筛选
+  if (hiddenLabel && (!t.hidden_label || t.hidden_label !== hiddenLabel)) return false;
+  // 搜索匹配 translation 或 original
+  if (search) {
     const translationMatch = t.translation.toLowerCase().includes(search);
     const originalMatch = t.original ? t.original.toLowerCase().includes(search) : false;
-    return translationMatch || originalMatch;
-  });
-   } else {
-    // 🔹 无筛选时，把 currentFiltered 赋值为 tweets
-    currentFiltered = [...tweets];
+    if (!translationMatch && !originalMatch) return false;
   }
+  return true;
+});
+
 
   // 排序
   currentFiltered.sort((a,b)=> {
@@ -455,54 +457,98 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 
   visibleCount = 30;
   renderCurrent();
-  tryLoadMore();
+
 }
 
 
 // ========== 渲染推文 ==========
 function renderCurrent() {
-  const container = document.getElementById("tweetContainer");
-  if (!container) return;
+    const container = document.getElementById("tweetContainer");
+    if (!container) return;
 
-  container.innerHTML = "";
-  const fragment = document.createDocumentFragment();
-  
-    const list = currentFiltered.length ? currentFiltered : tweets;
-  list.slice(0, visibleCount).forEach(t => {
-     const tweetEl = renderTweet(t)
+    let sentinel = document.getElementById("lazySentinel");
 
- // ✅ 添加注释功能
-    attachAnnotations(tweetEl, t.annotations || []);
-
-    fragment.appendChild(tweetEl);
-  });
-
-  container.appendChild(fragment);
-}
-
-
-
-function tryLoadMore() {
-  if (loading) return;
-
-  const list = currentFiltered; // currentFiltered 已经保证无筛选时等于 tweets
-  if (!list.length) return;
-
-  // ⚠️ 使用 container 的 scrollHeight 代替 document.documentElement
-  const container = document.getElementById("tweetContainer");
-  if (!container) return;
-
-  if (window.innerHeight + window.scrollY >= container.offsetHeight - 200) {
-    if (visibleCount < list.length) {
-      loading = true;
-      visibleCount += 30;
-      renderCurrent();
-      loading = false;
+    // 如果 sentinel 不存在或不在 container 内，创建并 append
+    if (!sentinel || sentinel.parentNode !== container) {
+        sentinel = document.createElement("div");
+        sentinel.id = "lazySentinel";
+        sentinel.style.height = "1px";
+        container.appendChild(sentinel);
     }
-  }
+
+    // 清空推文，保留 sentinel
+    Array.from(container.children).forEach(c => {
+        if (c !== sentinel) container.removeChild(c);
+    });
+
+    const fragment = document.createDocumentFragment();
+    const list = currentFiltered; 
+    list.slice(0, visibleCount).forEach(t => {
+        const tweetEl = renderTweet(t);
+        attachAnnotations(tweetEl, t.annotations || []);
+        fragment.appendChild(tweetEl);
+    });
+
+    container.insertBefore(fragment, sentinel);
 }
 
 
+
+function setupLazyLoadObserver() {
+  const sentinel = document.getElementById("lazySentinel");
+  if (!sentinel) return;
+
+  if (!observer) {
+    observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          loadMoreTweets();
+        }
+      });
+    }, { root: null, rootMargin: "200px", threshold: 0 });
+  }
+
+  observer.observe(sentinel);
+}
+
+function renderMoreTweets() {
+    const container = document.getElementById("tweetContainer");
+    if (!container) return;
+
+    let sentinel = document.getElementById("lazySentinel");
+    if (!sentinel || sentinel.parentNode !== container) {
+        sentinel = document.createElement("div");
+        sentinel.id = "lazySentinel";
+        sentinel.style.height = "1px";
+        container.appendChild(sentinel);
+    }
+
+    const fragment = document.createDocumentFragment();
+    const list = currentFiltered; 
+
+    // 只渲染新增部分
+    const start = visibleCount - 30; // 上一次加载结束的位置
+    const end = Math.min(visibleCount, list.length);
+    list.slice(start, end).forEach(t => {
+        const tweetEl = renderTweet(t);
+        attachAnnotations(tweetEl, t.annotations || []);
+        fragment.appendChild(tweetEl);
+    });
+
+    container.insertBefore(fragment, sentinel);
+}
+
+function loadMoreTweets() {
+  if (loading) return;
+  const list = currentFiltered; // currentFiltered 已经保证无筛选时等于 tweets
+  if (visibleCount >= list.length) return;
+
+  loading = true;
+  const oldVisibleCount = visibleCount;
+  visibleCount += 30;
+  renderMoreTweets();
+  loading = false;
+}
 
 
 
@@ -541,7 +587,8 @@ function renderTweet(t) {
       tagEl.addEventListener("click", () => {
         visibleCount = 30;
         applyFilters(null,null,tag);
-        window.scrollTo(0,0);
+        const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
       });
       tagContainer.appendChild(tagEl);
     });
@@ -633,8 +680,23 @@ if(sortToggle && sortLabel) {
     sortToggle.title = sortOrder==="new"?"排序：新 → 旧":"排序：旧 → 新";
     visibleCount = 30;
     applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+    const container = document.getElementById("tweetContainer");
+    if (container) container.scrollTop = 0;
   });
 }
 
+function updateDarkButton() {
+  const darkBtn = document.getElementById("darkToggle");
+  if (!darkBtn) return;
+
+  const isMobile = window.innerWidth <= 768;
+  const isDark = document.body.classList.contains("dark");
+
+  if (isMobile) {
+    darkBtn.textContent = isDark ? "☀️" : "🌙";
+  } else {
+    darkBtn.textContent = isDark ? "日间模式" : "夜间模式";
+  }
+}
 // ========== 启动 ==========
 init();
