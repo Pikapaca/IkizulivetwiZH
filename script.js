@@ -418,24 +418,24 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
   const tag = tagFilter || currentTag || "";
   const hiddenLabel = hiddenLabelFilter || ""; // 可选过滤
 
- if (member || month || tag || hiddenLabel || search) { 
+ 
   currentFiltered = tweets.filter(t => {
-    // 成员筛选
-    if (member !== "" && t.member !== member) return false;
-    // 月份筛选
-    if (month !== "" && t.month !== month) return false;
-    // 标签筛选
-    if (tag !== "" && (!t.tags || !t.tags.includes(tag))) return false;
-    // 隐藏 label 筛选（安全处理）
-    if (hiddenLabel !== "" && (!t.hidden_label || t.hidden_label !== hiddenLabel)) return false;
-    // 搜索匹配 translation 或 original
+  // 成员筛选
+  if (member && t.member !== member) return false;
+  // 月份筛选
+  if (month && t.month !== month) return false;
+  // 标签筛选
+  if (tag && (!t.tags || !t.tags.includes(tag))) return false;
+  // 隐藏 label 筛选
+  if (hiddenLabel && (!t.hidden_label || t.hidden_label !== hiddenLabel)) return false;
+  // 搜索匹配 translation 或 original
+  if (search) {
     const translationMatch = t.translation.toLowerCase().includes(search);
     const originalMatch = t.original ? t.original.toLowerCase().includes(search) : false;
-    return translationMatch || originalMatch;
-  });
-   } else {
-    // 🔹 无筛选时，把 currentFiltered 赋值为 tweets
-    currentFiltered = [...tweets];
+    if (!translationMatch && !originalMatch) return false;
+  }
+  return true;
+});
   }
 
   // 排序
