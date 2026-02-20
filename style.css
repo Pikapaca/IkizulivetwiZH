@@ -565,8 +565,8 @@ body.dark > #app {
   transition: all 0.2s ease;
 }
 
-  #sortToggle: active,
-  #darkToggle: active {
+  #sortToggle:active,
+  #darkToggle:active {
         transform: scale(0.94);
   }
   
