@@ -482,7 +482,7 @@ function renderCurrent() {
     });
 
     const fragment = document.createDocumentFragment();
-    const list = currentFiltered.length ? currentFiltered : tweets;
+    const list = currentFiltered; 
     list.slice(0, visibleCount).forEach(t => {
         const tweetEl = renderTweet(t);
         attachAnnotations(tweetEl, t.annotations || []);
@@ -524,7 +524,7 @@ function renderMoreTweets() {
     }
 
     const fragment = document.createDocumentFragment();
-    const list = currentFiltered.length ? currentFiltered : tweets;
+    const list = currentFiltered; 
 
     // 只渲染新增部分
     const start = visibleCount - 30; // 上一次加载结束的位置
