@@ -504,7 +504,32 @@ function setupLazyLoadObserver() {
   observer.observe(sentinel);
 }
 
+function renderMoreTweets() {
+    const container = document.getElementById("tweetContainer");
+    if (!container) return;
 
+    let sentinel = document.getElementById("lazySentinel");
+    if (!sentinel || sentinel.parentNode !== container) {
+        sentinel = document.createElement("div");
+        sentinel.id = "lazySentinel";
+        sentinel.style.height = "1px";
+        container.appendChild(sentinel);
+    }
+
+    const fragment = document.createDocumentFragment();
+    const list = currentFiltered.length ? currentFiltered : tweets;
+
+    // 只渲染新增部分
+    const start = visibleCount - 30; // 上一次加载结束的位置
+    const end = Math.min(visibleCount, list.length);
+    list.slice(start, end).forEach(t => {
+        const tweetEl = renderTweet(t);
+        attachAnnotations(tweetEl, t.annotations || []);
+        fragment.appendChild(tweetEl);
+    });
+
+    container.insertBefore(fragment, sentinel);
+}
 
 function loadMoreTweets() {
   if (loading) return;
@@ -512,8 +537,9 @@ function loadMoreTweets() {
   if (visibleCount >= list.length) return;
 
   loading = true;
+  const oldVisibleCount = visibleCount;
   visibleCount += 30;
-  renderCurrent();
+  renderMoreTweets();
   loading = false;
 }
 
