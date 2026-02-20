@@ -278,7 +278,7 @@ function renderMonthSidebar() {
       monthBtn.addEventListener("click", () => {
         visibleCount = 30;
         currentMonth = month;
-        applyFilters(currentMember, currentMonth, currentTag);
+        applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
         window.scrollTo(0,0);
       });
       monthsContainer.appendChild(monthBtn);
@@ -672,6 +672,7 @@ if(sortToggle && sortLabel) {
     sortToggle.title = sortOrder==="new"?"排序：新 → 旧":"排序：旧 → 新";
     visibleCount = 30;
     applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+    window.scrollTo(0, 0);
   });
 }
 
