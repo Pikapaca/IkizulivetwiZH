@@ -547,7 +547,7 @@ body.dark > #app {
 }
 
 /* 排序下拉和夜间模式按钮：可缩小，不换行 */
-#sortSelect, #darkModeToggle {
+#sortToggle, #darkToggle {
   flex: 0 1 auto;      /* 不占剩余空间，但可以缩小 */
   min-width: 30px;     /* 最小宽度 */
   max-width: 60px;     /* 最大宽度，防止撑出屏幕 */
