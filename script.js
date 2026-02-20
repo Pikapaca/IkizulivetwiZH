@@ -90,18 +90,6 @@ async function init() {
   renderMonthSidebar();
   renderCurrent();
 
-  // guide.json
-  loadJSON("guide.json").then(data => {
-    if (!data) return;
-    document.getElementById("guideTitle").textContent = data.title || "指南";
-    const listEl = document.getElementById("guideList");
-    listEl.innerHTML = "";
-    (data.items || []).forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      listEl.appendChild(li);
-    });
-  }).catch(() => console.warn("guide.json 加载失败"));
 
   const membersPromise = loadJSON("members.json");
 
@@ -184,10 +172,11 @@ if (mobileImportantBtn && hiddenLabelsList) {
     applyFilters(currentMember, currentMonth, currentTag);
   });
 
-  // 夜间模式
-  document.getElementById("darkToggle")?.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-  });
+// 夜间模式
+document.getElementById("darkToggle")?.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  updateDarkButton();
+});
 
 
   // 后台异步加载剩余月份
@@ -199,6 +188,10 @@ renderCurrent();
 });
 
 setupLazyLoadObserver(); // 初始化 scroll observer
+
+// —— 新增手机端夜间模式 emoji 按钮显示控制 —— //
+updateDarkButton(); // 初始化按钮显示（根据屏幕宽度和 dark class）
+window.addEventListener("resize", updateDarkButton); // 窗口变化时刷新按钮
 }
 
 // ========== 背景加载剩余月份 ==========
@@ -656,5 +649,18 @@ if(sortToggle && sortLabel) {
   });
 }
 
+function updateDarkButton() {
+  const darkBtn = document.getElementById("darkToggle");
+  if (!darkBtn) return;
+
+  const isMobile = window.innerWidth <= 768;
+  const isDark = document.body.classList.contains("dark");
+
+  if (isMobile) {
+    darkBtn.textContent = isDark ? "☀️" : "🌙";
+  } else {
+    darkBtn.textContent = isDark ? "日间模式" : "夜间模式";
+  }
+}
 // ========== 启动 ==========
 init();
