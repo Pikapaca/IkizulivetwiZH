@@ -270,7 +270,7 @@ body.dark button:hover {
   display: block;
   width: 100%;
   padding: 8px 0;
-  margin-top: 8px; 
+  margin-top: 8px; /* 在成员头像下方 */
   margin-bottom: 10px;
   background-color: #9b9b9b;
   color: #fff;
@@ -556,7 +556,7 @@ body.dark > #app {
         box-shadow: none;
    }
 
-  /* 成员栏改为顶部横向滚动 */
+    /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
     position: fixed;
     width: 100%;
@@ -572,6 +572,14 @@ body.dark > #app {
     scroll-padding-left: 10px;
   }
 
+#guideBtn {
+
+  padding: 0;
+  margin-top: 8px; 
+  margin-bottom: 10px;
+ 
+}
+
   #memberSidebar .member-btn:first-child {
   margin-left: 10px;
 }
@@ -585,26 +593,6 @@ body.dark > #app {
     background: #111;
     border-color: #333;
   }
-
-#guideBtn {
-  display: block;
-  width: 100%;
-  padding: 0, 0, 0, 20px;
-  margin-top: 8px; 
-  margin-bottom: 10px;
-  background-color: #9b9b9b;
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.2s;
-}
-
-#guideBtn:hover {
-  background-color: #191970;
-}
 
   /* 月份栏可折叠 */
 #monthSidebar {
