@@ -562,7 +562,6 @@ body.dark > #app {
     height: 60px;
     top: 60px;        /* header 高度 */
     display: flex;
-    justify-content: center;
     overflow-x: auto;
     white-space: nowrap;
     width:100%;  
