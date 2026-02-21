@@ -665,8 +665,8 @@ body.dark > #app {
     position: fixed;      /* 固定在视口 */
     top: 130px;           /* 留出 header + 成员栏高度 */
     bottom: 70px;         /* 留出底部操作栏 */
-    left: 20px;           /* 两侧间距 */
-    right: 20px;          /* 两侧间距 */
+    left: 14px;           /* 两侧间距 */
+    right: 14px;          /* 两侧间距 */
     overflow-y: auto;     /* 内部可滚动 */
     overflow-x: hidden;
     box-sizing: border-box;
