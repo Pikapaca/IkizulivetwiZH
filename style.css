@@ -558,6 +558,7 @@ body.dark > #app {
 
     /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
+    right:auto
     position: fixed;
     width: 100%;
     height: 60px;
@@ -565,7 +566,7 @@ body.dark > #app {
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 0;          /* 留空间 */
+    padding: 0 10px;          /* 留空间 */
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
@@ -574,18 +575,13 @@ body.dark > #app {
 
 
   #memberSidebar .member-btn:first-child {
-
+  margin-left: 10px;
 }
     
   #memberSidebar .member-btn {
     flex: 0 0 auto;
     margin-bottom: 0;
   }
-
-#memberSidebar::after {
-    content: "";               /* 占位用，填充右边空白 */
-    flex: 0 0 10px;            /* 右侧留 10px 空间 */
-}
 
   body.dark #memberSidebar {
     background: #111;
