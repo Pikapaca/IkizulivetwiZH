@@ -354,52 +354,60 @@ function renderMemberSidebar() {
   if (!sidebar) return;
   sidebar.innerHTML = "";
 
-  // 先获取 modal（必须在外层作用域）
   const modal = document.getElementById("guideModal");
   const close = modal ? modal.querySelector(".close-btn") : null;
 
-  // 渲染成员头像
-  Object.values(members).forEach(m => {
+  // ===== ① 先创建 guide 按钮（永远第一个）=====
+  const guideBtn = document.createElement("button");
+  guideBtn.id = "guideBtn";
+  guideBtn.textContent = "指南";
+  sidebar.appendChild(guideBtn);
+
+  if (modal) {
+    guideBtn.onclick = () => {
+      modal.style.display = "flex";
+    };
+  }
+
+  if (close) {
+    close.onclick = () => {
+      modal.style.display = "none";
+    };
+  }
+
+  // 只绑定一次 window 监听
+  if (!window._guideModalBound && modal) {
+    window.addEventListener("click", e => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+    window._guideModalBound = true;
+  }
+
+  // ===== ② 再渲染成员 =====
+  Object.values(members).slice(0, 10).forEach(m => {
     const btn = document.createElement("div");
     btn.className = "member-btn";
+
     const img = document.createElement("img");
     img.src = m.avatar;
     img.title = m.name;
     img.loading = "lazy";
+
     btn.appendChild(img);
-    btn.addEventListener("click", () => {
+
+    btn.onclick = () => {
       visibleCount = 30;
       currentMember = m.id;
       applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
+
       const container = document.getElementById("tweetContainer");
-    if (container) container.scrollTop = 0;
-    });
+      if (container) container.scrollTop = 0;
+    };
+
     sidebar.appendChild(btn);
   });
-
-  // 只创建按钮，不创建 modal
-  if (!document.getElementById("guideBtn")) {
-    const btn = document.createElement("button");
-    btn.id = "guideBtn";
-    btn.textContent = "指南";
-    sidebar.appendChild(btn);
-
-    if (modal) {
-      btn.addEventListener("click", () => {
-        modal.style.display = "flex";
-      });
-
-      if (close) {
-        close.addEventListener("click", () => {
-          modal.style.display = "none";
-        });
-      }
-
-      window.addEventListener("click", e => {
-        if (e.target === modal) modal.style.display = "none";
-      });
-    }
-  }
 }
 
 
