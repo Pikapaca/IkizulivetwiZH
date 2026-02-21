@@ -569,7 +569,7 @@ body.dark > #app {
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
-    scroll-padding-left: 10px;
+  
   }
 
   #memberSidebar .member-btn:first-child {
@@ -698,6 +698,5 @@ body.dark > #app {
     display: none;
   }
 }  
-
 
 
