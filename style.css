@@ -271,7 +271,7 @@ body.dark button:hover {
   width: 100%;
   padding: 8px 0;
   margin-top: 8px; 
-  margin-bottom: 10px
+  margin-bottom: 10px;
   background-color: #9b9b9b;
   color: #fff;
   font-weight: bold;
@@ -699,5 +699,6 @@ body.dark > #app {
     display: none;
   }
 }  
+
 
 
