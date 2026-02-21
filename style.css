@@ -565,24 +565,16 @@ body.dark > #app {
     display: inline-flex;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 0        /* 留空间 */
+    padding: 0 10px;          /* 留空间 */
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
-  
+    scroll-padding-left: 10px;
   }
 
-/* guide 按钮 */
-#guideBtn {
-  flex: 0 0 auto;          /* 不拉伸，保持原本内容宽度 */
-  margin-left: 10px;       /* 离左边 10px */
-  margin-right: 0;         /* 不额外加右边距，gap 已经控制间距 */
-  white-space: nowrap;      /* 防止按钮文本换行 */
-}
 
-/* 最右侧成员头像 */
-#memberSidebar .member-btn:last-child {
-  margin-right: 10px;      /* 保证右边有空白 */
+  #memberSidebar .member-btn:first-child {
+  margin-left: 10px;
 }
     
   #memberSidebar .member-btn {
