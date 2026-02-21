@@ -565,15 +565,20 @@ body.dark > #app {
     display: inline-flex;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 0 10px;          /* 留空间 */
+    padding: 0        /* 留空间 */
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
-  
   }
 
-  #memberSidebar .member-btn:first-child {
-  margin-left: 10px;
+#guideBtn {
+  margin-left: 10px;           /* 离左边 10px */
+  flex: 0 0 auto;              /* 防止被压缩 */
+}
+
+/* 给最右侧成员头像增加右边距，保证右边有空白 */
+#memberSidebar .member-btn:last-child {
+  margin-right: 10px;
 }
     
   #memberSidebar .member-btn {
