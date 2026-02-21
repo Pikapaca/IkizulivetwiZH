@@ -559,14 +559,14 @@ body.dark > #app {
     /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
     position: fixed;
-    left: 8px;
-    right: 8px;
     height: 60px;
     top: 60px;        /* header 高度 */
     display: flex;
+    justify-content: center;
     overflow-x: auto;
     white-space: nowrap;
-
+    width:100%;  
+    padding:8px; 
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
@@ -574,7 +574,7 @@ body.dark > #app {
   }
 
 
-  #memberSidebar .member-btn:first-child {
+  #memberSidebar .guide-btn:first-child {
   margin-left: 10px;
 }
     
