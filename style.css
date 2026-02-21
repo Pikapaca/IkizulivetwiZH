@@ -638,7 +638,7 @@ body.dark > #app {
   /* 给页面底部留空间 */
   main {
     margin: 100px 10px 70px 10px;
-    width: 100vw;
+    width: 100%;
     box-sizing: border-box;
   }
 
