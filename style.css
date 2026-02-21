@@ -558,9 +558,9 @@ body.dark > #app {
 
     /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
-    right:auto
     position: fixed;
-    width: 100%;
+    left: 8px;
+    right: 8px;
     height: 60px;
     top: 60px;        /* header 高度 */
     display: flex;
