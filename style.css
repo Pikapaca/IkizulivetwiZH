@@ -270,7 +270,8 @@ body.dark button:hover {
   display: block;
   width: 100%;
   padding: 8px 0;
-  margin-top: 8px; /* 在成员头像下方 */
+  margin-top: 8px; 
+  margin-bottom: 10px
   background-color: #9b9b9b;
   color: #fff;
   font-weight: bold;
