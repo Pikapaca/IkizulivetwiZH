@@ -404,16 +404,20 @@ function renderMemberSidebar() {
 
 
     // ✅ 在 DOM 创建后再加载 guide.json 
-   loadJSON("guide.json").then(data => {
-      if (!data) return;
-      document.getElementById("guideTitle").textContent = data.title || "指南";
-      const listEl = document.getElementById("guideList");
-      listEl.innerHTML = "";
-      (data.items || []).forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        listEl.appendChild(li);
-      });
+loadJSON("guide.json").then(data => {
+  if (!data) return;
+
+  const guideTitleEl = document.getElementById("guideTitle");
+  guideTitleEl.textContent = data.title || "指南"; // 标题通常不需要 Markdown
+
+  const listEl = document.getElementById("guideList");
+  listEl.innerHTML = "";
+
+  (data.items || []).forEach(item => {
+    const li = document.createElement("li");
+    li.innerHTML = marked.parse(item); // <-- 改成 innerHTML + marked.parse()
+    listEl.appendChild(li);
+  });
     }).catch(() => console.warn("guide.json 加载失败"));
 
 
