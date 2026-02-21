@@ -270,8 +270,7 @@ body.dark button:hover {
   display: block;
   width: 100%;
   padding: 8px 0;
-  margin-top: 8px; 
-  margin-bottom: 10px;
+  margin-top: 8px; /* 在成员头像下方 */
   background-color: #9b9b9b;
   color: #fff;
   font-weight: bold;
@@ -559,21 +558,20 @@ body.dark > #app {
     /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
     position: fixed;
+    width: 100%;
     height: 60px;
     top: 60px;        /* header 高度 */
-    display: flex;
+    display: inline-flex;
     overflow-x: auto;
     white-space: nowrap;
-    width:100%;  
-    padding:8px; 
+    padding: 0 10px;          /* 留空间 */
     gap: 10px;                /* 元素之间间距 */
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;  /* 必须加这个 */
     scroll-padding-left: 10px;
   }
 
-
-  #memberSidebar .guide-btn:first-child {
+  #memberSidebar .member-btn:first-child {
   margin-left: 10px;
 }
     
