@@ -81,7 +81,11 @@ function generateGlobalArrays() {
   allMonths = [...new Set(tweets.map(t => t.month))].sort((a, b) => b.localeCompare(a));
 
   // hidden_label 数组（去重且非空）
-  hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
+  hiddenLabels = [...new Set(
+    tweets
+      .flatMap(t => Array.isArray(t.hidden_label) ? t.hidden_label : [t.hidden_label])
+      .filter(Boolean)
+  )];
 }
 
 // ========== 初始化 ==========
@@ -309,7 +313,10 @@ hiddenLabelsList.style.paddingLeft = "10px";
 sidebar.appendChild(hiddenLabelsList);
 
 // 获取所有 hidden_label（去重非空）
-hiddenLabels = [...new Set(tweets.map(t => t.hidden_label).filter(Boolean))];
+hiddenLabels = [...new Set(
+  tweets.flatMap(t => Array.isArray(t.hidden_label) ? t.hidden_label : [t.hidden_label])
+          .filter(Boolean)
+)];
 
 // 生成列表
 hiddenLabels.forEach(label => {
@@ -427,7 +434,15 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
   // 标签筛选
   if (tag && (!t.tags || !t.tags.includes(tag))) return false;
   // 隐藏 label 筛选
-  if (hiddenLabel && (!t.hidden_label || t.hidden_label !== hiddenLabel)) return false;
+if (hiddenLabel) {
+  if (!t.hidden_label) return false;
+
+  const labels = Array.isArray(t.hidden_label)
+    ? t.hidden_label
+    : [t.hidden_label];
+
+  if (!labels.includes(hiddenLabel)) return false;
+}
   // 搜索匹配 translation 或 original
   if (search) {
     const translationMatch = t.translation.toLowerCase().includes(search);
