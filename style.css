@@ -51,7 +51,18 @@ header {
 }
 
 #sortSelect {
-  padding: 5px 8px;
+ 
+}
+
+#sortSelect:hover, #sortSelect:focus {
+
+}
+
+
+/* 排序按钮 & 夜间模式按钮通用样式 */
+#sortToggle,
+#darkToggle {
+ padding: 5px 8px;
   font-size: 0.9em;
     /* 圆角 + 边框 */
   border-radius: 6px;
@@ -68,40 +79,14 @@ header {
   transition: all 0.2s ease-in-out;
 }
 
-#sortSelect:hover, #sortSelect:focus {
-  background-color: rgba(255, 255, 255, 0.35);
-  border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 5px rgba(255,255,255,0.4);
-  outline: none;
-}
-
-
-/* 排序按钮 & 夜间模式按钮通用样式 */
-#sortToggle,
-#darkToggle {
-  padding: 5px 12px;
-  font-size: 0.95em;
-  border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.2); /* 更柔和的边框 */
-  
-  /* 背景半透明灰色，更适合白背景 */
-  background-color: rgba(200, 200, 200, 0.15);
-  backdrop-filter: blur(4px);
-
-  color: #333; /* 字体颜色偏暗，更容易看清 */
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  white-space: nowrap;
-}
-
 /* 鼠标悬停或聚焦时 */
 #sortToggle:hover,
 #sortToggle:focus,
 #darkToggle:hover,
 #darkToggle:focus {
-  background-color: rgba(200, 200, 200, 0.25); /* hover 稍微加深 */
-  border-color: rgba(0, 0, 0, 0.35);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 5px rgba(255,255,255,0.4);
   outline: none;
 }
 
