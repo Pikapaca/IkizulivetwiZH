@@ -186,9 +186,17 @@ main {
 #tweetContainer {
   height: 100%;
   overflow-y: auto;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; 
 }
 
 .tweet {
+  width: 100%;
+  max-width: 100%;   /* 不超过 tweetContainer */
+  overflow: hidden;  /* 防止内容撑出 */
+  box-sizing: border-box;
+  word-break: break-word;
   display: flex;
   align-items: flex-start;
   padding: 12px;
@@ -208,7 +216,8 @@ main {
 }
 
 .tweet-body {
-  flex: 1;
+  flex: 1 1 auto;  /* 可伸缩 */
+  min-width: 0;     /* 关键：允许收缩 */
   display: flex;
   flex-direction: column;
 }
@@ -242,6 +251,42 @@ main {
   color: #555;
   font-size: 0.9em;
   white-space: pre-wrap;
+}
+
+
+/* 引用推文外层容器 */
+.tweet-quoted {
+  border: 2px solid #ccc;
+  margin-top: 12px;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;       /* 防止横向溢出 */
+  display: flex;
+  flex-direction: column; /* 纵向排列内部内容 */,
+  min-width: 0;    /* 关键：允许引用块收缩 */
+  max-width: 100%; /* 明确不超出父容器 */
+}
+
+/* 内部引用推文 */
+.tweet-quoted-inner {
+  flex: 1 1 auto;        /* 允许伸缩 */
+  min-width: 0;           /* 关键：允许内容缩小，不撑开父容器 */
+  box-sizing: border-box;
+}
+
+/* ✅ 只管正文图片，不影响头像 */
+img.tweet-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  width: 100%
+  object-fit: contain;
+}
+
+.tweet-content,
+.tweet-original,
+.tweet-quoted {
+  overflow-wrap: anywhere; /* 比 break-word 更“强硬” */
 }
 
 .tweet-name { font-weight: bold; }
@@ -710,6 +755,9 @@ body.dark > #app {
     background: white;    /* 可选，防止内容透到底色 */
     z-index: 500;         /* 确保在底部栏下方 */
     padding: 10px 0 80px 0;      /* 上下间距，如果需要 */
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden; 
   }
   
 
@@ -720,6 +768,41 @@ body.dark > #app {
     padding: 15px;
     box-sizing: border-box;
     word-break: break-word;
+    overflow: hidden;  /* 防止内容撑出 */
+    box-sizing: border-box;
+    word-break: break-word;
+    display: flex;
+    align-items: flex-start;
+  }
+
+/* ===== 推文图片 ===== */
+/* 引用推文外层容器 */
+.tweet-quoted {
+  border: 2px solid #ccc;
+  box-sizing: border-box;
+  overflow: hidden;       /* 防止横向溢出 */
+  display: flex;
+  flex-direction: column; /* 纵向排列内部内容 */
+}
+
+/* 内部引用推文 */
+.tweet-quoted-inner {
+  flex: 1 1 auto;        /* 允许伸缩 */
+  min-width: 0;           /* 关键：允许内容缩小，不撑开父容器 */
+  box-sizing: border-box;
+}
+
+/* 推文和引用图片 */
+.tweet img,
+.tweet-quoted img {
+  display: block;
+  max-width: 100%;       /* 不超过父容器 */
+  height: auto;          /* 自适应高度 */
+  object-fit: contain;   /* 保持比例 */
+}
+
+.tweet, .tweet-quoted-inner {
+    padding: 10px;   /* 让内容有点空隙 */
   }
 
   /* 最后一条推文后自动空出底部栏 */
