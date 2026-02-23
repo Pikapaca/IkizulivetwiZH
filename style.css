@@ -254,24 +254,36 @@ main {
 }
 
 
-/* 引用推文外层容器 */
+/* ===== 引用推文（更像 Twitter 的卡片） ===== */
 .tweet-quoted {
-  border: 1px solid #ddd;
-  margin-top: 12px;
+  margin-top: 10px;
   padding: 10px;
+  border: 1px solid rgba(15, 20, 25, 0.15); /* 细边框 */
+  border-radius: 12px;                      /* Twitter 风圆角 */
+  background: rgba(255, 255, 255, 0.6);     /* 轻微底色，避免太“框” */
   box-sizing: border-box;
-  overflow: hidden;       /* 防止横向溢出 */
-  display: flex;
-  flex-direction: column; /* 纵向排列内部内容 */,
-  min-width: 0;    /* 关键：允许引用块收缩 */
-  max-width: 100%; /* 明确不超出父容器 */
+  overflow: hidden;
 }
 
-/* 内部引用推文 */
-.tweet-quoted-inner {
-  flex: 1 1 auto;        /* 允许伸缩 */
-  min-width: 0;           /* 关键：允许内容缩小，不撑开父容器 */
-  box-sizing: border-box;
+/* 让引用内容整体更紧凑一些 */
+.tweet-quoted .tweet-quoted-inner {
+  margin: 0;
+  padding: 0;            /* 外框已经有 padding */
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* 引用里的头像稍小一点（可选，更像引用卡片） */
+.tweet-quoted .avatar {
+  width: 36px;
+  height: 36px;
+  margin-top: 10px;
+}
+
+/* 引用里的文字略小一点（可选） */
+.tweet-quoted .tweet-content {
+  font-size: 0.95em;
 }
 
 /* ✅ 只管正文图片，不影响头像 */
@@ -322,6 +334,12 @@ body.dark .original-toggle-btn {
   background: #333;
   border: 1px solid #555;
   color: #ccc;
+}
+
+/* 夜间模式：引用卡片 */
+body.dark .tweet-quoted {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 /* 侧边栏夜间模式 */
