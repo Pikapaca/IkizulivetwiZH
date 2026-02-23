@@ -235,6 +235,7 @@ main {
 .tweet-original {
   display: none;          /* 默认隐藏 */
   margin-top: 8px;
+  margin-bottom: 12px;
   padding-top: 8px;
   border-top: 1px solid #eee;
   color: #555;
@@ -247,7 +248,7 @@ main {
 .tweet-content { line-height: 1.4; margin-bottom: 4px; white-space: pre-wrap; }
 .tweet-tag { display: inline-block; margin-right: 6px; color: #1a73e8; font-size: 0.85em; cursor: pointer; }
 .tweet-tag:hover { text-decoration: underline; }
-.tweet-date { font-size: 0.75em; color: #888; }
+.tweet-date { font-size: 0.75em; color: #888; margin-bottom: 12px; }
 
 /* ======================= 夜间模式 ======================= */
 body.dark {
@@ -741,6 +742,5 @@ body.dark > #app {
     display: none;
   }
 }  
-
 
 
