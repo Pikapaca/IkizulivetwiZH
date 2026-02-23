@@ -602,8 +602,31 @@ function renderTweet(t) {
   content.className = "tweet-content";
   content.textContent = t.translation;
 
+  // ===== 原文容器（默认隐藏）=====
+const original = document.createElement("div");
+original.className = "tweet-original";
+original.textContent = t.original || "";
+original.style.display = "none";
+
+// ===== 右上角按钮 =====
+const originalBtn = document.createElement("button");
+originalBtn.className = "original-toggle-btn";
+originalBtn.textContent = "🇯🇵";
+originalBtn.title = "显示原文";
+
+originalBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  const isHidden = original.style.display === "none";
+  original.style.display = isHidden ? "block" : "none";
+
+  originalBtn.title = isHidden ? "收起原文" : "显示原文";
+});
+
   body.appendChild(header);
-  body.appendChild(content);
+  body.appendChild(originalBtn);  // 按钮
+  body.appendChild(content);      // 翻译
+  
 
   if (t.tags?.length) {
     const tagContainer = document.createElement("div");
@@ -626,6 +649,8 @@ function renderTweet(t) {
   date.className = "tweet-date";
   date.textContent = t.date;
   body.appendChild(date);
+
+  body.appendChild(original);     // 原文
 
   container.appendChild(avatar);
   container.appendChild(body);

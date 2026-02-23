@@ -219,6 +219,28 @@ main {
   margin-bottom: 4px;
 }
 
+.original-toggle-btn {
+  margin-left: auto;     /* 自动推到右边 */
+  font-size: 0.75em;
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #f2f2f2;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 原文分割线 + 上下间距 */
+.tweet-original {
+  display: none;          /* 默认隐藏 */
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+  color: #555;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+}
+
 .tweet-name { font-weight: bold; }
 .tweet-id { color: gray; font-size: 0.85em; }
 .tweet-content { line-height: 1.4; margin-bottom: 4px; white-space: pre-wrap; }
@@ -240,6 +262,18 @@ body.dark header {
   background-color: #1f1f1f;
   color: #ccc;
   border-bottom: 1px solid #333;
+}
+
+/* 夜间模式 */
+body.dark .tweet-original {
+  border-top: 1px solid #444;
+  color: #bbb;
+}
+
+body.dark .original-toggle-btn {
+  background: #333;
+  border: 1px solid #555;
+  color: #ccc;
 }
 
 /* 侧边栏夜间模式 */
