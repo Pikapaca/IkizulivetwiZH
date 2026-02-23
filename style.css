@@ -219,8 +219,14 @@ main {
   margin-bottom: 4px;
 }
 
+.tweet-button-row {
+  display: flex;
+  justify-content: flex-end; /* 右对齐 */
+  margin-bottom: 4px;
+}
+
 .original-toggle-btn {
-  margin-left: auto;     /* 自动推到右边 */
+  flex: 0 0 auto; /* 不被拉伸 */
   font-size: 0.75em;
   padding: 2px 6px;
   border-radius: 6px;
