@@ -256,7 +256,7 @@ main {
 
 /* 引用推文外层容器 */
 .tweet-quoted {
-  border: 2px solid #ccc;
+  border: 1px solid #ddd;
   margin-top: 12px;
   padding: 10px;
   box-sizing: border-box;
@@ -742,7 +742,7 @@ body.dark > #app {
   padding: 10px;
 }
 
-  /* 推文区域全宽 */
+ /* 推文区域全宽 */
  #tweetContainer {
     position: fixed;      /* 固定在视口 */
     top: 130px;           /* 留出 header + 成员栏高度 */
@@ -755,9 +755,6 @@ body.dark > #app {
     background: white;    /* 可选，防止内容透到底色 */
     z-index: 500;         /* 确保在底部栏下方 */
     padding: 10px 0 80px 0;      /* 上下间距，如果需要 */
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden; 
   }
   
 
@@ -768,12 +765,14 @@ body.dark > #app {
     padding: 15px;
     box-sizing: border-box;
     word-break: break-word;
-    overflow: hidden;  /* 防止内容撑出 */
-    box-sizing: border-box;
-    word-break: break-word;
-    display: flex;
-    align-items: flex-start;
   }
+
+  /* 最后一条推文后自动空出底部栏 */
+#tweetContainer::after {
+  content: "";
+  display: block;
+  height: 100px; /* 底部栏高度 + 安全间距 */
+}
 
 /* ===== 推文图片 ===== */
 /* 引用推文外层容器 */
@@ -805,12 +804,7 @@ body.dark > #app {
     padding: 10px;   /* 让内容有点空隙 */
   }
 
-  /* 最后一条推文后自动空出底部栏 */
-#tweetContainer::after {
-  content: "";
-  display: block;
-  height: 100px; /* 底部栏高度 + 安全间距 */
-}
+
 
 .annotation-tooltip {
     max-width: 90%;
