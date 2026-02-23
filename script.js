@@ -439,6 +439,8 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 
  
   currentFiltered = tweets.filter(t => {
+   // 1️⃣ 过滤 hidden
+  if (t.hidden === true) return false;
   // 成员筛选
   if (member && t.member !== member) return false;
   // 月份筛选
