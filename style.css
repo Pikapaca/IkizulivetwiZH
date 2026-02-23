@@ -247,7 +247,7 @@ main {
 .tweet-name { font-weight: bold; }
 .tweet-id { color: gray; font-size: 0.85em; }
 .tweet-content { line-height: 1.5; margin-bottom: 4px; white-space: pre-wrap; margin-top: 8px}
-.tweet-tag { display: inline-block; margin-right: 6px; color: #1a73e8; font-size: 0.85em; cursor: pointer; }
+.tweet-tag { display: inline-block; margin-right: 6px; margin-bottom: 6px, color: #1a73e8; font-size: 0.85em; cursor: pointer; }
 .tweet-tag:hover { text-decoration: underline; }
 .tweet-date { font-size: 0.75em; color: #888; margin-bottom: 12px; }
 
