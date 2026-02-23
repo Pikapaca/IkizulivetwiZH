@@ -646,6 +646,20 @@ originalBtn.addEventListener("click", (e) => {
     body.appendChild(tagContainer);
   }
 
+    if (t.images?.length) {
+  const imagesContainer = document.createElement("div");
+  imagesContainer.className = "tweet-images";
+
+  t.images.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.loading = "lazy";
+    img.className = "tweet-image";
+    imagesContainer.appendChild(img);
+  });
+
+  body.appendChild(imagesContainer);
+}
   const date = document.createElement("div");
   date.className = "tweet-date";
   date.textContent = t.date;
@@ -653,6 +667,52 @@ originalBtn.addEventListener("click", (e) => {
 
   body.appendChild(original);     // 原文
 
+  // ===== 引用推文处理 =====
+  if (t.quotedId) {
+  const quotedContainer = document.createElement("div");
+  quotedContainer.className = "tweet-quoted";
+
+  // 优先通过 quotedId 查找列表内推文
+  const quotedTweet = tweets.find(x => x.id === t.quotedId);
+
+  if (quotedTweet) {
+    // 已在列表里的引用，复用 renderTweet
+    const innerTweet = renderTweet(quotedTweet);
+    innerTweet.classList.add("tweet-quoted-inner");
+    quotedContainer.appendChild(innerTweet);
+
+
+    // 如果引用推文也有原文，显示原文按钮
+    if (quotedTweet.quotedOriginal) {
+      const qOriginal = document.createElement("div");
+      qOriginal.className = "tweet-original";
+      qOriginal.textContent = quotedTweet.quotedOriginal;
+      qOriginal.style.display = "none";
+
+      const qBtn = document.createElement("button");
+      qBtn.className = "original-toggle-btn";
+      qBtn.textContent = "🇯🇵";
+      qBtn.title = "显示原文";
+
+      qBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isHidden = qOriginal.style.display === "none";
+        qOriginal.style.display = isHidden ? "block" : "none";
+        qBtn.title = isHidden ? "收起原文" : "显示原文";
+      });
+
+      quotedContainer.appendChild(qBtn);
+      quotedContainer.appendChild(qOriginal);
+      
+    
+    }
+  }
+
+  body.appendChild(quotedContainer);
+}
+
+
+  
   container.appendChild(avatar);
   container.appendChild(body);
   return container;
