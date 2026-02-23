@@ -103,7 +103,7 @@ header {
 .month-btn, .member-btn {
   display: block;
   margin-bottom: 8px;
-  padding: 6px 0 6px 12px;
+  padding: 6px 8px;
   background: white;
   border-radius: 6px;
   text-align: center;
