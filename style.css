@@ -203,7 +203,7 @@ main {
   height: 50px;
   border-radius: 50%;
   margin-right: 12px;
-  margin-top: 4px;
+  margin-top: 12px;
   object-fit: cover;
 }
 
@@ -741,5 +741,6 @@ body.dark > #app {
     display: none;
   }
 }  
+
 
 
