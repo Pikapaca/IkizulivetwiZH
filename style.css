@@ -186,9 +186,6 @@ main {
 #tweetContainer {
   height: 100%;
   overflow-y: auto;
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden; 
 }
 
 .tweet {
@@ -216,7 +213,7 @@ main {
 }
 
 .tweet-body {
-  flex: 1 1 auto;  /* 可伸缩 */
+  flex: 1 ;  /* 可伸缩 */
   min-width: 0;     /* 关键：允许收缩 */
   display: flex;
   flex-direction: column;
@@ -790,35 +787,6 @@ body.dark > #app {
   height: 100px; /* 底部栏高度 + 安全间距 */
 }
 
-/* ===== 推文图片 ===== */
-/* 引用推文外层容器 */
-.tweet-quoted {
-  border: 2px solid #ccc;
-  box-sizing: border-box;
-  overflow: hidden;       /* 防止横向溢出 */
-  display: flex;
-  flex-direction: column; /* 纵向排列内部内容 */
-}
-
-/* 内部引用推文 */
-.tweet-quoted-inner {
-  flex: 1 1 auto;        /* 允许伸缩 */
-  min-width: 0;           /* 关键：允许内容缩小，不撑开父容器 */
-  box-sizing: border-box;
-}
-
-/* 推文和引用图片 */
-.tweet img,
-.tweet-quoted img {
-  display: block;
-  max-width: 100%;       /* 不超过父容器 */
-  height: auto;          /* 自适应高度 */
-  object-fit: contain;   /* 保持比例 */
-}
-
-.tweet, .tweet-quoted-inner {
-    padding: 10px;   /* 让内容有点空隙 */
-  }
 
 
 
