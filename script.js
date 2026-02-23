@@ -623,8 +623,9 @@ originalBtn.addEventListener("click", (e) => {
   originalBtn.title = isHidden ? "收起原文" : "显示原文";
 });
 
+  body.appendChild(originalBtn);  // 按钮  
   body.appendChild(header);
-  body.appendChild(originalBtn);  // 按钮
+  
   body.appendChild(content);      // 翻译
   
 
