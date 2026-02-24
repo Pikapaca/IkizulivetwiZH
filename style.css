@@ -189,6 +189,11 @@ main {
 }
 
 .tweet {
+  width: 100%;
+  max-width: 100%;   /* 不超过 tweetContainer */
+  overflow: hidden;  /* 防止内容撑出 */
+  box-sizing: border-box;
+  word-break: break-word;
   display: flex;
   align-items: flex-start;
   padding: 12px;
@@ -208,7 +213,8 @@ main {
 }
 
 .tweet-body {
-  flex: 1;
+  flex: 1 ;  /* 可伸缩 */
+  min-width: 0;     /* 关键：允许收缩 */
   display: flex;
   flex-direction: column;
 }
@@ -244,6 +250,86 @@ main {
   white-space: pre-wrap;
 }
 
+
+/* ===== 引用推文（更像 Twitter 的卡片） ===== */
+.tweet-quoted {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid rgba(15, 20, 25, 0.15); /* 细边框 */
+  border-radius: 12px;                      /* Twitter 风圆角 */
+  background: rgba(255, 255, 255, 0.6);     /* 轻微底色，避免太“框” */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 让引用内容整体更紧凑一些 */
+.tweet-quoted .tweet-quoted-inner {
+  margin: 0;
+  padding: 0;            /* 外框已经有 padding */
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* 引用里的头像稍小一点（可选，更像引用卡片） */
+.tweet-quoted .avatar {
+  width: 36px;
+  height: 36px;
+  margin-top: 10px;
+}
+
+/* 引用里的文字略小一点（可选） */
+.tweet-quoted .tweet-content {
+  font-size: 0.95em;
+}
+
+/* ✅ 只管正文图片，不影响头像 */
+img.tweet-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  width: 100%
+  object-fit: contain;
+}
+
+/* ===== 图片弹窗（Lightbox） ===== */
+#imgModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;              /* 默认隐藏 */
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;              /* 高于 header / bottom bar */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#imgModal.show {
+  display: flex;
+}
+
+#imgModal img {
+  max-width: min(96vw, 1100px);
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+  background: #000;
+  object-fit: contain;
+}
+
+/* 可选：让图片看起来可点 */
+img.tweet-image {
+  cursor: zoom-in;
+}
+
+.tweet-content,
+.tweet-original,
+.tweet-quoted {
+  overflow-wrap: anywhere; /* 比 break-word 更“强硬” */
+}
+
 .tweet-name { font-weight: bold; }
 .tweet-id { color: gray; font-size: 0.85em; }
 .tweet-content { line-height: 1.5; margin-bottom: 4px; white-space: pre-wrap; margin-top: 8px}
@@ -277,6 +363,12 @@ body.dark .original-toggle-btn {
   background: #333;
   border: 1px solid #555;
   color: #ccc;
+}
+
+/* 夜间模式：引用卡片 */
+body.dark .tweet-quoted {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 /* 侧边栏夜间模式 */
@@ -674,8 +766,9 @@ body.dark > #app {
 
   /* 给页面底部留空间 */
   main {
-    margin: 100px 10px 70px 10px;
-    width: 100%;
+    margin: 100px 0 70px 0;
+    padding: 0 10px; 
+    width: auto;
     box-sizing: border-box;
   }
 
@@ -697,15 +790,15 @@ body.dark > #app {
   padding: 10px;
 }
 
-  /* 推文区域全宽 */
+ /* 推文区域全宽 */
  #tweetContainer {
     position: fixed;      /* 固定在视口 */
     top: 130px;           /* 留出 header + 成员栏高度 */
     bottom: 70px;         /* 留出底部操作栏 */
-    left: 14px;           /* 两侧间距 */
-    right: 14px;          /* 两侧间距 */
     overflow-y: auto;     /* 内部可滚动 */
     overflow-x: hidden;
+    left: 10px;
+    right: 10px; 
     box-sizing: border-box;
     background: white;    /* 可选，防止内容透到底色 */
     z-index: 500;         /* 确保在底部栏下方 */
@@ -728,6 +821,9 @@ body.dark > #app {
   display: block;
   height: 100px; /* 底部栏高度 + 安全间距 */
 }
+
+
+
 
 .annotation-tooltip {
     max-width: 90%;

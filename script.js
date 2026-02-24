@@ -439,6 +439,8 @@ function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null,
 
  
   currentFiltered = tweets.filter(t => {
+   // 1️⃣ 过滤 hidden
+  if (t.hidden === true) return false;
   // 成员筛选
   if (member && t.member !== member) return false;
   // 月份筛选
@@ -646,6 +648,20 @@ originalBtn.addEventListener("click", (e) => {
     body.appendChild(tagContainer);
   }
 
+    if (t.images?.length) {
+  const imagesContainer = document.createElement("div");
+  imagesContainer.className = "tweet-images";
+
+  t.images.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.loading = "lazy";
+    img.className = "tweet-image";
+    imagesContainer.appendChild(img);
+  });
+
+  body.appendChild(imagesContainer);
+}
   const date = document.createElement("div");
   date.className = "tweet-date";
   date.textContent = t.date;
@@ -653,10 +669,110 @@ originalBtn.addEventListener("click", (e) => {
 
   body.appendChild(original);     // 原文
 
+  // ===== 引用推文处理 =====
+  if (t.quotedId) {
+  const quotedContainer = document.createElement("div");
+  quotedContainer.className = "tweet-quoted";
+
+  // 优先通过 quotedId 查找列表内推文
+  const quotedTweet = tweets.find(x => x.id === t.quotedId);
+
+  if (quotedTweet) {
+    // 已在列表里的引用，复用 renderTweet
+    const innerTweet = renderTweet(quotedTweet);
+    innerTweet.classList.add("tweet-quoted-inner");
+    quotedContainer.appendChild(innerTweet);
+
+
+    // 如果引用推文也有原文，显示原文按钮
+    if (quotedTweet.quotedOriginal) {
+      const qOriginal = document.createElement("div");
+      qOriginal.className = "tweet-original";
+      qOriginal.textContent = quotedTweet.quotedOriginal;
+      qOriginal.style.display = "none";
+
+      const qBtn = document.createElement("button");
+      qBtn.className = "original-toggle-btn";
+      qBtn.textContent = "🇯🇵";
+      qBtn.title = "显示原文";
+
+      qBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isHidden = qOriginal.style.display === "none";
+        qOriginal.style.display = isHidden ? "block" : "none";
+        qBtn.title = isHidden ? "收起原文" : "显示原文";
+      });
+
+      quotedContainer.appendChild(qBtn);
+      quotedContainer.appendChild(qOriginal);
+      
+    
+    }
+  }
+
+  body.appendChild(quotedContainer);
+}
+
+
+  
   container.appendChild(avatar);
   container.appendChild(body);
   return container;
 }
+
+// ===== 图片弹窗 Lightbox =====
+function setupImageLightbox() {
+  // 1) 创建 modal（只创建一次）
+  let modal = document.getElementById("imgModal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "imgModal";
+    modal.innerHTML = `<img alt="preview">`;
+    document.body.appendChild(modal);
+  }
+
+  const modalImg = modal.querySelector("img");
+
+  // 2) 点击遮罩空白处关闭（点图片本身不关闭）
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // 3) ESC 关闭
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  function openModal(src) {
+    modalImg.src = src;
+    modal.classList.add("show");
+    // 防止打开后背景还能滚动（尤其手机）
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    modal.classList.remove("show");
+    modalImg.src = ""; // 释放引用
+    document.body.style.overflow = "";
+  }
+
+  // 4) 事件委托：推文图片点击打开
+  const container = document.getElementById("tweetContainer");
+  if (!container) return;
+
+  container.addEventListener("click", (e) => {
+    const img = e.target.closest && e.target.closest("img.tweet-image");
+    if (!img) return;
+
+    e.stopPropagation();
+    openModal(img.src);
+  });
+}
+
+// ✅ 在 init() 的最后调用一次（DOM 都准备好后）
+setupImageLightbox();
+
+
 
 // -------- 新增注释功能 --------
 function attachAnnotations(container, annotations = []) {
