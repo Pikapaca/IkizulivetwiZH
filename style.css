@@ -292,6 +292,38 @@ img.tweet-image {
   object-fit: contain;
 }
 
+/* ===== 图片弹窗（Lightbox） ===== */
+#imgModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;              /* 默认隐藏 */
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;              /* 高于 header / bottom bar */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#imgModal.show {
+  display: flex;
+}
+
+#imgModal img {
+  max-width: min(96vw, 1100px);
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+  background: #000;
+  object-fit: contain;
+}
+
+/* 可选：让图片看起来可点 */
+img.tweet-image {
+  cursor: zoom-in;
+}
+
 .tweet-content,
 .tweet-original,
 .tweet-quoted {

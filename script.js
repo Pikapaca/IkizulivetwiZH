@@ -720,6 +720,60 @@ originalBtn.addEventListener("click", (e) => {
   return container;
 }
 
+// ===== 图片弹窗 Lightbox =====
+function setupImageLightbox() {
+  // 1) 创建 modal（只创建一次）
+  let modal = document.getElementById("imgModal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "imgModal";
+    modal.innerHTML = `<img alt="preview">`;
+    document.body.appendChild(modal);
+  }
+
+  const modalImg = modal.querySelector("img");
+
+  // 2) 点击遮罩空白处关闭（点图片本身不关闭）
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // 3) ESC 关闭
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  function openModal(src) {
+    modalImg.src = src;
+    modal.classList.add("show");
+    // 防止打开后背景还能滚动（尤其手机）
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    modal.classList.remove("show");
+    modalImg.src = ""; // 释放引用
+    document.body.style.overflow = "";
+  }
+
+  // 4) 事件委托：推文图片点击打开
+  const container = document.getElementById("tweetContainer");
+  if (!container) return;
+
+  container.addEventListener("click", (e) => {
+    const img = e.target.closest && e.target.closest("img.tweet-image");
+    if (!img) return;
+
+    e.stopPropagation();
+    openModal(img.src);
+  });
+}
+
+// ✅ 在 init() 的最后调用一次（DOM 都准备好后）
+setupImageLightbox();
+
+
+
 // -------- 新增注释功能 --------
 function attachAnnotations(container, annotations = []) {
   if (!annotations.length) return;
