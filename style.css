@@ -688,7 +688,9 @@ body.dark > #app {
     /* 成员栏改为顶部横向滚动 */
   #memberSidebar {
     position: fixed;
-    width: 100%;
+    left: 0;          /* ✅ 重置 */
+    right: 0;         /* ✅ 重置 */
+    width: auto;      /* ✅ 用 left+right 控宽，比 width:100% 更稳 */
     height: 60px;
     top: 60px;        /* header 高度 */
     display: inline-flex;
@@ -702,16 +704,14 @@ body.dark > #app {
   }
 
 #guideBtn {
-
+  margin-left: 10px;
   padding: 0;
   margin-top: 8px; 
   margin-bottom: 10px;
  
 }
 
-  #memberSidebar .member-btn:first-child {
-  margin-left: 10px;
-}
+
     
   #memberSidebar .member-btn {
     flex: 0 0 auto;
