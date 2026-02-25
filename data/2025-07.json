@@ -13,7 +13,7 @@
     "date": "2025-07-01 17:16",
     "tags": ["生活好难部"], 
     "annotations": [
-  { "term": "五连打", "definition": "五つ打ち，特指一种节奏型，偶尔也被称为Jersey club", "anno_image": "images/anno/jersey-club.png"}
+  { "term": "五连打", "definition": "五つ打ち，特指一种节奏型，偶尔也被称为Jersey club", "anno_image": ["images/anno/jersey-club.png"]}
 ]
   },
   {
