@@ -803,8 +803,31 @@ function attachAnnotations(container, annotations = []) {
 
         const tooltip = document.createElement("div");
         tooltip.className = "annotation-tooltip";
-        tooltip.textContent = definition;
-        document.body.appendChild(tooltip);
+
+// 文字容器
+        const textEl = document.createElement("div");
+        textEl.className = "anno-text";
+        textEl.textContent = definition ?? "";
+        tooltip.appendChild(textEl);
+
+// 图片容器
+        const imgs = Array.isArray(item.anno_image) ? item.anno_image : [];
+        if (imgs.length) {
+        const imgWrap = document.createElement("div");
+        imgWrap.className = "anno-images";
+
+        imgs.forEach(src => {
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = "";
+          img.loading = "lazy";
+          imgWrap.appendChild(img);
+      });
+
+       tooltip.appendChild(imgWrap);
+      }
+
+       document.body.appendChild(tooltip);
 
         span.addEventListener("click", e => {
           e.stopPropagation();

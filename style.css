@@ -596,6 +596,25 @@ body.dark .annotation-tooltip {
   box-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
 
+/* annotation 图片容器 */
+.annotation-tooltip .anno-images {
+  margin-top: 6px;       /* 文字和图片之间留点空间 */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* annotation 图片 */
+.annotation-tooltip .anno-images img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+}
+
+.annotation-tooltip img {
+  max-height: 160px;
+}
 
 
 /* ========== 手机兼容 ========== */
@@ -829,6 +848,22 @@ body.dark > #app {
     font-size: 0.9em;
     padding: 10px;
   }
+
+/* 手机端图片自适应 */
+.annotation-tooltip .anno-images img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 防止图片过高占满屏 */
+.annotation-tooltip img {
+  max-height: 40vh;
+}
+
+/* 保证不贴屏幕边缘 */
+.annotation-tooltip {
+  box-sizing: border-box;
+}
 
 }
 
