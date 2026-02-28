@@ -251,11 +251,12 @@ function renderMonthSidebar() {
   if (!sidebar) return;
   sidebar.innerHTML = "";
 
-    // ✅ 侧边栏统计只用可见推文（hidden:true 不计入）
-  const sidebarTweets = tweets.filter(t => t.hidden !== true);
-
   const grouped = {};
   const counts = {};
+
+  // ✅ 侧边栏计数不统计 hidden:true
+  const sidebarTweets = tweets.filter(t => t.hidden !== true);
+
   sidebarTweets.forEach(t => {
     const year = t.month.split("-")[0];
     grouped[year] = grouped[year] || [];
@@ -317,7 +318,7 @@ sidebar.appendChild(hiddenLabelsList);
 
 // 获取所有 hidden_label（去重非空）
 hiddenLabels = [...new Set(
-  sidebarTweets.flatMap(t => Array.isArray(t.hidden_label) ? t.hidden_label : [t.hidden_label])
+ sidebarTweets.flatMap(t => Array.isArray(t.hidden_label) ? t.hidden_label : [t.hidden_label])
           .filter(Boolean)
 )];
 
