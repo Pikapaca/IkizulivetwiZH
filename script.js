@@ -318,7 +318,7 @@ sidebar.appendChild(hiddenLabelsList);
 
 // 获取所有 hidden_label（去重非空）
 hiddenLabels = [...new Set(
- sidebarTweets.flatMap(t => Array.isArray(t.hidden_label) ? t.hidden_label : [t.hidden_label])
+ tweets.flatMap(t => Array.isArray(t.hidden_label) ? t.hidden_label : [t.hidden_label])
           .filter(Boolean)
 )];
 
