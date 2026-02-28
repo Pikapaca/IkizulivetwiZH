@@ -70,5 +70,11 @@
     "name": "イキヅライブ！ LOVELIVE! BLUEBIRD",
     "displayId": "ikizulive_staff",
     "avatar": "images/staff.jpg"
-  }  
+  }, 
+  {
+    "id": "lld",
+    "name": "みんなのイキヅライブ！ユーザー参加企画専用アカウント【集まれ！L高生】",
+    "displayId": "lld_ikizulive",
+    "avatar": "images/lld.png"
+  }      
 ]
