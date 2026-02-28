@@ -24,9 +24,14 @@ header {
   cursor: pointer;
 }
 
+.search-wrap{
+  position: relative;
+  display: inline-block;
+  margin-left: auto; /* 把“靠右”从 input 转移到容器，更稳定 */
+}
+
 #searchInput {
-  margin-left: auto;
-  padding: 5px 10px;
+  padding: 5px 28px 5px 10px;
   font-size: 0.95em;
   /* 圆角 + 边框 */
   border-radius: 6px;
@@ -50,6 +55,22 @@ header {
   box-shadow: 0 0 5px rgba(200,200,200,0.4);
 }
 
+.search-clear{
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+  display: none;   /* 默认隐藏，有内容才显示 */
+  opacity: 0.6;
+}
+
+.search-clear:hover{ opacity: 1; }
 
 /* 排序按钮 & 夜间模式按钮通用样式 */
 #sortToggle,

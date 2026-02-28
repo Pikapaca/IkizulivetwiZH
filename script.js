@@ -163,13 +163,38 @@ if (mobileImportantBtn && hiddenLabelsList) {
 
 
 
-  // 搜索
-  document.getElementById("searchInput")?.addEventListener("input", () => {
-    visibleCount = 30;
-    applyFilters();
-    const container = document.getElementById("tweetContainer");
-    if (container) container.scrollTop = 0;
-  });
+// 搜索 + 清除按钮
+const searchInput = document.getElementById("searchInput");
+const searchClear = document.getElementById("searchClear");
+
+function updateSearchClearBtn() {
+  if (!searchInput || !searchClear) return;
+  searchClear.style.display = searchInput.value ? "block" : "none";
+}
+
+// 输入时筛选 + 更新清除按钮显示
+searchInput?.addEventListener("input", () => {
+  visibleCount = 30;
+  applyFilters();
+  const container = document.getElementById("tweetContainer");
+  if (container) container.scrollTop = 0;
+  updateSearchClearBtn();
+});
+
+// 点击 × 清空搜索并刷新
+searchClear?.addEventListener("click", () => {
+  if (!searchInput) return;
+  searchInput.value = "";
+  visibleCount = 30;
+  applyFilters();
+  const container = document.getElementById("tweetContainer");
+  if (container) container.scrollTop = 0;
+  updateSearchClearBtn();
+  searchInput.focus();
+});
+
+// 初始化一次（页面刚打开时）
+updateSearchClearBtn();
 
   // 排序下拉
   document.getElementById("sortSelect")?.addEventListener("change", e => {
