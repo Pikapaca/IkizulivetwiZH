@@ -133,9 +133,49 @@ async function init() {
 
 const mobileMonthBtn = document.getElementById("mobileMonthBtn");
 const monthSidebar = document.getElementById("monthSidebar");
+const monthOverlay = document.getElementById("monthOverlay");
+
+function isMobileView() {
+  return window.innerWidth <= 768;
+}
+
+function openMonthSidebar() {
+  if (!monthSidebar) return;
+  monthSidebar.classList.add("mobile-open");
+  if (isMobileView() && monthOverlay) {
+    monthOverlay.classList.add("show");
+  }
+}
+
+function closeMonthSidebar() {
+  if (!monthSidebar) return;
+  monthSidebar.classList.remove("mobile-open");
+  if (monthOverlay) {
+    monthOverlay.classList.remove("show");
+  }
+}
+
+function toggleMonthSidebar() {
+  if (!isMobileView() || !monthSidebar) return;
+
+  const isOpen = monthSidebar.classList.contains("mobile-open");
+  if (isOpen) {
+    closeMonthSidebar();
+  } else {
+    openMonthSidebar();
+  }
+}
+
 if (mobileMonthBtn && monthSidebar) {
-  mobileMonthBtn.addEventListener("click", () => {
-    monthSidebar.classList.toggle("mobile-open");
+  mobileMonthBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleMonthSidebar();
+  });
+}
+
+if (monthOverlay) {
+  monthOverlay.addEventListener("click", () => {
+    closeMonthSidebar();
   });
 }
 
@@ -143,10 +183,12 @@ if (mobileMonthBtn && monthSidebar) {
 
 // 手机端“重要事件”按钮
 const mobileImportantBtn = document.getElementById("mobileImportantBtn");
-const hiddenLabelsList = document.getElementById("hiddenLabelsList");
-if (mobileImportantBtn && hiddenLabelsList) {
+if (mobileImportantBtn) {
   mobileImportantBtn.addEventListener("click", () => {
-    hiddenLabelsList.classList.toggle("show");
+    const hiddenLabelsList = document.getElementById("hiddenLabelsList");
+    if (hiddenLabelsList) {
+      hiddenLabelsList.classList.toggle("show");
+    }
   });
 }
 
@@ -318,6 +360,9 @@ function renderMonthSidebar() {
         applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
         const container = document.getElementById("tweetContainer");
     if (container) container.scrollTop = 0;
+    if (window.innerWidth <= 768) {
+      closeMonthSidebar();
+    }    
       });
       monthsContainer.appendChild(monthBtn);
     });
@@ -352,7 +397,6 @@ hiddenLabels.forEach(label => {
   const li = document.createElement("li");
   li.textContent = label;
   li.style.cursor = "pointer";
-  li.style.color = "blue";
   li.style.margin = "3px 0";
 
   li.addEventListener("click", () => {
