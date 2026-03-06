@@ -397,7 +397,6 @@ hiddenLabels.forEach(label => {
   const li = document.createElement("li");
   li.textContent = label;
   li.style.cursor = "pointer";
-  li.style.color = "blue";
   li.style.margin = "3px 0";
 
   li.addEventListener("click", () => {

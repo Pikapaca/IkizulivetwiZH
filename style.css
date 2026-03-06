@@ -554,7 +554,11 @@ body.dark #guideBtn:hover {
 #hiddenLabelsList li {
   cursor: pointer;
   padding: 3px 0;
-  color: #191970;
+  color: #2f2f2f;   /* 日间：深灰偏黑 */
+}
+
+body.dark #hiddenLabelsList li {
+  color: #d6d6d6;   /* 夜间：浅灰偏白 */
 }
 
 #hiddenLabelsList li:hover {
@@ -706,8 +710,7 @@ body.dark > #app {
   padding: 4px 6px;    /* 可调小，越小越容易缩 */
   box-sizing: border-box;
   white-space: nowrap;  /* 保持单行 */
-  overflow: hidden;
-  text-overflow: ellipsis; /* 超出显示省略号 */
+
   border-radius: 16px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   background: #ffffff;
