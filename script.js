@@ -346,7 +346,7 @@ monthSelect.appendChild(defaultOption);
   .forEach(month => {
     const option = document.createElement("option");
     option.value = month;
-    option.textContent = month; // 如果你想显示数量，就改成 `${month} (${counts[month]})`
+    option.textContent = `${month} (${counts[month] || 0})`;
     if (currentMonth === month) option.selected = true;
     monthSelect.appendChild(option);
   });
