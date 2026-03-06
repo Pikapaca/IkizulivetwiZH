@@ -121,6 +121,26 @@ header {
 #monthSidebar { left: 10px; width: 100px; }
 #memberSidebar { right: 10px; width: 80px; }
 
+.month-select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  font-size: 0.9em;
+  border-radius: 6px;
+  border: 1px solid rgba(200, 200, 200, 0.5);
+  background: white;
+  color: #333;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.month-select:focus {
+  outline: none;
+  border-color: rgba(160, 160, 160, 0.8);
+  box-shadow: 0 0 4px rgba(180, 180, 180, 0.35);
+}
+
 .month-btn, .member-btn {
   display: block;
   margin-bottom: 8px;
@@ -398,6 +418,12 @@ body.dark #monthSidebar {
   background-color: #1a1a1a;
   color: #ccc;
   border-right: 1px solid #333;
+}
+
+body.dark .month-select {
+  background: #2a2a2a;
+  color: #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 /* 侧边栏按钮文字/hover */
@@ -850,6 +876,13 @@ body.dark > #app {
     overflow-y: auto;
     padding: 10px;
   }
+
+#monthSidebar.mobile-open .month-select {
+  width: 100%;
+  font-size: 0.95em;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+}
 
   body.dark #monthOverlay {
     background: rgba(0, 0, 0, 0.35);

@@ -200,6 +200,10 @@ if (mobileImportantBtn) {
   currentMonth = null;
   currentTag = null;
   currentHiddenLabel = null; // 清空 hidden_label 筛选
+
+   const monthSelect = document.getElementById("monthSelect");
+  if (monthSelect) monthSelect.value = "";
+
     applyFilters();
   });
 
@@ -318,59 +322,49 @@ function renderMonthSidebar() {
   if (!sidebar) return;
   sidebar.innerHTML = "";
 
-  const grouped = {};
-  const counts = {};
+const counts = {};
 
-  // ✅ 侧边栏计数不统计 hidden:true
-  const sidebarTweets = tweets.filter(t => t.hidden !== true);
+// 侧边栏计数不统计 hidden:true
+const sidebarTweets = tweets.filter(t => t.hidden !== true);
 
-  sidebarTweets.forEach(t => {
-    const year = t.month.split("-")[0];
-    grouped[year] = grouped[year] || [];
-    if (!grouped[year].includes(t.month)) grouped[year].push(t.month);
-    counts[t.month] = (counts[t.month] || 0) + 1;
+sidebarTweets.forEach(t => {
+  counts[t.month] = (counts[t.month] || 0) + 1;
+});
+
+// 单个月份下拉
+const monthSelect = document.createElement("select");
+monthSelect.id = "monthSelect";
+monthSelect.className = "month-select";
+
+const defaultOption = document.createElement("option");
+defaultOption.value = "";
+defaultOption.textContent = "年-月";
+monthSelect.appendChild(defaultOption);
+
+[...new Set(sidebarTweets.map(t => t.month))]
+  .sort((a, b) => b.localeCompare(a))
+  .forEach(month => {
+    const option = document.createElement("option");
+    option.value = month;
+    option.textContent = month; // 如果你想显示数量，就改成 `${month} (${counts[month]})`
+    if (currentMonth === month) option.selected = true;
+    monthSelect.appendChild(option);
   });
 
-  Object.keys(grouped).sort((a,b)=>b-a).forEach(year => {
-    const yearDiv = document.createElement("div");
-    yearDiv.className = "year-item";
+monthSelect.addEventListener("change", () => {
+  visibleCount = 30;
+  currentMonth = monthSelect.value || null;
+  applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
 
-    const header = document.createElement("div");
-    header.className = "year-header";
-    header.innerHTML = `${year} <span class="toggle-arrow">▼</span>`;
+  const container = document.getElementById("tweetContainer");
+  if (container) container.scrollTop = 0;
 
-    const monthsContainer = document.createElement("div");
-    monthsContainer.className = "months-container";
-    monthsContainer.style.display = "none";
+  if (window.innerWidth <= 768) {
+    closeMonthSidebar();
+  }
+});
 
-    header.addEventListener("click", () => {
-      const isHidden = monthsContainer.style.display === "none";
-      monthsContainer.style.display = isHidden ? "block" : "none";
-      header.classList.toggle("expanded", isHidden);
-      header.querySelector(".toggle-arrow").textContent = isHidden ? "▲" : "▼";
-    });
-
-    grouped[year].sort((a,b)=>b.localeCompare(a)).forEach(month => {
-      const monthBtn = document.createElement("div");
-      monthBtn.className = "month-btn";
-      monthBtn.textContent = `${month} (${counts[month]})`;
-      monthBtn.addEventListener("click", () => {
-        visibleCount = 30;
-        currentMonth = month;
-        applyFilters(currentMember, currentMonth, currentTag, currentHiddenLabel);
-        const container = document.getElementById("tweetContainer");
-    if (container) container.scrollTop = 0;
-    if (window.innerWidth <= 768) {
-      closeMonthSidebar();
-    }    
-      });
-      monthsContainer.appendChild(monthBtn);
-    });
-
-    yearDiv.appendChild(header);
-    yearDiv.appendChild(monthsContainer);
-    sidebar.appendChild(yearDiv);
-  });
+sidebar.appendChild(monthSelect);
 
 
      // 重要事件按钮
