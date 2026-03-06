@@ -433,7 +433,7 @@ function renderMemberSidebar() {
   // ===== ① 先创建 guide 按钮（永远第一个）=====
   const guideBtn = document.createElement("button");
   guideBtn.id = "guideBtn";
-  guideBtn.textContent = "指南";
+  guideBtn.textContent = "网页指南";
   sidebar.appendChild(guideBtn);
 
   if (modal) {
