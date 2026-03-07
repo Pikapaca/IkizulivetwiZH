@@ -864,38 +864,49 @@ requestAnimationFrame(() => {
   const tweetContainer = document.getElementById("tweetContainer");
   if (!tweetContainer) return;
 
-  const scrollToEl = (smooth = true) => {
+  const scrollToEl = () => {
     const elRect = el.getBoundingClientRect();
     const containerRect = tweetContainer.getBoundingClientRect();
 
     const targetTop =
       tweetContainer.scrollTop +
       (elRect.top - containerRect.top) -
-      20; // 留一点顶部空隙，别贴太死
+      20;
 
     tweetContainer.scrollTo({
       top: targetTop,
-      behavior: smooth ? "smooth" : "auto"
+      behavior: "auto"
     });
   };
 
-  scrollToEl(true);
+  let lastTop = null;
+  let stableCount = 0;
+  let tries = 0;
+  const maxTries = 20;
 
-  setTimeout(() => {
-    scrollToEl(false);
-  }, 250);
+  const correctUntilStable = () => {
+    const currentTop = el.getBoundingClientRect().top;
 
-  setTimeout(() => {
-    scrollToEl(false);
-  }, 800);
+    scrollToEl();
+
+    const newTop = el.getBoundingClientRect().top;
+
+    if (lastTop !== null && Math.abs(newTop - lastTop) < 1) {
+      stableCount++;
+    } else {
+      stableCount = 0;
+    }
+
+    lastTop = newTop;
+    tries++;
+
+    if (stableCount >= 2 || tries >= maxTries) return;
+
+    setTimeout(correctUntilStable, 100);
+  };
+
+  correctUntilStable();
 });
-
-  el.classList.add("tweet-highlight");
-  setTimeout(() => {
-    el.classList.remove("tweet-highlight");
-  }, 2000);
-}
-
 // ===== 图片弹窗 Lightbox =====
 function setupImageLightbox() {
   // 1) 创建 modal（只创建一次）
