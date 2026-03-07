@@ -119,7 +119,12 @@ async function init() {
   // 最近三个月
   const latestMonths = getLatestMonthsFromData(tweets, 3);
   tweets = tweets.filter(t => latestMonths.includes(t.month))
-                 .sort((a, b) => new Date(b.date) - new Date(a.date));
+                 .sort((a, b) => new Date(b.date) - new Date(a.date))
+                 .map((t, idx) => ({
+                   ...t,
+                   _idx: idx,
+                   _jumpId: `tweet-${t.member}-${t.date}-${idx}`.replace(/[^a-zA-Z0-9_-]/g, "-")
+                 }));
 
   // 成员数据
   const memberData = await membersPromise;
@@ -296,7 +301,11 @@ async function loadRemainingMonths() {
     }));
     const results = await Promise.all(promises);
     results.forEach(arr => tweets = tweets.concat(arr));
-    tweets = tweets.map((t, idx) => ({ ...t, _idx: idx }));
+        tweets = tweets.map((t, idx) => ({
+      ...t,
+      _idx: idx,
+      _jumpId: `tweet-${t.member}-${t.date}-${idx}`.replace(/[^a-zA-Z0-9_-]/g, "-")
+    }));
         tweets.sort((a, b) => {
            const timeDiff = new Date(b.date) - new Date(a.date);
 
@@ -497,7 +506,7 @@ loadJSON("guide.json").then(data => {
 
 
 // ========== 筛选和排序（支持隐藏 label + 原文检索） ==========
-function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null, hiddenLabelFilter = null) {
+function applyFilters(memberFilter = null, monthFilter = null, tagFilter = null, hiddenLabelFilter = null, resetVisible = true) {
   const search = document.getElementById("searchInput")?.value.toLowerCase() || "";
   const member = memberFilter || currentMember || "";
   const month = monthFilter || currentMonth || "";
@@ -551,7 +560,9 @@ if (hiddenLabel) {
 });
 
 
-  visibleCount = 30;
+  if (resetVisible) {
+    visibleCount = 30;
+  }
   renderCurrent();
 
 }
@@ -651,6 +662,7 @@ function loadMoreTweets() {
 function renderTweet(t) {
   const container = document.createElement("div");
   container.className = "tweet";
+  container.id = t._jumpId || "";
 
   if (t.deleted) {
     container.classList.add("deleted");
@@ -733,9 +745,18 @@ originalBtn.addEventListener("click", (e) => {
 
   body.appendChild(imagesContainer);
 }
-  const date = document.createElement("div");
-  date.className = "tweet-date";
+ 
+  const date = document.createElement("span");
+  date.className = "tweet-date jump-text";
   date.textContent = t.date;
+  date.dataset.target = t._jumpId || "";
+
+  date.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (!date.dataset.target) return;
+    jumpToTweet(date.dataset.target);
+  });
+
   body.appendChild(date);
 
   if (t.deleted) {
@@ -796,6 +817,44 @@ originalBtn.addEventListener("click", (e) => {
   container.appendChild(avatar);
   container.appendChild(body);
   return container;
+}
+
+function jumpToTweet(targetId) {
+  currentMember = null;
+  currentMonth = null;
+  currentTag = null;
+  currentHiddenLabel = null;
+
+  const monthSelect = document.getElementById("monthSelect");
+  if (monthSelect) monthSelect.value = "";
+
+  const searchInput = document.getElementById("searchInput");
+  if (searchInput) searchInput.value = "";
+
+  const searchClear = document.getElementById("searchClear");
+  if (searchClear) searchClear.style.display = "none";
+
+  const container = document.getElementById("tweetContainer");
+  if (container) container.scrollTop = 0;
+
+  applyFilters(null, null, null, null, true);
+
+  let el = document.getElementById(targetId);
+
+  while (!el && visibleCount < currentFiltered.length) {
+    visibleCount += 30;
+    applyFilters(null, null, null, null, false);
+    el = document.getElementById(targetId);
+  }
+
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.classList.add("tweet-highlight");
+
+    setTimeout(() => {
+      el.classList.remove("tweet-highlight");
+    }, 2000);
+  }
 }
 
 // ===== 图片弹窗 Lightbox =====

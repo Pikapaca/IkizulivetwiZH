@@ -694,6 +694,24 @@ body.dark .annotation-tooltip {
   display: none;
 }
 
+.jump-text {
+  cursor: pointer;
+}
+
+.jump-text:hover {
+  text-decoration: underline;
+}
+
+.tweet-highlight {
+  animation: tweetFlash 2s ease;
+}
+
+@keyframes tweetFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.9); }
+  30%  { box-shadow: 0 0 0 6px rgba(255, 215, 0, 0.35); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
 
 /* ========== 手机兼容 ========== */
 @media (max-width: 768px) {
