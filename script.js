@@ -837,26 +837,58 @@ function jumpToTweet(targetId) {
   const container = document.getElementById("tweetContainer");
   if (container) container.scrollTop = 0;
 
-  // 先回到 no filter 列表
+  // 回到 no filter 列表
   applyFilters(null, null, null, null, true);
 
-  // 在 no filter 列表里直接找到目标位置
+  // 在 no filter 列表中找到目标推文的位置
   const targetIndex = currentFiltered.findIndex(t => t._jumpId === targetId);
+  console.log("jump targetId:", targetId);
+  console.log("jump targetIndex:", targetIndex);
+  console.log("jump target tweet:", currentFiltered[targetIndex]);
+
   if (targetIndex === -1) return;
 
-  // 一次性把可见条数扩到足够包含目标
+  // 一次性把可见条数扩到能包含目标的位置
   visibleCount = Math.ceil((targetIndex + 1) / 30) * 30;
   renderCurrent();
 
   const el = document.getElementById(targetId);
+  console.log("jump target element:", el);
+
   if (!el) return;
 
-  el.scrollIntoView({ behavior: "smooth", block: "center" });
+  console.log("element text:", el.querySelector(".tweet-content")?.textContent);
+  console.log("element date:", el.querySelector(".tweet-date")?.textContent);
 
-  // 再补滚一次，减轻图片懒加载造成的位置偏差
+requestAnimationFrame(() => {
+  const tweetContainer = document.getElementById("tweetContainer");
+  if (!tweetContainer) return;
+
+  const scrollToEl = (smooth = true) => {
+    const elRect = el.getBoundingClientRect();
+    const containerRect = tweetContainer.getBoundingClientRect();
+
+    const targetTop =
+      tweetContainer.scrollTop +
+      (elRect.top - containerRect.top) -
+      20; // 留一点顶部空隙，别贴太死
+
+    tweetContainer.scrollTo({
+      top: targetTop,
+      behavior: smooth ? "smooth" : "auto"
+    });
+  };
+
+  scrollToEl(true);
+
   setTimeout(() => {
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, 300);
+    scrollToEl(false);
+  }, 250);
+
+  setTimeout(() => {
+    scrollToEl(false);
+  }, 800);
+});
 
   el.classList.add("tweet-highlight");
   setTimeout(() => {
