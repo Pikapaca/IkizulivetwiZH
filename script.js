@@ -860,6 +860,15 @@ function jumpToTweet(targetId) {
   console.log("element text:", el.querySelector(".tweet-content")?.textContent);
   console.log("element date:", el.querySelector(".tweet-date")?.textContent);
 
+// 先清掉旧高亮，避免重复点击时动画不触发
+el.classList.remove("tweet-highlight");
+void el.offsetWidth; // 强制重绘，让动画能重新触发
+el.classList.add("tweet-highlight");
+
+setTimeout(() => {
+  el.classList.remove("tweet-highlight");
+}, 2000);
+
 requestAnimationFrame(() => {
   const tweetContainer = document.getElementById("tweetContainer");
   if (!tweetContainer) return;
