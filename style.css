@@ -381,7 +381,7 @@ img.tweet-image {
 .tweet.deleted .tweet-content {
   text-decoration: line-through;
   text-decoration-color: #c8c8c8;
-  text-decoration-thickness: 1.5px;
+  text-decoration-thickness: 1px;
 }
 
 .deleted-note {
