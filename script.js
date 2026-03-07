@@ -875,7 +875,7 @@ requestAnimationFrame(() => {
 
     tweetContainer.scrollTo({
       top: targetTop,
-      behavior: "smooth"
+      behavior: smooth ? "smooth" : "auto"
     });
   };
 
