@@ -907,6 +907,8 @@ requestAnimationFrame(() => {
 
   correctUntilStable();
 });
+}
+
 // ===== 图片弹窗 Lightbox =====
 function setupImageLightbox() {
   // 1) 创建 modal（只创建一次）
