@@ -864,27 +864,28 @@ requestAnimationFrame(() => {
   const tweetContainer = document.getElementById("tweetContainer");
   if (!tweetContainer) return;
 
-  const scrollToEl = (smooth = true) => {
+  const getTargetTop = () => {
     const elRect = el.getBoundingClientRect();
     const containerRect = tweetContainer.getBoundingClientRect();
 
-    const targetTop =
+    return (
       tweetContainer.scrollTop +
       (elRect.top - containerRect.top) -
-      20; // 留一点顶部空隙，别贴太死
-
-    tweetContainer.scrollTo({
-      top: targetTop,
-      behavior: "smooth"
-    });
+      20
+    );
   };
 
-  scrollToEl(true);
+  tweetContainer.scrollTo({
+    top: getTargetTop(),
+    behavior: "smooth"
+  });
 
   setTimeout(() => {
-    scrollToEl(false);
-  }, 400);
-
+    tweetContainer.scrollTo({
+      top: getTargetTop(),
+      behavior: "auto"
+    });
+  }, 500);
 });
 
   el.classList.add("tweet-highlight");
