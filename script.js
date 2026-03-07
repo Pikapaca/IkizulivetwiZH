@@ -837,24 +837,31 @@ function jumpToTweet(targetId) {
   const container = document.getElementById("tweetContainer");
   if (container) container.scrollTop = 0;
 
+  // 先回到 no filter 列表
   applyFilters(null, null, null, null, true);
 
-  let el = document.getElementById(targetId);
+  // 在 no filter 列表里直接找到目标位置
+  const targetIndex = currentFiltered.findIndex(t => t._jumpId === targetId);
+  if (targetIndex === -1) return;
 
-  while (!el && visibleCount < currentFiltered.length) {
-    visibleCount += 30;
-    applyFilters(null, null, null, null, false);
-    el = document.getElementById(targetId);
-  }
+  // 一次性把可见条数扩到足够包含目标
+  visibleCount = Math.ceil((targetIndex + 1) / 30) * 30;
+  renderCurrent();
 
-  if (el) {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  // 再补滚一次，减轻图片懒加载造成的位置偏差
+  setTimeout(() => {
     el.scrollIntoView({ behavior: "smooth", block: "center" });
-    el.classList.add("tweet-highlight");
+  }, 300);
 
-    setTimeout(() => {
-      el.classList.remove("tweet-highlight");
-    }, 2000);
-  }
+  el.classList.add("tweet-highlight");
+  setTimeout(() => {
+    el.classList.remove("tweet-highlight");
+  }, 2000);
 }
 
 // ===== 图片弹窗 Lightbox =====
