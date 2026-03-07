@@ -867,7 +867,7 @@ el.classList.add("tweet-highlight");
 
 setTimeout(() => {
   el.classList.remove("tweet-highlight");
-}, 2000);
+}, 1000);
 
 requestAnimationFrame(() => {
   const tweetContainer = document.getElementById("tweetContainer");
