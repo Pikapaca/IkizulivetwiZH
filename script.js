@@ -652,6 +652,10 @@ function renderTweet(t) {
   const container = document.createElement("div");
   container.className = "tweet";
 
+  if (t.deleted) {
+    container.classList.add("deleted");
+  }  
+
   const m = members[t.member];
   if (!m) return container;
 
@@ -733,6 +737,13 @@ originalBtn.addEventListener("click", (e) => {
   date.className = "tweet-date";
   date.textContent = t.date;
   body.appendChild(date);
+
+  if (t.deleted) {
+    const deletedNote = document.createElement("div");
+    deletedNote.className = "deleted-note";
+    deletedNote.textContent = "（已删除）";
+    body.appendChild(deletedNote);
+  }
 
   body.appendChild(original);     // 原文
 

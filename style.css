@@ -378,6 +378,19 @@ img.tweet-image {
 .tweet-tag:hover { text-decoration: underline; }
 .tweet-date { font-size: 0.75em; color: #888; margin-top: 6px; margin-bottom: 12px; }
 
+.tweet.deleted .tweet-content {
+  text-decoration: line-through;
+  text-decoration-color: #c8c8c8;
+  text-decoration-thickness: 1.5px;
+}
+
+.deleted-note {
+  margin-top: 4px;
+  font-size: 0.85em;
+  color: #999;
+  font-style: italic;
+}
+
 /* ======================= 夜间模式 ======================= */
 body.dark {
   background: #1e1e1e;
@@ -386,6 +399,14 @@ body.dark {
 body.dark main { color: #ccc; }
 body.dark .tweet { background: #2c2c2c; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 body.dark .tweet-id, body.dark .tweet-date { color: #aaa; }
+
+body.dark .tweet.deleted .tweet-content {
+  text-decoration-color: #777;
+}
+
+body.dark .deleted-note {
+  color: #aaa;
+}
 
 /* header 夜间模式 */
 body.dark header {
