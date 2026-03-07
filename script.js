@@ -875,7 +875,7 @@ requestAnimationFrame(() => {
 
     tweetContainer.scrollTo({
       top: targetTop,
-      behavior: smooth ? "smooth" : "auto"
+      behavior: "smooth"
     });
   };
 
@@ -883,11 +883,8 @@ requestAnimationFrame(() => {
 
   setTimeout(() => {
     scrollToEl(false);
-  }, 250);
+  }, 400);
 
-  setTimeout(() => {
-    scrollToEl(false);
-  }, 800);
 });
 
   el.classList.add("tweet-highlight");
