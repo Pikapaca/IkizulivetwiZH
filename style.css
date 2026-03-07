@@ -703,7 +703,7 @@ body.dark .annotation-tooltip {
 }
 
 .tweet-highlight {
-  animation: tweetFlashBg 2s ease;
+  animation: tweetFlashBg 0.8s ease;
 }
 
 @keyframes tweetFlashBg {
