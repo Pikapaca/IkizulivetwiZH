@@ -389,11 +389,34 @@ hiddenLabelsList.id = "hiddenLabelsList";
 hiddenLabelsList.style.paddingLeft = "10px";
 sidebar.appendChild(hiddenLabelsList);
 
-// 获取所有 hidden_label（去重非空）
+// 获取所有 hidden_label（去重非空）+ 固定顺序
+const hiddenLabelOrder = [
+  "入部前",
+  "废校？！",
+  "乃理子声优试镜挑战",
+  "首次线下集合！",
+  "L高文化祭",
+  "圣诞活动！",
+  "收到新offer？",
+  "LL前作相关",
+  "现实时间联动"
+];
+
 hiddenLabels = [...new Set(
- tweets.flatMap(t => Array.isArray(t.hidden_label) ? t.hidden_label : [t.hidden_label])
-          .filter(Boolean)
-)];
+  tweets
+    .flatMap(t => Array.isArray(t.hidden_label) ? t.hidden_label : [t.hidden_label])
+    .filter(Boolean)
+)].sort((a, b) => {
+  const ia = hiddenLabelOrder.indexOf(a);
+  const ib = hiddenLabelOrder.indexOf(b);
+
+  if (ia !== -1 && ib !== -1) return ia - ib;
+  if (ia !== -1) return -1;
+  if (ib !== -1) return 1;
+
+  return a.localeCompare(b, "zh-Hans-CN");
+});
+
 
 // 生成列表
 hiddenLabels.forEach(label => {
