@@ -76,7 +76,7 @@
     "tags": ["生活好难部"], 
     "hidden_label":["L高文化祭2"],
     "annotations": [
-  { "term": "白银周", "definition": "シルバーウィーク：日本9月中下旬的连假" }
+  { "term": "白银周", "definition": "シルバーウィーク：日本9月中下旬的连假" }]
   }, 
  {
     "member": "hanabi",
@@ -85,7 +85,6 @@
     "date": "2026-09-07 15:57",
     "tags": ["生活好难部"], 
     "hidden_label":["L高文化祭2"]
-]
   }, 
  {
     "member": "hanabi",
